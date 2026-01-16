@@ -113,8 +113,8 @@ const COLORS = {
 
 // Game constants
 const CONSTANTS = {
-    GRAVITY: 0.6,
-    MAX_FALL_SPEED: 15,
+    GRAVITY: 0.38,
+    MAX_FALL_SPEED: 10,
     TILE_SIZE: 32,
     CANVAS_WIDTH: 800,
     CANVAS_HEIGHT: 600

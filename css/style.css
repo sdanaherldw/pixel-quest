@@ -69,12 +69,99 @@ body {
     pointer-events: none;
 }
 
+/* Mobile Controls */
+#mobile-controls {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    padding: 0 15px;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#dpad {
+    position: absolute;
+    left: 15px;
+    bottom: 10px;
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+}
+
+#action-buttons {
+    position: absolute;
+    right: 15px;
+    bottom: 10px;
+    display: flex;
+    gap: 15px;
+    pointer-events: auto;
+}
+
+.dpad-btn, .action-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dpad-btn:active, .action-btn:active {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: #fff;
+}
+
+.action-btn {
+    width: 70px;
+    height: 70px;
+    font-size: 24px;
+}
+
+#btn-jump {
+    background: rgba(0, 100, 200, 0.5);
+}
+
+#btn-attack {
+    background: rgba(200, 50, 50, 0.5);
+}
+
 @media (max-width: 820px) {
     #game-container {
         width: 100vw;
-        height: 75vw;
-        max-height: 100vh;
+        height: 56.25vw;
+        max-height: 70vh;
+        min-width: unset;
+        min-height: unset;
         border-radius: 0;
         border: none;
+    }
+
+    #mobile-controls {
+        display: block;
+    }
+}
+
+@media (max-width: 600px) {
+    .dpad-btn, .action-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 16px;
+    }
+
+    .action-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 20px;
     }
 }

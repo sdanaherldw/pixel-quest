@@ -10,13 +10,13 @@ class Player {
         this.vy = 0;
 
         // Physics constants
-        this.walkSpeed = 3;
-        this.runSpeed = 5;
-        this.jumpForce = -12;
+        this.walkSpeed = 2.5;
+        this.runSpeed = 4;
+        this.jumpForce = -9.5;
         this.gravity = CONSTANTS.GRAVITY;
         this.maxFallSpeed = CONSTANTS.MAX_FALL_SPEED;
-        this.friction = 0.85;
-        this.airFriction = 0.95;
+        this.friction = 0.88;
+        this.airFriction = 0.96;
 
         // State
         this.grounded = false;
