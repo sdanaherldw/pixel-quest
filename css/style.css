@@ -16,8 +16,12 @@ body {
 
 #game-container {
     position: relative;
-    width: 800px;
-    height: 600px;
+    width: 65vw;
+    height: calc(65vw * 0.75);
+    max-width: 1200px;
+    max-height: 900px;
+    min-width: 640px;
+    min-height: 480px;
     border: 4px solid #4a4a6a;
     border-radius: 4px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5), inset 0 0 60px rgba(0, 0, 0, 0.3);

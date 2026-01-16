@@ -294,9 +294,20 @@ class Game {
 
     renderGame() {
         const ctx = this.ctx;
+        // Create camera object with position and isOnScreen method
+        const camX = this.camera.getViewX();
+        const camY = this.camera.getViewY();
         const cam = {
-            x: this.camera.getViewX(),
-            y: this.camera.getViewY()
+            x: camX,
+            y: camY,
+            width: CONSTANTS.CANVAS_WIDTH,
+            height: CONSTANTS.CANVAS_HEIGHT,
+            isOnScreen: (obj) => {
+                return obj.x + obj.width > camX &&
+                       obj.x < camX + CONSTANTS.CANVAS_WIDTH &&
+                       obj.y + obj.height > camY &&
+                       obj.y < camY + CONSTANTS.CANVAS_HEIGHT;
+            }
         };
 
         // Render parallax background
@@ -320,7 +331,9 @@ class Game {
         }
 
         // Render player
-        this.player.render(ctx, cam);
+        if (this.player) {
+            this.player.render(ctx, cam);
+        }
 
         // Render particles
         Particles.render(ctx, cam);

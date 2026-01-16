@@ -476,31 +476,46 @@ class Player {
         const spriteSet = this.powerUps.powered.active || this.powerUps.invincibility.active ?
             Sprites.getSprite('playerPowered') : Sprites.getSprite('player');
 
-        let sprite;
-        switch (this.state) {
-            case 'idle':
-                sprite = spriteSet.idle[this.animFrame];
-                break;
-            case 'run':
-                sprite = spriteSet.run[this.animFrame];
-                break;
-            case 'jump':
-                sprite = spriteSet.jump;
-                break;
-            case 'fall':
-                sprite = spriteSet.fall;
-                break;
-            default:
-                sprite = spriteSet.idle[0];
+        let sprite = null;
+        if (spriteSet) {
+            switch (this.state) {
+                case 'idle':
+                    sprite = spriteSet.idle ? spriteSet.idle[this.animFrame] : null;
+                    break;
+                case 'run':
+                    sprite = spriteSet.run ? spriteSet.run[this.animFrame] : null;
+                    break;
+                case 'jump':
+                    sprite = spriteSet.jump;
+                    break;
+                case 'fall':
+                    sprite = spriteSet.fall;
+                    break;
+                default:
+                    sprite = spriteSet.idle ? spriteSet.idle[0] : null;
+            }
         }
 
         // Flip sprite if facing left
-        if (!this.facingRight) {
-            ctx.translate(screenX + this.width, screenY);
-            ctx.scale(-1, 1);
-            ctx.drawImage(sprite, 0, 0, this.width, this.height);
+        if (sprite) {
+            if (!this.facingRight) {
+                ctx.translate(screenX + this.width, screenY);
+                ctx.scale(-1, 1);
+                ctx.drawImage(sprite, 0, 0, this.width, this.height);
+            } else {
+                ctx.drawImage(sprite, screenX, screenY, this.width, this.height);
+            }
         } else {
-            ctx.drawImage(sprite, screenX, screenY, this.width, this.height);
+            // Fallback: draw colored rectangle if sprites not loaded
+            ctx.fillStyle = this.powerUps.invincibility.active ? '#FFD700' : '#E85D04';
+            ctx.fillRect(screenX, screenY, this.width, this.height);
+            // Face
+            ctx.fillStyle = '#FFDAB9';
+            ctx.fillRect(screenX + 6, screenY + 4, 16, 12);
+            // Eyes
+            ctx.fillStyle = '#000';
+            ctx.fillRect(screenX + 8, screenY + 8, 3, 3);
+            ctx.fillRect(screenX + 17, screenY + 8, 3, 3);
         }
 
         ctx.restore();
