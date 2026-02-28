@@ -1,0 +1,927 @@
+{
+  "region": "shadowmire",
+  "regionName": "Shadowmire Swamp",
+  "enemies": [
+    {
+      "id": "bog-zombie",
+      "name": "Bog Zombie",
+      "region": "shadowmire",
+      "level": 8,
+      "stats": { "hp": 130, "atk": 22, "def": 8, "spd": 1.5 },
+      "xpReward": 55,
+      "goldDrop": { "min": 2, "max": 8 },
+      "lootTable": "bog-zombie-common",
+      "behavior": "shamble-swarm",
+      "abilities": ["rotten-grasp", "plague-burst", "rise-again"],
+      "abilityDetails": [
+        {
+          "id": "rotten-grasp",
+          "name": "Rotten Grasp",
+          "description": "Grabs the target with fetid, waterlogged hands, dealing damage and applying a disease debuff that reduces max HP by 5% for 15 seconds.",
+          "damage": 18,
+          "cooldown": 5.0,
+          "effect": { "type": "disease", "maxHPReduction": 0.05, "duration": 15.0 }
+        },
+        {
+          "id": "plague-burst",
+          "name": "Plague Burst",
+          "description": "On death, the zombie's bloated corpse explodes, spraying plague-infested viscera in all directions and applying poison to all nearby targets.",
+          "damage": 12,
+          "aoe": { "type": "circle", "radius": 60 },
+          "type": "death-trigger",
+          "effect": { "type": "poison", "damage": 4, "duration": 6.0 }
+        },
+        {
+          "id": "rise-again",
+          "name": "Rise Again",
+          "description": "Has a 30% chance to reanimate 5 seconds after death with 40% HP. Can only trigger once. Prevented by fire damage or holy magic dealing the killing blow.",
+          "type": "passive",
+          "reanimateChance": 0.3,
+          "reanimateDelay": 5.0,
+          "reanimateHPPercent": 0.4,
+          "preventedBy": ["fire", "holy"]
+        }
+      ],
+      "weaknesses": ["fire", "holy"],
+      "resistances": ["physical", "shadow", "poison"],
+      "packSize": { "min": 3, "max": 6 },
+      "description": "Waterlogged corpses that shamble from the black waters of the swamp, their bloated flesh sloughing from bones stained green with mold. They are driven by the necromantic plague that permeates the Shadowmire — mindless, relentless, and horrifyingly numerous.",
+      "sprite": { "base": "zombie", "variant": "bog", "width": 26, "height": 30 }
+    },
+    {
+      "id": "swamp-hag",
+      "name": "Swamp Hag",
+      "region": "shadowmire",
+      "level": 10,
+      "stats": { "hp": 110, "atk": 18, "def": 10, "spd": 3.0, "int": 22 },
+      "xpReward": 85,
+      "goldDrop": { "min": 15, "max": 35 },
+      "lootTable": "swamp-hag-rare",
+      "behavior": "ranged-debuff",
+      "abilities": ["hex-bolt", "aging-curse", "cauldron-summon", "disguise"],
+      "abilityDetails": [
+        {
+          "id": "hex-bolt",
+          "name": "Hex Bolt",
+          "description": "Fires a bolt of sickly green energy that deals shadow damage and has a chance to transform the target into a toad for 2 seconds.",
+          "damage": 25,
+          "cooldown": 3.0,
+          "range": 300,
+          "effect": { "type": "polymorph", "form": "toad", "duration": 2.0, "chance": 0.15 }
+        },
+        {
+          "id": "aging-curse",
+          "name": "Aging Curse",
+          "description": "Places a curse on the target that reduces all their stats by 15% and slows attack speed by 20% for 10 seconds.",
+          "cooldown": 14.0,
+          "effect": { "type": "curse", "statReduction": 0.15, "atkSpdReduction": 0.2, "duration": 10.0 }
+        },
+        {
+          "id": "cauldron-summon",
+          "name": "Summon Cauldron",
+          "description": "Places a bubbling cauldron that periodically spawns a Bog Zombie every 8 seconds. The cauldron has 150 HP and must be destroyed.",
+          "cooldown": 25.0,
+          "cauldronHP": 150,
+          "spawnInterval": 8.0,
+          "spawnId": "bog-zombie"
+        },
+        {
+          "id": "disguise",
+          "name": "Bog Disguise",
+          "description": "Can disguise itself as a harmless old woman NPC until a player gets within 50 units, triggering a surprise attack with guaranteed first hit.",
+          "type": "passive-ambush",
+          "disguiseRange": 50,
+          "firstStrikeDamage": 30
+        }
+      ],
+      "weaknesses": ["fire", "holy"],
+      "resistances": ["shadow", "poison", "nature"],
+      "description": "Hunched crones of terrifying power who lurk in the deepest reaches of the swamp, stirring cauldrons of bubbling filth and whispering to spirits that no living thing should hear. They can appear as harmless old women to lure the unwary close before revealing their true forms — twisted, green-skinned horrors with teeth like needles and eyes that glow with malevolent intelligence.",
+      "sprite": { "base": "hag", "variant": "swamp", "width": 28, "height": 34 }
+    },
+    {
+      "id": "poison-toad",
+      "name": "Bloat Toad",
+      "region": "shadowmire",
+      "level": 9,
+      "stats": { "hp": 160, "atk": 24, "def": 14, "spd": 2.5 },
+      "xpReward": 65,
+      "goldDrop": { "min": 3, "max": 10 },
+      "lootTable": "poison-toad-common",
+      "behavior": "ambush-water",
+      "abilities": ["toxic-tongue", "poison-cloud", "belly-flop", "submerge"],
+      "abilityDetails": [
+        {
+          "id": "toxic-tongue",
+          "name": "Toxic Tongue",
+          "description": "Lashes out with a long, sticky tongue that pulls the target into melee range and applies a potent poison.",
+          "damage": 15,
+          "cooldown": 5.0,
+          "range": 200,
+          "effect": { "type": "pull-and-poison", "pullDistance": 150, "poisonDamage": 6, "poisonDuration": 8.0 }
+        },
+        {
+          "id": "poison-cloud",
+          "name": "Poison Cloud",
+          "description": "Exhales a massive cloud of toxic gas that lingers in the area, poisoning anything that passes through.",
+          "cooldown": 12.0,
+          "aoe": { "type": "circle", "radius": 100 },
+          "duration": 8.0,
+          "effect": { "type": "poison-zone", "damage": 8, "tickRate": 1.0 }
+        },
+        {
+          "id": "belly-flop",
+          "name": "Belly Flop",
+          "description": "Leaps into the air and slams down on a target area, creating a splash of toxic water that damages and slows.",
+          "damage": 30,
+          "cooldown": 8.0,
+          "aoe": { "type": "circle", "radius": 80 },
+          "effect": { "type": "slow", "value": 0.4, "duration": 3.0 }
+        },
+        {
+          "id": "submerge",
+          "name": "Submerge",
+          "description": "Sinks beneath the swamp water, becoming untargetable for 4 seconds while repositioning.",
+          "cooldown": 15.0,
+          "duration": 4.0,
+          "effect": { "type": "vanish" }
+        }
+      ],
+      "weaknesses": ["ice", "lightning"],
+      "resistances": ["poison", "nature"],
+      "description": "Enormous toads the size of wagons, their warty skin oozing with toxic secretions and their eyes bulging with dim, hungry intelligence. They lurk beneath the swamp's surface with only their eyes visible, striking with whip-like tongues to drag prey into the muck.",
+      "sprite": { "base": "toad", "variant": "bloat", "width": 44, "height": 36 }
+    },
+    {
+      "id": "shadow-stalker",
+      "name": "Shadow Stalker",
+      "region": "shadowmire",
+      "level": 11,
+      "stats": { "hp": 90, "atk": 40, "def": 6, "spd": 5.5 },
+      "xpReward": 95,
+      "goldDrop": { "min": 12, "max": 28 },
+      "lootTable": "shadow-stalker-uncommon",
+      "behavior": "stealth-assassin",
+      "abilities": ["shadow-strike", "vanish", "shadow-step", "mark-of-death"],
+      "abilityDetails": [
+        {
+          "id": "shadow-strike",
+          "name": "Shadow Strike",
+          "description": "Emerges from the shadows to deliver a devastating backstab that deals triple damage if the target is not facing the attacker.",
+          "damage": 35,
+          "backstabMultiplier": 3.0,
+          "cooldown": 6.0
+        },
+        {
+          "id": "vanish",
+          "name": "Vanish",
+          "description": "Dissolves into shadow, becoming completely invisible and untargetable for 5 seconds. Next attack from stealth deals bonus damage.",
+          "cooldown": 12.0,
+          "duration": 5.0,
+          "bonusDamageFromStealth": 0.5
+        },
+        {
+          "id": "shadow-step",
+          "name": "Shadow Step",
+          "description": "Teleports through shadows to appear behind a target, bypassing all obstacles and defenses.",
+          "cooldown": 8.0,
+          "effect": { "type": "teleport-behind" }
+        },
+        {
+          "id": "mark-of-death",
+          "name": "Mark of Death",
+          "description": "Marks a target. After 6 seconds, the mark detonates, dealing shadow damage equal to 50% of all damage the target received during the mark's duration.",
+          "cooldown": 20.0,
+          "duration": 6.0,
+          "detonationDamagePercent": 0.5
+        }
+      ],
+      "weaknesses": ["holy", "fire"],
+      "resistances": ["shadow", "physical"],
+      "description": "Formless entities born from the concentrated darkness of the Shadowmire — not ghosts, not demons, but something between. They exist as patches of deeper darkness within the swamp's perpetual gloom, striking from impossible angles with claws of solidified shadow that phase through armor and rend the soul itself.",
+      "sprite": { "base": "shadow", "variant": "stalker", "width": 30, "height": 36 }
+    },
+    {
+      "id": "corpse-flower",
+      "name": "Corpse Flower",
+      "region": "shadowmire",
+      "level": 10,
+      "stats": { "hp": 200, "atk": 28, "def": 16, "spd": 0.0 },
+      "xpReward": 80,
+      "goldDrop": { "min": 0, "max": 5 },
+      "lootTable": "corpse-flower-uncommon",
+      "behavior": "stationary-trap",
+      "abilities": ["luring-scent", "vine-snare", "corpse-burst", "pollen-cloud"],
+      "abilityDetails": [
+        {
+          "id": "luring-scent",
+          "name": "Luring Scent",
+          "description": "Releases a hypnotic perfume that forces the nearest target to walk slowly toward the flower for 3 seconds. Resisted by high willpower.",
+          "cooldown": 14.0,
+          "range": 200,
+          "effect": { "type": "charm-walk", "duration": 3.0, "resistedBy": "wis-check-16" }
+        },
+        {
+          "id": "vine-snare",
+          "name": "Vine Snare",
+          "description": "Shoots vine tendrils that root the target in place and deal constriction damage over time.",
+          "damage": 10,
+          "tickRate": 1.0,
+          "cooldown": 6.0,
+          "range": 150,
+          "effect": { "type": "root", "duration": 4.0 }
+        },
+        {
+          "id": "corpse-burst",
+          "name": "Corpse Burst",
+          "description": "Detonates one of the corpses embedded in its root structure, launching bone shrapnel and disease-laden flesh in all directions.",
+          "damage": 35,
+          "cooldown": 10.0,
+          "aoe": { "type": "circle", "radius": 100 },
+          "effect": { "type": "disease", "maxHPReduction": 0.08, "duration": 12.0 }
+        },
+        {
+          "id": "pollen-cloud",
+          "name": "Pollen Cloud",
+          "description": "Releases a massive cloud of spores that confuses all targets within, causing them to attack the nearest creature — friend or foe — for 4 seconds.",
+          "cooldown": 20.0,
+          "aoe": { "type": "circle", "radius": 120 },
+          "effect": { "type": "confusion", "duration": 4.0 }
+        }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["shadow", "poison", "nature", "physical"],
+      "description": "A monstrous plant that has grown massive by feeding on the swamp's endless supply of corpses. Its beautiful, crimson petals belie the horror beneath — a root system woven through dozens of half-decomposed bodies, from which it draws sustenance and ammunition. The sickly-sweet perfume it emits can charm the unwary into walking straight into its crushing vines.",
+      "sprite": { "base": "plant", "variant": "corpse-flower", "width": 48, "height": 52 }
+    },
+    {
+      "id": "bone-archer",
+      "name": "Bone Archer",
+      "region": "shadowmire",
+      "level": 9,
+      "stats": { "hp": 75, "atk": 32, "def": 6, "spd": 3.0, "dex": 16 },
+      "xpReward": 65,
+      "goldDrop": { "min": 8, "max": 20 },
+      "lootTable": "bone-archer-common",
+      "behavior": "ranged-stationary",
+      "abilities": ["bone-arrow", "volley-of-the-dead", "reassemble"],
+      "abilityDetails": [
+        {
+          "id": "bone-arrow",
+          "name": "Bone Arrow",
+          "description": "Fires a sharpened bone that splinters on impact, dealing physical damage with a chance to apply a bleed.",
+          "damage": 22,
+          "cooldown": 2.5,
+          "range": 350,
+          "effect": { "type": "bleed", "damage": 4, "duration": 4.0, "chance": 0.3 }
+        },
+        {
+          "id": "volley-of-the-dead",
+          "name": "Volley of the Dead",
+          "description": "Fires a rapid volley of 6 bone arrows into the air that rain down on a target area.",
+          "damage": 12,
+          "arrowCount": 6,
+          "cooldown": 12.0,
+          "aoe": { "type": "circle", "radius": 80 }
+        },
+        {
+          "id": "reassemble",
+          "name": "Reassemble",
+          "description": "When destroyed, the bones collapse but reassemble after 4 seconds with 50% HP unless the skull is destroyed (targeted headshot).",
+          "type": "passive",
+          "reassembleDelay": 4.0,
+          "reassembleHPPercent": 0.5,
+          "preventedBy": "headshot"
+        }
+      ],
+      "weaknesses": ["holy", "fire"],
+      "resistances": ["physical", "shadow", "poison"],
+      "packSize": { "min": 2, "max": 4 },
+      "description": "Skeletal archers that perch on the twisted branches of dead cypress trees, raining sharpened bones upon travelers who wander too close. Their empty eye sockets glow with dim green light, and their aim is unnervingly precise for creatures with no eyes, no muscles, and no reason to exist.",
+      "sprite": { "base": "skeleton", "variant": "archer", "width": 24, "height": 32 }
+    },
+    {
+      "id": "plague-rat-swarm",
+      "name": "Plague Rat Swarm",
+      "region": "shadowmire",
+      "level": 8,
+      "stats": { "hp": 100, "atk": 15, "def": 2, "spd": 4.0 },
+      "xpReward": 50,
+      "goldDrop": { "min": 1, "max": 5 },
+      "lootTable": "plague-rat-common",
+      "behavior": "swarm-chase",
+      "abilities": ["gnawing-swarm", "plague-carrier", "scatter-reform"],
+      "abilityDetails": [
+        {
+          "id": "gnawing-swarm",
+          "name": "Gnawing Swarm",
+          "description": "The swarm engulfs a target, dealing continuous physical damage that ignores armor. The target is slowed while covered in rats.",
+          "damage": 8,
+          "tickRate": 0.5,
+          "cooldown": 3.0,
+          "duration": 4.0,
+          "ignoresArmor": true,
+          "effect": { "type": "slow", "value": 0.3, "duration": 4.0 }
+        },
+        {
+          "id": "plague-carrier",
+          "name": "Plague Carrier",
+          "description": "Every attack has a 20% chance to inflict Plague, which deals shadow damage over time and spreads to nearby allies if not cleansed within 6 seconds.",
+          "type": "passive",
+          "effect": { "type": "plague", "damage": 5, "duration": 10.0, "spreadRadius": 60, "spreadDelay": 6.0, "chance": 0.2 }
+        },
+        {
+          "id": "scatter-reform",
+          "name": "Scatter and Reform",
+          "description": "When hit by an AoE attack, the swarm scatters into 3 smaller swarms that reform after 3 seconds if not individually destroyed.",
+          "type": "passive-trigger",
+          "triggerCondition": "aoe-damage",
+          "splitCount": 3,
+          "splitHPPercent": 0.3,
+          "reformDelay": 3.0
+        }
+      ],
+      "weaknesses": ["fire", "lightning"],
+      "resistances": ["physical", "shadow"],
+      "immunities": ["poison"],
+      "description": "A writhing carpet of hundreds of disease-ridden rats that moves as a single entity, flowing over obstacles and through cracks like a living tide of mange-ridden fur and snapping teeth. The plague they carry spreads from person to person, turning what begins as a nuisance encounter into a potential party-wide catastrophe.",
+      "sprite": { "base": "swarm", "variant": "rats", "width": 40, "height": 24 }
+    },
+    {
+      "id": "drowned-knight",
+      "name": "Drowned Knight",
+      "region": "shadowmire",
+      "level": 11,
+      "stats": { "hp": 220, "atk": 36, "def": 24, "spd": 2.0 },
+      "xpReward": 100,
+      "goldDrop": { "min": 20, "max": 50 },
+      "lootTable": "drowned-knight-rare",
+      "behavior": "melee-tank-honorable",
+      "abilities": ["waterlogged-strike", "shield-of-the-fallen", "drowning-embrace", "oath-remembered"],
+      "abilityDetails": [
+        {
+          "id": "waterlogged-strike",
+          "name": "Waterlogged Strike",
+          "description": "A slow but devastating overhead swing with a corroded greatsword. The water streaming from the blade reduces the target's fire resistance.",
+          "damage": 45,
+          "cooldown": 5.0,
+          "effect": { "type": "debuff", "fireResistReduction": 0.3, "duration": 8.0 }
+        },
+        {
+          "id": "shield-of-the-fallen",
+          "name": "Shield of the Fallen",
+          "description": "Raises a spectral shield that absorbs 100 damage and reflects any holy damage back at the attacker at double strength.",
+          "cooldown": 14.0,
+          "shieldHP": 100,
+          "holyReflect": 2.0,
+          "duration": 6.0
+        },
+        {
+          "id": "drowning-embrace",
+          "name": "Drowning Embrace",
+          "description": "Grabs a target and drags them into the nearest body of swamp water. The target takes increasing suffocation damage until they break free with a strength check.",
+          "damage": 15,
+          "damageEscalation": 5,
+          "tickRate": 1.0,
+          "cooldown": 16.0,
+          "effect": { "type": "grab-and-drown", "breakFreeCheck": "str-check-16" }
+        },
+        {
+          "id": "oath-remembered",
+          "name": "Oath Remembered",
+          "description": "If addressed by a Paladin or with holy magic before combat, the Drowned Knight hesitates, remembering its former life. It fights with reduced aggression and may yield at 25% HP, providing information and loot without needing to be destroyed.",
+          "type": "special-interaction",
+          "condition": "paladin-or-holy-magic-preemptive",
+          "effect": { "type": "reduced-aggression", "yieldThreshold": 0.25 }
+        }
+      ],
+      "weaknesses": ["fire", "holy"],
+      "resistances": ["physical", "shadow", "ice"],
+      "description": "The revenants of paladins and holy knights who fell in the Shadowmire centuries ago during a crusade against the original necromancer. Their armor is pitted with rust and draped in waterweed, and the oaths they swore in life still echo faintly in the hollow of their skulls. Unlike mindless undead, the Drowned Knights retain fragments of honor and consciousness — a terrible burden, for they are aware of what they have become.",
+      "sprite": { "base": "knight", "variant": "drowned", "width": 32, "height": 38 }
+    },
+    {
+      "id": "will-o-wisp",
+      "name": "Will-o'-Wisp",
+      "region": "shadowmire",
+      "level": 9,
+      "stats": { "hp": 50, "atk": 20, "def": 2, "spd": 6.0, "int": 18 },
+      "xpReward": 60,
+      "goldDrop": { "min": 5, "max": 15 },
+      "lootTable": "wisp-common",
+      "behavior": "lure-and-flee",
+      "abilities": ["spirit-spark", "lure-light", "soul-drain"],
+      "abilityDetails": [
+        {
+          "id": "spirit-spark",
+          "name": "Spirit Spark",
+          "description": "Fires a bolt of spectral energy that deals shadow damage and reduces the target's mana by a flat amount.",
+          "damage": 18,
+          "cooldown": 3.0,
+          "range": 250,
+          "effect": { "type": "mana-burn", "value": 10 }
+        },
+        {
+          "id": "lure-light",
+          "name": "Lure Light",
+          "description": "Drifts slowly away from the party, glowing brightly. Characters who follow for more than 5 seconds are led into an ambush zone where additional enemies spawn.",
+          "type": "passive-lure",
+          "lureDistance": 200,
+          "ambushEnemies": ["bog-zombie", "bog-zombie", "bog-zombie", "poison-toad"]
+        },
+        {
+          "id": "soul-drain",
+          "name": "Soul Drain",
+          "description": "If a party member dies near the Wisp, it absorbs their residual life energy, fully healing itself and gaining +50% damage for 30 seconds.",
+          "type": "passive-trigger",
+          "triggerCondition": "nearby-death",
+          "healPercent": 1.0,
+          "damageBoost": 0.5,
+          "duration": 30.0
+        }
+      ],
+      "weaknesses": ["holy"],
+      "resistances": ["physical", "shadow", "poison"],
+      "description": "Flickering orbs of pale blue-green light that drift through the swamp's darkest reaches, beckoning travelers deeper into the mire with their mesmerizing glow. Those who follow find themselves surrounded by undead, waist-deep in bog water, with no path back.",
+      "sprite": { "base": "wisp", "variant": "swamp", "width": 16, "height": 16 }
+    }
+  ],
+  "bosses": [
+    {
+      "id": "bone-colossus",
+      "name": "The Bone Colossus",
+      "region": "shadowmire",
+      "dungeon": "sunken-crypt",
+      "level": 10,
+      "isBoss": true,
+      "stats": { "hp": 1500, "atk": 40, "def": 22, "spd": 1.5 },
+      "xpReward": 550,
+      "goldDrop": { "min": 100, "max": 160 },
+      "lootTable": "bone-colossus-boss",
+      "description": "A nightmarish assemblage of a thousand skeletons fused into a single towering abomination, standing thirty feet tall in the flooded vault of the Sunken Crypt. The bones of warriors, peasants, and beasts have been welded together by necromantic energy into a hulking form vaguely resembling a giant, with multiple skulls serving as eyes and the ribcages of dozens forming its torso. It moves with a terrible grinding creak, and every step sheds fragments of bone that skitter across the floor with a life of their own.",
+      "phases": [
+        {
+          "name": "The Assembled",
+          "hpThreshold": 1.0,
+          "abilities": ["bone-sweep", "skull-bombardment", "skeletal-rain", "bone-cage"],
+          "behavior": "melee-slow-tank",
+          "abilityDetails": {
+            "bone-sweep": {
+              "description": "Sweeps a massive arm of fused bones across the arena, dealing devastating physical damage to all targets in a wide arc.",
+              "damage": 50,
+              "cooldown": 5.0,
+              "aoe": { "type": "cone", "angle": 120, "range": 150 }
+            },
+            "skull-bombardment": {
+              "description": "Detaches skulls from its body and hurls them at random targets. Each skull explodes on impact, dealing shadow damage.",
+              "damage": 25,
+              "cooldown": 8.0,
+              "projectileCount": 5,
+              "effect": { "type": "shadow-explosion", "radius": 40 }
+            },
+            "skeletal-rain": {
+              "description": "Shakes violently, sending a rain of bone fragments across the entire arena that deals light damage and applies bleed.",
+              "damage": 15,
+              "cooldown": 12.0,
+              "aoe": { "type": "circle", "radius": 400 },
+              "effect": { "type": "bleed", "damage": 3, "duration": 6.0 }
+            },
+            "bone-cage": {
+              "description": "Extends rib-like bones from the ground that form a cage around a target, trapping them and dealing crushing damage over time.",
+              "cooldown": 15.0,
+              "cageHP": 180,
+              "dotDamage": 12,
+              "dotTickRate": 1.0,
+              "duration": 6.0
+            }
+          }
+        },
+        {
+          "name": "The Unraveling",
+          "hpThreshold": 0.4,
+          "abilities": ["disassemble", "bone-tornado", "mass-reassemble", "death-rattle"],
+          "behavior": "swarm-transformation",
+          "visualChange": "colossus-splits-into-swarm-of-skeletons",
+          "abilityDetails": {
+            "disassemble": {
+              "description": "The Colossus splits apart into 20 individual skeletons that swarm the party. Each skeleton has its own HP pool. The Colossus reforms when all skeletons are destroyed — or after 30 seconds, consuming remaining skeletons for HP.",
+              "cooldown": 45.0,
+              "skeletonCount": 20,
+              "skeletonStats": { "hp": 50, "atk": 15, "def": 5, "spd": 3.5 },
+              "reformTimer": 30.0,
+              "healPerSurvivor": 0.02
+            },
+            "bone-tornado": {
+              "description": "Spins its upper body rapidly, creating a tornado of bone shrapnel that damages everything in a wide radius.",
+              "damage": 30,
+              "tickRate": 0.5,
+              "cooldown": 14.0,
+              "duration": 4.0,
+              "aoe": { "type": "circle", "radius": 200 }
+            },
+            "mass-reassemble": {
+              "description": "Pulls bones from the walls and floor of the crypt, repairing itself for 10% max HP. Also increases its size and damage by 5% each time used, stacking up to 3 times.",
+              "cooldown": 20.0,
+              "healPercent": 0.1,
+              "damageIncrease": 0.05,
+              "sizeIncrease": 0.05,
+              "maxStacks": 3
+            },
+            "death-rattle": {
+              "description": "At 5% HP, every skull in the Colossus screams simultaneously, dealing massive shadow damage and fearing all targets for 3 seconds.",
+              "damage": 60,
+              "aoe": { "type": "circle", "radius": 400 },
+              "type": "death-trigger",
+              "hpThreshold": 0.05,
+              "effect": { "type": "fear", "duration": 3.0 }
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*the bones shift and grind, and a chorus of whispers emerges from the hundreds of skulls embedded in the monstrosity — fragments of the people these bones once were* We were... farmers... soldiers... children... He took our bones... gave us this shape... this purpose... We guard. We GUARD. You will NOT pass. You will JOIN US.",
+        "phase2": "*the colossus shudders and begins to split apart, individual skeletons pulling free and scattering across the chamber like insects* WE ARE LEGION! Every bone a soldier! Every skull a sentinel! CUT US DOWN AND WE RISE AGAIN! WE ARE THE DEAD OF THALWEG, AND WE WILL NOT BE STILL!",
+        "defeat": "*the bones clatter to the floor in a cascade, the green light fading from each skull one by one. The last skull to go dark whispers* Thank you... we were so tired... of standing..."
+      },
+      "sprite": { "base": "colossus", "variant": "bone", "width": 80, "height": 96 }
+    },
+    {
+      "id": "morgantha-swamp-witch",
+      "name": "Morgantha the Swamp Witch",
+      "region": "shadowmire",
+      "dungeon": "morganthas-tower",
+      "level": 12,
+      "isBoss": true,
+      "stats": { "hp": 1800, "atk": 30, "def": 18, "spd": 3.0, "int": 35 },
+      "xpReward": 800,
+      "goldDrop": { "min": 150, "max": 250 },
+      "lootTable": "morgantha-boss",
+      "description": "A witch of terrible age and greater power, Morgantha has served Lord Vexmort for three centuries as his chief lieutenant and plague-brewer. She is the architect of the undead plague that ravages the Shadowmire, crafting virulent diseases in her tower laboratory and unleashing them through the swamp's waterways. Beneath her hunched, haggish exterior lies a mind of extraordinary cunning and a mastery of dark magic rivaling the lich himself. She and Vexmort were once student and teacher — and she has not forgotten which of them is the more talented.",
+      "phases": [
+        {
+          "name": "The Witch's Welcome",
+          "hpThreshold": 1.0,
+          "abilities": ["plague-bolt", "hex-of-weakness", "cauldron-of-despair", "swamp-servants"],
+          "behavior": "ranged-debuffer",
+          "abilityDetails": {
+            "plague-bolt": {
+              "description": "Fires a bolt of concentrated plague that deals shadow damage and applies a stacking disease debuff.",
+              "damage": 30,
+              "cooldown": 3.0,
+              "range": 350,
+              "effect": { "type": "disease-stack", "maxHPReduction": 0.03, "maxStacks": 10, "duration": 20.0 }
+            },
+            "hex-of-weakness": {
+              "description": "Curses a target, inverting their healing — all healing received deals damage instead for 8 seconds.",
+              "cooldown": 16.0,
+              "effect": { "type": "heal-inversion", "duration": 8.0 },
+              "resistedBy": "wis-check-18"
+            },
+            "cauldron-of-despair": {
+              "description": "Summons a massive bubbling cauldron at the arena center that periodically erupts, dealing AoE poison damage and spawning plague rats.",
+              "cooldown": 25.0,
+              "cauldronHP": 300,
+              "eruptDamage": 25,
+              "eruptInterval": 5.0,
+              "eruptRadius": 120,
+              "spawnInterval": 8.0,
+              "spawnId": "plague-rat-swarm"
+            },
+            "swamp-servants": {
+              "description": "Animates the roots and plants around the arena, creating vine tendrils that lash out at anyone who moves too quickly.",
+              "cooldown": 20.0,
+              "duration": 12.0,
+              "tendrilDamage": 15,
+              "tendrilTrigger": "movement-speed-above-60%"
+            }
+          }
+        },
+        {
+          "name": "True Form",
+          "hpThreshold": 0.6,
+          "abilities": ["mass-polymorph", "plague-rain", "shadow-swap", "life-drain-field"],
+          "behavior": "aggressive-caster",
+          "visualChange": "witch-transforms-young-beautiful-dark-sorceress",
+          "statBoost": { "int": 1.5, "spd": 1.3 },
+          "abilityDetails": {
+            "mass-polymorph": {
+              "description": "Transforms all party members into toads for 4 seconds. While polymorphed, players can only hop slowly and cannot attack or use abilities.",
+              "cooldown": 30.0,
+              "effect": { "type": "mass-polymorph", "form": "toad", "duration": 4.0 },
+              "resistedBy": "wis-check-20"
+            },
+            "plague-rain": {
+              "description": "Calls down a rain of plague-infested water across the entire arena, dealing continuous poison and shadow damage.",
+              "cooldown": 18.0,
+              "duration": 8.0,
+              "tickDamage": 10,
+              "tickRate": 0.5,
+              "aoe": { "type": "circle", "radius": 400 }
+            },
+            "shadow-swap": {
+              "description": "Swaps positions with a random party member, leaving a shadow clone in her former position that explodes after 2 seconds.",
+              "cooldown": 12.0,
+              "cloneExplosionDamage": 40,
+              "explosionRadius": 80
+            },
+            "life-drain-field": {
+              "description": "Creates a zone that drains HP from all enemies within and channels it to Morgantha, healing her proportionally.",
+              "cooldown": 20.0,
+              "aoe": { "type": "circle", "radius": 150 },
+              "drainDamage": 12,
+              "drainTickRate": 1.0,
+              "drainDuration": 6.0,
+              "healMultiplier": 1.5
+            }
+          }
+        },
+        {
+          "name": "The Plague Unleashed",
+          "hpThreshold": 0.25,
+          "abilities": ["epidemic", "death-blossom", "desperate-bargain", "final-hex"],
+          "behavior": "desperate-caster",
+          "visualChange": "dark-energy-spiraling-plague-clouds-everywhere",
+          "statBoost": { "int": 2.0, "spd": 1.5, "def": 0.4 },
+          "enrageTimer": 120,
+          "abilityDetails": {
+            "epidemic": {
+              "description": "Every disease and poison effect currently on any party member detonates, dealing its remaining damage instantly and then refreshing.",
+              "cooldown": 20.0,
+              "effect": { "type": "dot-detonation" }
+            },
+            "death-blossom": {
+              "description": "Summons 5 Corpse Flowers at random locations that immediately begin attacking the party.",
+              "cooldown": 30.0,
+              "summonCount": 5,
+              "summonId": "corpse-flower"
+            },
+            "desperate-bargain": {
+              "description": "At 15% HP, Morgantha offers to surrender and betray Vexmort in exchange for her life. Accepting gives crucial information about the lich's phylactery. Refusing triggers Final Hex.",
+              "type": "choice-trigger",
+              "hpThreshold": 0.15,
+              "acceptReward": { "info": "vexmort-phylactery-location", "flag": "morgantha-betrayal" },
+              "refuseResponse": "final-hex"
+            },
+            "final-hex": {
+              "description": "With her dying breath, Morgantha curses the party. All members have their max HP permanently reduced by 5% until the curse is removed by a powerful cleric NPC.",
+              "type": "death-trigger",
+              "effect": { "type": "permanent-curse", "maxHPReduction": 0.05, "removedBy": "high-cleric-purify" }
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*a cackling laugh echoes through the tower as a hunched figure stirs a cauldron that bubbles with something unspeakable* Oh my, VISITORS! How delightful! I so rarely get visitors who still have a pulse! *turns, revealing a face like a rotting apple* Do sit down, dears. Have some tea. It's to DIE for. *cackles* Literally!",
+        "phase2": "*the hunched form straightens, and the haggish exterior melts away like a mask, revealing a breathtakingly beautiful woman with midnight-black hair and eyes of burning violet* Enough pretense. You've lasted longer than anyone Vexmort has sent against me as a test. Oh yes — did you think this was HIS tower? This is MY domain. I was brewing plagues while that dried-up corpse was still learning to read! Let me show you what THREE CENTURIES of practice looks like!",
+        "phase3": "*blood flowing from a dozen wounds, her beauty cracking to reveal the decay beneath* You fools! Do you know what happens when I die?! The plagues I have contained — the diseases I keep balanced — they all SPREAD! Unchecked! Uncontrolled! You need me ALIVE, you idiots! *at 15% HP* WAIT! Wait... I yield. Kill me and the plague consumes everything. But spare me... and I will give you something far more valuable. I will tell you where Vexmort hides his wretched soul.",
+        "defeat": "*if killed* May the plague... take you all... *the tower shudders as her death disrupts the careful balance of diseases she maintained*",
+        "defeatMerciful": "*if spared* A wise choice, for once. The lich keeps his phylactery in a place no sane person would look — inside the heart of the swamp itself. The bog is his phylactery. The entire Shadowmire. Destroy the Heartstone at the citadel's foundation, and the swamp's necromantic energy dies. And so does he. Now leave my tower before I change my mind about cooperation."
+      },
+      "sprite": { "base": "witch", "variant": "swamp", "width": 40, "height": 48 }
+    },
+    {
+      "id": "lord-vexmort",
+      "name": "Lord Vexmort the Undying",
+      "region": "shadowmire",
+      "dungeon": "vexmort-citadel",
+      "level": 14,
+      "isBoss": true,
+      "isRegionBoss": true,
+      "stats": { "hp": 3000, "atk": 45, "def": 30, "spd": 3.0, "int": 40 },
+      "xpReward": 1400,
+      "goldDrop": { "min": 250, "max": 400 },
+      "lootTable": "lord-vexmort-boss",
+      "description": "Lord Vexmort, born Aldric Vex, was once the most gifted healer in the southern kingdoms. His transformation into a lich was not born of ambition but of grief — the plague that ravaged his homeland killed everyone he loved, and his desperate quest to reverse death itself consumed him utterly. Now he is a skeletal figure of terrible majesty, draped in robes of shadow and crowned with a circlet of black iron. His phylactery is the Shadowmire itself — the necromantic Heartstone buried beneath his citadel pulses with stolen life energy, sustaining both the lich and the bog. To kill him permanently, the Heartstone must be destroyed.",
+      "phases": [
+        {
+          "name": "The Scholar of Death",
+          "hpThreshold": 1.0,
+          "abilities": ["death-bolt", "raise-undead-army", "soul-cage", "necrotic-aura"],
+          "behavior": "ranged-commander",
+          "abilityDetails": {
+            "death-bolt": {
+              "description": "Fires a bolt of concentrated necrotic energy that deals massive shadow damage and heals Vexmort for a portion of damage dealt.",
+              "damage": 50,
+              "cooldown": 4.0,
+              "range": 400,
+              "lifesteal": 0.3
+            },
+            "raise-undead-army": {
+              "description": "Raises a wave of 6 assorted undead (zombies, skeletons, drowned knights) to fight alongside him.",
+              "cooldown": 20.0,
+              "summonPool": ["bog-zombie", "bog-zombie", "bone-archer", "bone-archer", "drowned-knight", "drowned-knight"]
+            },
+            "soul-cage": {
+              "description": "Traps a party member's soul in a spectral cage, separating it from their body. The body falls unconscious while the soul must fight a shadow copy of itself to break free.",
+              "cooldown": 22.0,
+              "duration": 10.0,
+              "shadowCopyPercent": 0.6,
+              "effect": { "type": "soul-separation" }
+            },
+            "necrotic-aura": {
+              "description": "A passive aura that causes all healing effects within 100 units of Vexmort to be reduced by 40%.",
+              "type": "passive-aura",
+              "radius": 100,
+              "effect": { "type": "healing-reduction", "value": 0.4 }
+            }
+          }
+        },
+        {
+          "name": "The Healer Inverted",
+          "hpThreshold": 0.6,
+          "abilities": ["plague-nova", "mass-death-grip", "phylactery-pulse", "undeath-conversion"],
+          "behavior": "aggressive-caster",
+          "visualChange": "robes-billow-shadow-energy-intensifies",
+          "statBoost": { "int": 1.4, "spd": 1.3 },
+          "abilityDetails": {
+            "plague-nova": {
+              "description": "Releases a massive wave of necromantic plague energy. All living things hit are diseased, poisoned, and have their max HP reduced by 10% for 15 seconds.",
+              "damage": 45,
+              "cooldown": 14.0,
+              "aoe": { "type": "circle", "radius": 300 },
+              "effect": { "type": "plague-debuff", "diseased": true, "poisoned": true, "maxHPReduction": 0.1, "duration": 15.0 }
+            },
+            "mass-death-grip": {
+              "description": "Lifts all party members into the air with telekinetic force, dealing continuous shadow damage before slamming them to the ground.",
+              "damage": 20,
+              "slamDamage": 40,
+              "cooldown": 18.0,
+              "duration": 3.0,
+              "tickRate": 1.0
+            },
+            "phylactery-pulse": {
+              "description": "The Heartstone beneath the citadel pulses, healing Vexmort for 15% of his max HP. This ability triggers automatically every 30 seconds and cannot be interrupted without damaging the Heartstone directly.",
+              "type": "passive-periodic",
+              "interval": 30.0,
+              "healPercent": 0.15,
+              "interruptCondition": "heartstone-damage"
+            },
+            "undeath-conversion": {
+              "description": "If a party member has been killed and not revived, Vexmort raises them as an undead minion that fights against the party with 80% of their original stats.",
+              "type": "passive-trigger",
+              "triggerCondition": "party-member-dead-10s",
+              "convertedStats": 0.8
+            }
+          }
+        },
+        {
+          "name": "Death Unbound",
+          "hpThreshold": 0.25,
+          "abilities": ["finger-of-death", "necrotic-storm", "heartstone-overload", "final-words"],
+          "behavior": "desperate-caster",
+          "visualChange": "skeletal-form-wreathed-in-shadow-fire",
+          "statBoost": { "int": 1.8, "spd": 1.5, "def": 0.5 },
+          "enrageTimer": 150,
+          "abilityDetails": {
+            "finger-of-death": {
+              "description": "Points at a single target and channels death energy for 3 seconds. If the channel completes, the target is instantly reduced to 1 HP.",
+              "cooldown": 25.0,
+              "channelTime": 3.0,
+              "interruptible": true,
+              "effect": { "type": "reduce-to-1hp" }
+            },
+            "necrotic-storm": {
+              "description": "A storm of shadow energy fills the arena, dealing shadow damage to all living things every 0.5 seconds for 8 seconds.",
+              "damage": 12,
+              "tickRate": 0.5,
+              "cooldown": 18.0,
+              "duration": 8.0,
+              "aoe": { "type": "circle", "radius": 500 }
+            },
+            "heartstone-overload": {
+              "description": "Channels all remaining power from the Heartstone, healing to 40% HP but destroying his phylactery in the process. Can only be used once. After this, Vexmort can be killed permanently.",
+              "type": "one-time-use",
+              "healPercent": 0.4,
+              "effect": { "type": "destroy-phylactery", "flag": "heartstone-destroyed" }
+            },
+            "final-words": {
+              "description": "Upon defeat, Vexmort has a final moment of clarity as Aldric Vex, offering genuine remorse and a warning about Cinder Core.",
+              "type": "death-trigger"
+            }
+          },
+          "specialMechanic": {
+            "id": "heartstone",
+            "name": "The Heartstone",
+            "description": "A pulsing black crystal visible through the floor of the citadel's lowest chamber. The party can choose to attack the Heartstone during the fight to stop Vexmort's healing. The Heartstone has 800 HP and is vulnerable to holy damage. Destroying it before Phase 3 prevents Vexmort from using Heartstone Overload.",
+            "hp": 800,
+            "weakness": "holy",
+            "resistance": "shadow"
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*a voice like dry leaves scraping across stone echoes through the citadel* You have come at last. I wondered when someone would be brave enough — or foolish enough — to walk into the dead center of my domain. *the lich descends from his throne of petrified wood, shadow trailing from his robes like ink in water* I am Vexmort. I was Aldric Vex, once. The finest healer in the southern kingdoms. I cured the Crimson Wasting, the Bone Plague, the Weeping Sores of Grimfen. I saved ten thousand lives. And then... the plague came that I could not cure. It took everyone. *the green fire in his eyes flickers* EVERYONE. So I cured death itself. And look at me now.",
+        "phase2": "You are STRONG. Stronger than the crusaders who came three centuries ago. Their bones serve me now — their paladin commander makes an excellent doorman. *gestures and the undead press closer* But strength of arms means nothing against death. I have had THREE HUNDRED YEARS to perfect the art of ending life. Every disease, every poison, every method of cellular destruction — I have studied them all. Cataloged them. MASTERED them. You cannot kill what is already dead!",
+        "phase3": "The Heartstone... *voice cracks with something almost like emotion* You would destroy the swamp itself to reach me? This bog, for all its horror, is a LIVING THING! Every twisted tree, every fetid pool, every shambling corpse — they are all part of a single organism! MY organism! And you would... *falls silent for a moment* ...perhaps that is what must happen. Perhaps death must die. *channels the Heartstone's energy* But not today. NOT TODAY!",
+        "defeat": "*the lich crumbles, and for one fleeting moment the skeletal face smooths into something resembling a living man — tired, grieving, but finally at peace* Aldric... my name was... Aldric. I only wanted to save them. All of them. *the green fire dims to a warm amber* The corruption that came to the Elderwood... the dragon that froze the mountains... the construct that burned the desert... they are all symptoms. The disease lies deeper. In the fire. In the core of the world. Something ancient... is waking up. And it is so much worse... than death... *crumbles to dust*"
+      },
+      "sprite": { "base": "lich", "variant": "vexmort", "width": 56, "height": 64 }
+    }
+  ],
+  "lootTables": {
+    "bog-zombie-common": {
+      "drops": [
+        { "itemId": "rotting-flesh", "chance": 0.5, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "tattered-cloth", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "antidote", "chance": 0.1, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "swamp-hag-rare": {
+      "drops": [
+        { "itemId": "hag-eye", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "hex-charm", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "cauldron-stirrer-staff", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "mana-potion", "chance": 0.25, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "poison-toad-common": {
+      "drops": [
+        { "itemId": "toad-venom-sac", "chance": 0.4, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "bloat-toad-hide", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "antidote", "chance": 0.15, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "shadow-stalker-uncommon": {
+      "drops": [
+        { "itemId": "shadow-essence", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "shadow-cloak-fragment", "chance": 0.12, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "soul-shard", "chance": 0.2, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "corpse-flower-uncommon": {
+      "drops": [
+        { "itemId": "crimson-petal", "chance": 0.4, "quantity": { "min": 1, "max": 3 } },
+        { "itemId": "necrotic-root", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "luring-perfume", "chance": 0.1, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "bone-archer-common": {
+      "drops": [
+        { "itemId": "bone-arrow-bundle", "chance": 0.5, "quantity": { "min": 5, "max": 15 } },
+        { "itemId": "skeleton-skull", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "bone-bow", "chance": 0.08, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "plague-rat-common": {
+      "drops": [
+        { "itemId": "rat-fang", "chance": 0.5, "quantity": { "min": 1, "max": 3 } },
+        { "itemId": "plague-sample", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "antidote", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "drowned-knight-rare": {
+      "drops": [
+        { "itemId": "rusted-holy-sword", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "waterlogged-shield", "chance": 0.12, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "paladins-oath-ring", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "wisp-common": {
+      "drops": [
+        { "itemId": "spectral-light", "chance": 0.4, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "wisp-core", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "mana-potion", "chance": 0.2, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "bone-colossus-boss": {
+      "guaranteed": [
+        { "itemId": "colossus-skull-helm", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "bone-reaper-scythe", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ribcage-shield", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 2, "max": 4 } }
+      ]
+    },
+    "morgantha-boss": {
+      "guaranteed": [
+        { "itemId": "morganthas-grimoire", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "plague-cure-recipe", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "witch-queen-staff", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "shadow-weave-robe", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "polymorph-wand", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } }
+      ]
+    },
+    "lord-vexmort-boss": {
+      "guaranteed": [
+        { "itemId": "vexmorts-circlet", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "heartstone-shard", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "shadowmire-region-key", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "staff-of-the-undying", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "robes-of-the-lich-king", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "death-grip-gauntlets", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "aldrics-journal", "chance": 1.0, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } }
+      ]
+    }
+  }
+}

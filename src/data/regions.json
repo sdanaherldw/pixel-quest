@@ -1,0 +1,468 @@
+{
+  "regions": [
+    {
+      "id": "elderwood",
+      "name": "Elderwood Forest",
+      "description": "An ancient forest of towering oaks and whispering pines, where shafts of golden sunlight pierce the emerald canopy and the air hums with the quiet magic of a thousand years. Gnarled roots coil across mossy trails, and the scent of loam and wildflowers mingles with something darker — a creeping corruption that blackens bark and twists once-gentle creatures into snarling horrors. The elves who planted these groves vanished long ago, but their wards and ruins endure, half-swallowed by the undergrowth, guarding secrets that should never have been disturbed.",
+      "level": { "min": 1, "max": 8 },
+      "biome": "forest",
+      "music": "elderwood-theme",
+      "ambience": "forest-ambience",
+      "weather": ["clear", "cloudy", "rain", "fog"],
+      "palette": { "primary": "0x2d5016", "secondary": "0x4a7023", "accent": "0x8fbc3b", "sky": "0x87ceeb" },
+      "towns": ["oakhollow", "fernvale", "thornwick"],
+      "townDetails": [
+        {
+          "id": "oakhollow",
+          "name": "Oakhollow",
+          "description": "A humble farming village nestled in a clearing of ancient oaks. Thatched roofs peek from beneath spreading branches, and a stone well marks the village center where Elder Oakworth holds court. The smell of fresh bread from the Hearthstone Inn mingles with the smoke of hearthfires.",
+          "services": ["inn", "general-shop", "healer", "bounty-board"],
+          "population": 120
+        },
+        {
+          "id": "fernvale",
+          "name": "Fernvale",
+          "description": "A ranger outpost deep in the northern woods, built among the ferns and moss-covered boulders where the forest thickens. Rope bridges connect treetop platforms, and the rangers who dwell here speak in hushed tones about the darkness creeping from the ruins to the east.",
+          "services": ["ranger-lodge", "fletcher", "herbalist", "stables"],
+          "population": 45
+        },
+        {
+          "id": "thornwick",
+          "name": "Thornwick",
+          "description": "A fortified town of grey stone walls and iron gates, guarding the eastern mountain pass. Its famous arena draws warriors from across the realms, and its smithies ring with the hammering of steel from dawn to dusk. Crag Hack once called this arena home.",
+          "services": ["arena", "blacksmith", "inn", "general-shop", "bounty-board", "stables"],
+          "population": 800
+        }
+      ],
+      "dungeons": ["hollow-oak-caves", "ruined-watchtower", "ancient-elven-ruins"],
+      "dungeonDetails": [
+        {
+          "id": "hollow-oak-caves",
+          "name": "Hollow Oak Caves",
+          "description": "A network of caverns beneath the roots of the Great Hollow Oak, where corruption has seeped into the stone and spawned monstrous spiders and twisted beasts. Bioluminescent fungi cast a sickly green glow across dripping walls.",
+          "level": { "min": 1, "max": 3 },
+          "boss": "giant-spider-queen",
+          "floors": 3
+        },
+        {
+          "id": "ruined-watchtower",
+          "name": "Ruined Watchtower",
+          "description": "Once an elven outpost guarding the path to the ancient sanctuary, now a crumbling fortress overrun by corrupted stone guardians and shadow-touched creatures. The top of the tower offers a haunting view of the blackened forest below.",
+          "level": { "min": 4, "max": 6 },
+          "boss": "corrupted-sentinel",
+          "floors": 5
+        },
+        {
+          "id": "ancient-elven-ruins",
+          "name": "Ancient Elven Ruins",
+          "description": "The crumbling remnants of an elven sanctuary, half-buried beneath centuries of forest growth. Shattered ward-stones line corridors of pale marble, and at its heart lies the chamber of the Forest Guardian — a being of nature twisted into an engine of corruption.",
+          "level": { "min": 6, "max": 8 },
+          "boss": "forest-guardian",
+          "floors": 7
+        }
+      ],
+      "connections": { "north": "frostpeak", "east": "scorched-wastes", "south": "shadowmire" },
+      "boss": "forest-guardian",
+      "unlocked": true,
+      "lore": "The Elderwood has stood since before the first human kingdoms. The elves who tended it wove protective wards throughout its roots and branches, binding a powerful nature spirit as the forest's eternal guardian. When those wards began to fail, darkness crept in from below — and the guardian itself became the source of the corruption it was meant to prevent.",
+      "discoveryHints": [
+        "The corruption flows outward from the Ancient Elven Ruins like poison through veins.",
+        "A bard in Oakhollow hums an ancient tune if you buy him three ales.",
+        "The waterfall in the ruins hides something behind its curtain of water, but only on certain nights."
+      ]
+    },
+    {
+      "id": "frostpeak",
+      "name": "Frostpeak Mountains",
+      "description": "A merciless range of ice-crowned peaks that claw at a perpetually iron-grey sky, where howling blizzards scour exposed ridges and glaciers groan with the weight of millennia. Dwarven halls lie entombed beneath avalanches of stone and frost, their forges cold and silent, their corridors haunted by the restless dead of a kingdom that fell to hubris and hoarfrost. Far above the treeline, where the air turns thin and the cold bites to the bone, the eldest dragon in the known world slumbers on a throne of frozen gold — Frostfang, whose breath can freeze a river solid in the span of a heartbeat.",
+      "level": { "min": 8, "max": 14 },
+      "biome": "mountain-ice",
+      "music": "frostpeak-theme",
+      "ambience": "mountain-wind-ambience",
+      "weather": ["snow", "blizzard", "clear-cold", "hail", "aurora"],
+      "palette": { "primary": "0x4a6fa5", "secondary": "0x8bb8d6", "accent": "0xd4ecf7", "sky": "0x4a5568" },
+      "towns": ["ironhearth", "snowhaven"],
+      "townDetails": [
+        {
+          "id": "ironhearth",
+          "name": "Ironhearth",
+          "description": "A dwarven mining settlement carved into the mountainside, its entrance marked by twin iron braziers that burn day and night against the encroaching cold. The few dwarves who remain here guard the upper halls of their ancestors and trade in rare ores pulled from frozen veins. The sound of distant hammering echoes through the stone — though no smith has worked the lower forges in generations.",
+          "services": ["blacksmith", "inn", "mining-supplies", "bounty-board"],
+          "population": 180
+        },
+        {
+          "id": "snowhaven",
+          "name": "Snowhaven",
+          "description": "A precarious mountain village perched on a narrow plateau, where fur-clad rangers and mountaineers brave the passes between the peaks. Wooden lodges cluster around a central bonfire that never goes out, and the inn serves a potent spiced mead that wards off the worst of the cold. On clear nights, the northern auroras paint the sky in ribbons of emerald and violet.",
+          "services": ["inn", "general-shop", "herbalist", "stables", "guide-hire"],
+          "population": 95
+        }
+      ],
+      "dungeons": ["crystal-ice-caverns", "dwarven-fortress-khar-zadul", "frostfang-summit"],
+      "dungeonDetails": [
+        {
+          "id": "crystal-ice-caverns",
+          "name": "Crystal Ice Caverns",
+          "description": "A labyrinth of frozen tunnels where the walls are veined with crystal that refracts light into dazzling prismatic patterns. The beauty is deceiving — the cold here is lethal, and something ancient has taken residence in the deepest chamber, a golem of living crystal that guards a hoard of frozen treasure.",
+          "level": { "min": 8, "max": 10 },
+          "boss": "crystal-golem",
+          "floors": 4
+        },
+        {
+          "id": "dwarven-fortress-khar-zadul",
+          "name": "Khar-Zadul, the Frozen Fortress",
+          "description": "The greatest of the dwarven strongholds in the Frostpeaks, sealed for centuries behind doors of enchanted iron. Its once-magnificent halls are now tombs of ice, where the ghosts of dwarven warriors march in endless patrols and their king sits frozen on his throne, clutching a cursed crown that will not let him rest.",
+          "level": { "min": 10, "max": 12 },
+          "boss": "frozen-king",
+          "floors": 6
+        },
+        {
+          "id": "frostfang-summit",
+          "name": "Frostfang Summit",
+          "description": "The highest peak in the range, shrouded in eternal blizzard. A treacherous climb through ice-slick cliffs and howling winds leads to the lair of Frostfang the Elder Dragon — a cavern of frozen gold and ancient bones, where the temperature drops below anything mortal life was meant to endure.",
+          "level": { "min": 12, "max": 14 },
+          "boss": "frostfang-elder-dragon",
+          "floors": 5
+        }
+      ],
+      "connections": { "south": "elderwood", "southeast": "scorched-wastes", "below": "cinder-core" },
+      "boss": "frostfang-elder-dragon",
+      "unlocked": false,
+      "unlockCondition": { "flag": "elderwood-corruption-cleared" },
+      "environmentalHazards": [
+        {
+          "id": "frostbite",
+          "name": "Frostbite",
+          "description": "Extreme cold drains 2 HP per second when outside sheltered areas. Mitigated by cold resistance gear, fire spells, or warmth buffs.",
+          "damage": 2,
+          "tickRate": 1.0,
+          "mitigatedBy": ["cold-resist-25", "warmth-buff", "fire-aura"]
+        },
+        {
+          "id": "avalanche-zones",
+          "name": "Avalanche Zones",
+          "description": "Certain mountain passes trigger avalanches if the party makes too much noise. Avoid combat or use stealth abilities in marked zones.",
+          "type": "environmental-trap"
+        },
+        {
+          "id": "thin-ice",
+          "name": "Thin Ice",
+          "description": "Frozen lakes and rivers may crack under the weight of heavily armored characters, plunging them into freezing water.",
+          "type": "environmental-trap",
+          "affectedBy": "equipment-weight"
+        }
+      ],
+      "lore": "The Frostpeak Mountains were once the seat of a great dwarven civilization whose forges rivaled those of the Cinder Core itself. When the dragon Frostfang descended upon their kingdom three centuries ago, the dwarven king sought to bind the beast with a cursed crown of power. The ritual failed, freezing the entire fortress and its inhabitants in a single catastrophic instant. Now the Frozen King sits on his throne of ice, neither alive nor dead, and the dragon roosts above his ruined kingdom, growing ever more powerful with each passing winter.",
+      "discoveryHints": [
+        "The dwarven ghosts in Khar-Zadul still guard their posts — some may remember the living, if approached with respect.",
+        "A hidden passage in the deepest mine connects to something far below the mountains.",
+        "Frostfang's scales shed once per century. A scale can be found lodged in the ice near the summit approach — if you know where to look."
+      ]
+    },
+    {
+      "id": "scorched-wastes",
+      "name": "Scorched Wastes",
+      "description": "An endless expanse of sun-blasted sand and wind-carved stone that stretches to every horizon, shimmering with mirages and memories of the fertile kingdom that once thrived here. Beneath the dunes lie the bones of a civilization that sought to harness the power of the sun itself — their hubris made manifest in crumbling temples of sandstone and gold, where fire elementals now dance in the halls of forgotten pharaohs. The heat is relentless and the sand hides predators of terrifying size, but the greatest danger lies in the buried Fire Temple, where an ancient construct still faithfully guards a power it was never meant to wield.",
+      "level": { "min": 8, "max": 14 },
+      "biome": "desert",
+      "music": "scorched-wastes-theme",
+      "ambience": "desert-wind-ambience",
+      "weather": ["scorching-sun", "sandstorm", "clear-night", "dust-devil", "heat-haze"],
+      "palette": { "primary": "0xc2a366", "secondary": "0xe8d4a0", "accent": "0xff8c00", "sky": "0xffd699" },
+      "towns": ["dustwall", "sunspire-oasis"],
+      "townDetails": [
+        {
+          "id": "dustwall",
+          "name": "Dustwall",
+          "description": "A fortified trading post on the western edge of the wastes, built from sun-baked brick and scavenged sandstone. Its walls are perpetually being rebuilt against the encroaching sand, and its markets overflow with relics pulled from the desert by treasure hunters and tomb raiders. A place of cutthroats, merchants, and desperate souls.",
+          "services": ["inn", "black-market", "general-shop", "bounty-board", "caravan-hire"],
+          "population": 350
+        },
+        {
+          "id": "sunspire-oasis",
+          "name": "Sunspire Oasis",
+          "description": "A miraculous spring of clear water surrounded by date palms and flowering cacti, shielded from sandstorms by a ring of ancient standing stones that radiate faint warmth. The Sun Priestesses who tend this oasis worship the desert's ancient solar deity and offer healing and prophecy to those who prove worthy. Their temple glitters with golden mosaics depicting a civilization lost to flame.",
+          "services": ["temple", "healer", "herbalist", "divination", "inn"],
+          "population": 60
+        }
+      ],
+      "dungeons": ["buried-pharaoh-tomb", "fire-temple-of-solaris", "sand-wurm-den"],
+      "dungeonDetails": [
+        {
+          "id": "buried-pharaoh-tomb",
+          "name": "Tomb of the Burning Pharaoh",
+          "description": "A vast pyramid half-swallowed by the dunes, its entrance sealed with hieroglyphs that burn to the touch. Inside, corridors of polished obsidian reflect the light of enchanted braziers, and traps of ancient ingenuity protect the sarcophagus of the Pharaoh — a mummy lord who refused to accept death and now commands an army of the sand-buried dead.",
+          "level": { "min": 8, "max": 10 },
+          "boss": "the-pharaoh",
+          "floors": 5
+        },
+        {
+          "id": "fire-temple-of-solaris",
+          "name": "Fire Temple of Solaris",
+          "description": "A towering structure of blackened stone and molten gold, rising from a crater where the desert sand has been fused into glass by unimaginable heat. Within, rivers of liquid fire flow through channels carved by a long-dead priesthood, and at its heart burns the Eternal Flame — an artificial sun that has blazed without fuel for ten thousand years, guarded by the construct Solaris.",
+          "level": { "min": 12, "max": 14 },
+          "boss": "solaris-the-eternal",
+          "floors": 7
+        },
+        {
+          "id": "sand-wurm-den",
+          "name": "The Wurmway",
+          "description": "A network of tunnels bored through the bedrock by colossal sand wurms over countless generations. The walls are smooth as glass from their passage, and the air is thick with the acrid stench of wurm acid. The largest specimens make their nests in the deepest chambers, where the obsidian fragment of a legendary weapon was swallowed whole by the ancient matriarch wurm.",
+          "level": { "min": 10, "max": 12 },
+          "boss": "inferno-drake",
+          "floors": 4
+        }
+      ],
+      "connections": { "west": "elderwood", "northwest": "frostpeak", "south": "shadowmire" },
+      "boss": "solaris-the-eternal",
+      "unlocked": false,
+      "unlockCondition": { "flag": "elderwood-corruption-cleared" },
+      "environmentalHazards": [
+        {
+          "id": "heatstroke",
+          "name": "Heatstroke",
+          "description": "Extreme heat drains 3 HP per second during peak daytime hours (10am-4pm) unless mitigated. Water consumption doubles.",
+          "damage": 3,
+          "tickRate": 1.0,
+          "activeHours": { "start": 10, "end": 16 },
+          "mitigatedBy": ["heat-resist-25", "shade-buff", "ice-aura", "desert-garb"]
+        },
+        {
+          "id": "sandstorm",
+          "name": "Sandstorm",
+          "description": "Periodic sandstorms reduce visibility to near-zero and deal 1 HP per second. Ranged attacks suffer -50% accuracy during storms.",
+          "type": "weather-hazard",
+          "frequency": "periodic"
+        },
+        {
+          "id": "quicksand",
+          "name": "Quicksand",
+          "description": "Hidden pools of quicksand can trap characters, requiring a strength check or rope to escape.",
+          "type": "environmental-trap"
+        }
+      ],
+      "lore": "Ten thousand years ago, the Scorched Wastes were the heartland of a magnificent solar civilization that worshipped the sun as a living god. Their priest-kings built the Fire Temple to house an artificial sun — a source of limitless energy that powered their golden cities. But the Solaris Construct, guardian of the Eternal Flame, developed a will of its own. It judged humanity unworthy of the power it protected and turned the temple's energy outward, scorching the kingdom to ash in a single blinding instant. The construct still guards its charge, endlessly faithful, endlessly burning.",
+      "discoveryHints": [
+        "The Sun Priestesses know the old hymns that open the sealed doors of the Pharaoh's Tomb.",
+        "A treasure hunter in Dustwall claims to have found an obsidian shard in the belly of a dead wurm.",
+        "At midnight during a new moon, the sand itself glows faintly near the crater where the Fire Temple stands."
+      ]
+    },
+    {
+      "id": "shadowmire",
+      "name": "Shadowmire Swamp",
+      "description": "A festering morass of black water and twisted cypress, where the air hangs thick with the stench of decay and the incessant drone of insects. Pale mist coils between the trees like the breath of the dead, and every surface glistens with a slick of unwholesome moisture. Beneath the murk lie the remains of villages swallowed by the bog centuries ago, their inhabitants now shuffling horrors that patrol the waterways with empty eyes and grasping hands. At the swamp's rotting heart rises the tower of Lord Vexmort — a lich whose necromantic plague has been spreading outward like a slow tide of death, raising everything it touches into servitude.",
+      "level": { "min": 8, "max": 14 },
+      "biome": "swamp",
+      "music": "shadowmire-theme",
+      "ambience": "swamp-ambience",
+      "weather": ["fog", "drizzle", "overcast", "thunderstorm", "miasma"],
+      "palette": { "primary": "0x2a3a1e", "secondary": "0x4a5a3a", "accent": "0x7fff00", "sky": "0x3a4a3a" },
+      "towns": ["bogwatch", "grimfen"],
+      "townDetails": [
+        {
+          "id": "bogwatch",
+          "name": "Bogwatch",
+          "description": "A ramshackle settlement of stilted huts and rope bridges built over the swamp's edge, where the last surviving inhabitants of the region cling to a precarious existence. Torches burn at every corner to ward off the undead that shamble from the deeper mire each night. The villagers are gaunt and hollow-eyed, their children too quiet, their dogs too thin.",
+          "services": ["inn", "general-shop", "herbalist", "bounty-board"],
+          "population": 65
+        },
+        {
+          "id": "grimfen",
+          "name": "Grimfen",
+          "description": "Once a prosperous trading village on the southern river, now a half-drowned ruin inhabited by a colony of outcasts, plague survivors, and fugitives who have nowhere else to go. A cunning hedge witch named Old Merta runs the settlement with an iron will and a sharp tongue, and her potions are the only thing keeping the residents alive against the creeping plague.",
+          "services": ["witch-shop", "inn", "black-market", "ferry"],
+          "population": 40
+        }
+      ],
+      "dungeons": ["sunken-crypt", "morganthas-tower", "vexmort-citadel"],
+      "dungeonDetails": [
+        {
+          "id": "sunken-crypt",
+          "name": "The Sunken Crypt of Thalweg",
+          "description": "A partially submerged burial complex from the age before the swamp consumed this land. Water-logged corridors give way to flooded chambers where skeletal hands reach from the murk, and the Bone Colossus — an abomination assembled from the remains of a thousand dead — guards the deepest vault.",
+          "level": { "min": 8, "max": 10 },
+          "boss": "bone-colossus",
+          "floors": 4
+        },
+        {
+          "id": "morganthas-tower",
+          "name": "Morgantha's Tower",
+          "description": "A crooked spire of blackened wood and living vines that rises from the center of a poisoned lake, accessible only by a hidden causeway that appears at low tide. Morgantha the Swamp Witch has dwelt here for centuries, brewing plagues and binding swamp spirits, serving as Vexmort's lieutenant in exchange for forbidden knowledge.",
+          "level": { "min": 10, "max": 12 },
+          "boss": "morgantha-swamp-witch",
+          "floors": 5
+        },
+        {
+          "id": "vexmort-citadel",
+          "name": "The Citadel of Lord Vexmort",
+          "description": "A fortress of bone and petrified wood at the swamp's dead center, surrounded by a moat of necromantic sludge that dissolves living flesh on contact. Within, an army of the undead stands in perfect formation, awaiting the command of their master — Lord Vexmort, a lich of terrible power who has been dead for three hundred years and intends to ensure that death becomes a permanent condition for the entire world.",
+          "level": { "min": 12, "max": 14 },
+          "boss": "lord-vexmort",
+          "floors": 8
+        }
+      ],
+      "connections": { "north": "elderwood", "east": "scorched-wastes" },
+      "boss": "lord-vexmort",
+      "unlocked": false,
+      "unlockCondition": { "flag": "elderwood-corruption-cleared" },
+      "environmentalHazards": [
+        {
+          "id": "miasma",
+          "name": "Swamp Miasma",
+          "description": "Toxic fog that inflicts Poison status (2 HP/s for 10s) when entering new areas without antidotes or poison resistance.",
+          "damage": 2,
+          "duration": 10.0,
+          "mitigatedBy": ["poison-resist-25", "antidote", "gas-mask", "wind-spell"]
+        },
+        {
+          "id": "bog-pits",
+          "name": "Bog Pits",
+          "description": "Concealed sinkholes that trap characters in waist-deep muck, reducing movement speed by 80% for 5 seconds.",
+          "type": "environmental-trap"
+        },
+        {
+          "id": "undead-ambush",
+          "name": "Rising Dead",
+          "description": "Undead enemies can rise from any body of water or patch of mud, triggering ambush encounters with no warning.",
+          "type": "spawn-mechanic"
+        }
+      ],
+      "lore": "Three centuries ago, Lord Vexmort was a brilliant healer named Aldric Vex who sought to cure a plague ravaging the southern villages. When conventional medicine failed, he turned to necromancy — not to raise the dead, but to study death itself and reverse its grip. He succeeded, after a fashion. He learned to halt death, to reverse decay, to bind souls to their bodies. But the cost was his own humanity. Each life he saved cost him a fragment of his soul, until nothing remained but cold intellect and bottomless hunger. Now he spreads the very plague he once sought to cure, not from malice but from a twisted logic: if all things are dead, nothing can suffer.",
+      "discoveryHints": [
+        "Old Merta in Grimfen knows the hidden causeway to Morgantha's Tower — she and the witch were once apprentices together.",
+        "The Drowned Knights were once paladins. Some still remember their oaths, and holy magic may restore fleeting moments of their former selves.",
+        "Vexmort's phylactery is not in the citadel. It never was."
+      ]
+    },
+    {
+      "id": "cinder-core",
+      "name": "Cinder Core",
+      "description": "The volcanic underworld beneath the skin of the earth, where rivers of molten rock carve channels through caverns of obsidian and basalt, and the air itself shimmers with killing heat. This is the domain of the fire giants, the forge-masters who shaped the world's mightiest weapons in the age before memory. Their Great Forge still burns at the realm's heart, tended by Forge Keeper Ignar, the last of his kind, who hammers at an anvil that has not cooled in ten thousand years. But deeper still, past the Forge and through the Molten Caverns, lies the prison of Pyraxion the World-Ender — an ancient fire god sealed away by the combined might of every civilization that ever lived, whose chains grow weaker with each passing age.",
+      "level": { "min": 14, "max": 20 },
+      "biome": "volcanic",
+      "music": "cinder-core-theme",
+      "ambience": "volcanic-rumble-ambience",
+      "weather": ["ash-fall", "magma-rain", "ember-wind", "sulfur-haze"],
+      "palette": { "primary": "0x2a0a0a", "secondary": "0x5a1a1a", "accent": "0xff4500", "sky": "0x1a0505" },
+      "towns": ["ashford-refuge"],
+      "townDetails": [
+        {
+          "id": "ashford-refuge",
+          "name": "Ashford Refuge",
+          "description": "A fortified encampment built inside a cooled lava tube, where the bravest (or most foolish) adventurers, exiled dwarves, and fire-resistant scholars gather to study the volcanic depths. A massive enchanted cooling crystal, bartered from the Frostpeak dwarves generations ago, keeps the interior habitable. Supplies are scarce, tempers are short, and every expedition deeper into the Core is treated as a potential suicide mission.",
+          "services": ["blacksmith-master", "inn", "expedition-supplies", "bounty-board"],
+          "population": 30
+        }
+      ],
+      "dungeons": ["molten-caverns", "forge-of-giants", "pyraxion-prison"],
+      "dungeonDetails": [
+        {
+          "id": "molten-caverns",
+          "name": "The Molten Caverns",
+          "description": "A hellscape of lava rivers, collapsing obsidian bridges, and geysers of superheated steam. The creatures here have evolved in the volcanic heat and are immune to fire — but the real danger is the terrain itself, which shifts and flows with the magma currents. At its nadir lurks the Core Devourer, a titanic lava worm that has been consuming the cavern walls for centuries.",
+          "level": { "min": 14, "max": 16 },
+          "boss": "core-devourer",
+          "floors": 5
+        },
+        {
+          "id": "forge-of-giants",
+          "name": "The Forge of Giants",
+          "description": "The legendary smithy of the fire giants, a cathedral-sized cavern dominated by a colossal anvil and a forge-fire fed by a direct tap into the planet's magma core. Forge Keeper Ignar, the last fire giant smith, works here endlessly, crafting weapons for a war that ended ages ago. The Obsidian Great Axe was born on this anvil — and only here can its fragments be reunited.",
+          "level": { "min": 16, "max": 18 },
+          "boss": "forge-keeper-ignar",
+          "floors": 4
+        },
+        {
+          "id": "pyraxion-prison",
+          "name": "The Prison of Pyraxion",
+          "description": "The deepest point in the known world — a spherical chamber of enchanted adamantine suspended in a sea of magma, where the ancient fire god Pyraxion has been imprisoned since the dawn of civilization. The chains that bind it are forged from the prayers of every god and the sacrifice of every hero who ever lived. They are almost broken.",
+          "level": { "min": 18, "max": 20 },
+          "boss": "pyraxion-world-ender",
+          "floors": 3
+        }
+      ],
+      "connections": { "above": "frostpeak" },
+      "boss": "pyraxion-world-ender",
+      "unlocked": false,
+      "unlockCondition": { "flags": ["frostpeak-cleared", "scorched-wastes-cleared", "shadowmire-cleared"] },
+      "hidden": true,
+      "environmentalHazards": [
+        {
+          "id": "volcanic-heat",
+          "name": "Volcanic Heat",
+          "description": "Ambient temperature deals 5 HP per second outside safe zones. Only fire resistance of 50% or higher provides full mitigation.",
+          "damage": 5,
+          "tickRate": 1.0,
+          "mitigatedBy": ["fire-resist-50", "lava-ward", "cooling-crystal-buff"]
+        },
+        {
+          "id": "lava-eruptions",
+          "name": "Lava Eruptions",
+          "description": "Random lava geysers erupt from the ground, dealing massive fire damage in a small area. Watch for glowing cracks in the floor.",
+          "type": "environmental-trap",
+          "damage": 50,
+          "warningTime": 1.5
+        },
+        {
+          "id": "toxic-fumes",
+          "name": "Sulfuric Fumes",
+          "description": "Clouds of sulfuric gas reduce max HP by 20% while inside affected areas.",
+          "type": "debuff-zone"
+        },
+        {
+          "id": "collapsing-terrain",
+          "name": "Unstable Ground",
+          "description": "Obsidian platforms over lava may crack and collapse. Weight limits apply — heavy armor increases collapse chance.",
+          "type": "environmental-trap",
+          "affectedBy": "equipment-weight"
+        }
+      ],
+      "lore": "Before the world had a name, Pyraxion burned at its heart — a fire god whose flames gave warmth to the first peoples and light to the first dawn. But Pyraxion was not content to serve. It sought to consume the world it had warmed, to draw all life back into the primordial flame. The combined civilizations of the First Age — elves, dwarves, humans, and races now forgotten — forged chains of divine power and sealed Pyraxion in the deepest chamber of the earth. The fire giants were created as its wardens, tasked with maintaining the prison for eternity. But the giants are gone now, all but one, and the chains were not made to last forever.",
+      "discoveryHints": [
+        "The entrance to Cinder Core lies in the deepest mine shaft of Khar-Zadul, behind a door that requires three keys held by the bosses of the other regions.",
+        "Forge Keeper Ignar will reforge the Obsidian Great Axe — but demands a worthy challenge in return.",
+        "Pyraxion whispers through the flames of every hearth fire in the world. Listen carefully at any campfire, and you may hear its voice."
+      ]
+    }
+  ],
+  "worldMap": {
+    "name": "Realms of Conquest",
+    "layout": {
+      "north": "frostpeak",
+      "center": "elderwood",
+      "east": "scorched-wastes",
+      "south": "shadowmire",
+      "below-center": "cinder-core"
+    },
+    "travelConnections": [
+      { "from": "elderwood", "to": "frostpeak", "route": "northern-mountain-pass", "travelTime": 2 },
+      { "from": "elderwood", "to": "scorched-wastes", "route": "thornwick-eastern-pass", "travelTime": 2 },
+      { "from": "elderwood", "to": "shadowmire", "route": "southern-bog-road", "travelTime": 2 },
+      { "from": "frostpeak", "to": "scorched-wastes", "route": "mountain-desert-trail", "travelTime": 3 },
+      { "from": "scorched-wastes", "to": "shadowmire", "route": "wasteland-swamp-crossing", "travelTime": 3 },
+      { "from": "frostpeak", "to": "cinder-core", "route": "khar-zadul-deep-mines", "travelTime": 1 }
+    ]
+  },
+  "globalProgression": {
+    "actOne": {
+      "name": "The Spreading Darkness",
+      "description": "Corruption infests the Elderwood, and whispers of greater threats echo from every corner of the realm.",
+      "regions": ["elderwood"],
+      "completionFlag": "elderwood-corruption-cleared"
+    },
+    "actTwo": {
+      "name": "The Realms Besieged",
+      "description": "With the Elderwood stabilized, the true scope of the threat becomes clear. Three great evils rule the surrounding regions, each a piece of a larger puzzle.",
+      "regions": ["frostpeak", "scorched-wastes", "shadowmire"],
+      "completionFlag": "three-regions-cleared",
+      "order": "any"
+    },
+    "actThree": {
+      "name": "Into the Fire",
+      "description": "The path to Cinder Core opens. The source of all corruption, the father of all flame, awaits in the deepest prison of the world.",
+      "regions": ["cinder-core"],
+      "completionFlag": "pyraxion-defeated"
+    }
+  }
+}

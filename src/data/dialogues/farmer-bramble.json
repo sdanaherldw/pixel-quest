@@ -1,172 +1,772 @@
 {
   "id": "farmer-bramble",
   "speaker": "Farmer Bramble",
-  "context": "Oakhollow outskirts - A worried farmer whose sheep have gone missing",
+  "context": "Oakhollow - Eastern farmstead near the forest edge. Side quest: Lost Livestock",
   "portrait": "farmer-bramble",
   "nodes": {
     "start": {
-      "text": "*wringing hands* Oh, thank the spirits! Are you the adventurers Elder Oakworth mentioned? Please, I need your help! My sheep — they've gone missing in the forest!",
+      "text": "*a stout, weathered man paces anxiously near a broken fence, wringing a battered cap between calloused hands. His eyes are red-rimmed from sleepless worry* Oh! Travelers! Please, you have to help me. It's my sheep -- Clover, Thistle, and little Biscuit -- they've gone missing! The fence broke in the night and they wandered off toward the forest. With all this corruption and those twisted beasts roaming about... *voice cracks* ...they won't last a day out there on their own.",
+      "condition": {
+        "type": "quest_not_started",
+        "questId": "lost-livestock"
+      },
       "choices": [
-        { "text": "What happened to your sheep?", "next": "explain" },
-        { "text": "How many are missing?", "next": "how-many" },
-        { "text": "We're busy with more important things.", "next": "decline" }
+        {
+          "text": "Calm down. Tell me exactly what happened.",
+          "next": "explain_situation"
+        },
+        {
+          "text": "Missing sheep? We have bigger problems to deal with.",
+          "next": "dismiss_initial"
+        },
+        {
+          "text": "We'll find your sheep. Which way did they go?",
+          "next": "accept_immediately"
+        },
+        {
+          "text": "What's in it for us if we help?",
+          "next": "negotiate_reward"
+        }
       ]
     },
-    "explain": {
-      "text": "Three nights ago, I heard terrible sounds from the eastern pasture. When I went to check at dawn, seven of my best woolbacks were gone! No blood, no tracks — just... gone. The fence was broken from the inside, like they ran in terror. Something in the forest drove them out.",
+
+    "explain_situation": {
+      "text": "*takes a shaky breath and steadies himself against the broken fence post* I keep three sheep. Just three. They're all I have left since... *swallows hard* ...since my wife Rosemary passed two winters ago. She loved those animals more than anything in this world. Named every one of them herself. Last night the wind kicked up something fierce, howling down from the northeast, and I heard the fence posts snap around midnight. By the time I got my boots on and lit a lantern, they were gone. The tracks lead east, toward the Old Mill. But that whole area's been crawling with corrupted wolves since the blight started spreading. I'm no fighter -- I'm just a farmer with bad knees and worse luck.",
       "choices": [
-        { "text": "Could it be the corruption Elder Oakworth mentioned?", "next": "corruption-link" },
-        { "text": "Where exactly should we look?", "next": "location" },
-        { "text": "What's the reward?", "next": "reward" }
+        {
+          "text": "We'll bring them back safely. You have our word.",
+          "next": "accept_heartfelt"
+        },
+        {
+          "text": "I'm sorry about your wife. We'll do what we can.",
+          "next": "accept_heartfelt"
+        },
+        {
+          "text": "The Old Mill area is dangerous. We'd need some compensation for the risk.",
+          "next": "negotiate_reward"
+        }
       ]
     },
-    "how-many": {
-      "text": "Seven! My finest woolbacks — Daisy, Clover, Buttercup, Thistle, Primrose, Ivy, and old Barnaby. Barnaby's the ram, ornery fellow, but he's worth his weight in gold. Literally — his wool fetches premium prices at market.",
+
+    "dismiss_initial": {
+      "text": "*face falls, but he squares his shoulders with quiet dignity* Bigger problems. Aye, I suppose you do. The corruption, the monsters, the end of the world as we know it -- I've heard it all from the Elder. But to me... *voice barely above a whisper* ...those three sheep are MY whole world. They're the last living things that connect me to my Rosemary. My wife. She'd have gone after them herself, bad hip and all -- wouldn't have cared about the wolves or the dark. *turns away, pulling his cap back on* Forget I asked. I'll figure something out on my own.",
       "choices": [
-        { "text": "Tell me what happened.", "next": "explain" },
-        { "text": "Where should we look?", "next": "location" }
+        {
+          "text": "Wait. I didn't mean it like that. Tell me where they went.",
+          "next": "accept_after_guilt"
+        },
+        {
+          "text": "I'm sorry, we really can't help right now. Good luck, Bramble.",
+          "next": "leave_without_helping"
+        }
       ]
     },
-    "corruption-link": {
-      "text": "*nods fearfully* That's what I'm afraid of. The animals in the forest have been acting strange — aggressive, confused. If my sheep wandered into corrupted territory... *trails off* Please, they might still be alive. Woolbacks are hardy creatures.",
+
+    "accept_after_guilt": {
+      "text": "*turns back, eyes red but flickering with hope* You... you mean it? Oh, bless you. Bless you, traveler. *wipes his nose on his sleeve* The tracks lead east along the creek path toward the Old Mill. It's been abandoned for years now -- used to be Thatcher's place before he moved to Thornwick. There's an enclosed yard there with stone walls. If the sheep found it, they might have sheltered inside. Just... please be careful. The corrupted wolves hunt in packs around that stretch, especially at dusk.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "journal_entry": "Farmer Bramble's three sheep -- Clover, Thistle, and Biscuit -- have wandered off toward the Old Mill east of Oakhollow. We've agreed to find and return them."
+      },
       "choices": [
-        { "text": "We'll find them. Where do we start?", "next": "location" },
-        { "text": "What if they've been... changed?", "next": "corrupted-sheep" }
+        {
+          "text": "We'll handle the wolves. Sit tight, Bramble.",
+          "next": "sendoff"
+        },
+        {
+          "text": "Before we go -- what will you give us for bringing them back?",
+          "next": "negotiate_reward_accepted"
+        }
       ]
     },
-    "corrupted-sheep": {
-      "text": "*goes pale* Changed? You mean... like the twisted wolves? Oh spirits, no... If my woolbacks have been corrupted, I... I don't know what I'd do. But even if they're beyond saving, please — bring back Barnaby's bell. It was my father's. It's all I have left of him.",
+
+    "negotiate_reward": {
+      "text": "*fumbles with his cap, embarrassment coloring his weathered cheeks* Compensation. Right. Right. I... I'm not a wealthy man, traveler. The farm barely breaks even in a good year, and this hasn't been a good year by any stretch. *pauses, wrestling with himself, then reaches a decision* But I do have one thing of real value. My Rosemary's wool cloak. She wove it herself from our sheep's very first shearing -- the finest Elderwood wool you'll ever touch, threaded with silver from our wedding rings. It's warm enough to turn back a mountain blizzard and light as summer linen. It's... *voice thick* ...it's the most precious thing I own. But those sheep are alive, and Rosemary would have wanted them safe more than she'd want her cloak gathering dust in a chest.",
       "choices": [
-        { "text": "We'll do everything we can.", "next": "accept-quest" },
-        { "text": "We might have to put them down if they're corrupted.", "next": "hard-truth" }
+        {
+          "text": "We can't take your wife's cloak. We'll find the sheep -- no payment needed.",
+          "next": "accept_no_payment"
+        },
+        {
+          "text": "The cloak and whatever gold you can spare. Those wolves aren't going to fight themselves.",
+          "next": "negotiate_full_payment"
+        },
+        {
+          "text": "Keep the cloak. But we'll need gold for supplies if we're risking our necks out there.",
+          "next": "negotiate_gold_only"
+        },
+        {
+          "text": "Deal. The cloak for the sheep's safe return.",
+          "next": "accept_with_cloak"
+        }
       ]
     },
-    "hard-truth": {
-      "text": "*blinks back tears* I know. I've been a farmer long enough to know when an animal is suffering. If they can't be saved, then... give them peace. But bring me proof — Barnaby's bell, or a tuft of their wool. So I know for certain.",
+
+    "negotiate_reward_accepted": {
+      "text": "*nods reluctantly* I understand. You're risking your lives out there for my sake -- I won't pretend that doesn't have a cost. I can offer 30 gold -- it's what I've saved for winter feed. And... *hesitates, then reaches a painful decision* ...my late wife Rosemary's wool cloak. She wove it herself from our sheep's first shearing. It's the finest piece of cloth in all of Oakhollow. Warm as a hearth, light as a feather, threaded with silver. I'd part with it to see my girls come home safe.",
       "choices": [
-        { "text": "You have our word.", "next": "accept-quest" }
+        {
+          "text": "Keep the cloak. The gold is enough.",
+          "next": "negotiate_gold_only"
+        },
+        {
+          "text": "We'll take both. Those wolves will earn us every coin and thread.",
+          "next": "accept_with_cloak"
+        },
+        {
+          "text": "Keep your money too, Bramble. We'll do it for free.",
+          "next": "accept_no_payment"
+        }
       ]
     },
-    "location": {
-      "text": "The eastern pasture borders the Whispering Thicket — that stretch of old-growth forest between here and the Hollow Oak Caves. There's a stream that runs through it; the sheep always liked to drink there. Start at the old stone bridge and follow the water northeast.",
+
+    "accept_no_payment": {
+      "text": "*stares at you in frank disbelief, his mouth working silently for several seconds before he finds words* No payment? You'd... you'd do this for nothing? *his eyes fill with tears he hastily tries to blink away* I... I don't know what to say. The world's gone dark and twisted, monsters in the woods, corruption in the earth, and here you are -- helping a foolish old farmer find his sheep for free. *straightens up and points east with a trembling hand* The Old Mill, past the creek. The sheep's tracks lead straight there. And when you bring them home... well, we'll see about that reward. I won't let such kindness go unanswered, even if you won't ask for payment.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "relationship_bonus": 10,
+        "set_flag": "bramble_refused_payment",
+        "journal_entry": "We've agreed to find Farmer Bramble's sheep at the Old Mill for free. He was deeply grateful for our kindness."
+      },
+      "next": "sendoff"
+    },
+
+    "negotiate_full_payment": {
+      "text": "*winces, but nods with the resignation of a man who has no leverage* The cloak and... *counts coins slowly from a worn leather pouch, his lips moving with each one* ...thirty gold. It's everything I have saved for winter supplies. If this is what it costs to bring Clover, Thistle, and Biscuit home alive, then so be it. *wraps the cloak carefully and holds it out alongside the pouch* Rosemary would understand. She always said the sheep came first.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "set_flag": "bramble_full_payment_agreed",
+        "journal_entry": "Farmer Bramble has promised his late wife's wool cloak and 30 gold in exchange for the safe return of his three sheep near the Old Mill."
+      },
+      "next": "sendoff"
+    },
+
+    "negotiate_gold_only": {
+      "text": "*visible relief washes over his weathered face* Keep the cloak? You... you're a decent sort, traveler. More decent than most who pass through here. *presses a leather pouch into your hands* Thirty gold. Take it, and bring my sheep home. That's all I ask. *clutches the folded cloak to his chest* Thank you for letting me keep this. It still smells like her, some days.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "set_flag": "bramble_gold_only",
+        "relationship_bonus": 5,
+        "journal_entry": "Farmer Bramble has offered 30 gold for the safe return of his sheep near the Old Mill. We let him keep his late wife's cloak."
+      },
+      "next": "sendoff"
+    },
+
+    "accept_with_cloak": {
+      "text": "*nods solemnly and folds the cloak with reverent, practiced care before handing it to you along with a pouch of coins* Take good care of it. Rosemary spent three months weaving that cloak. It kept her warm through the harshest winter Oakhollow has ever seen -- the one that took old Roderick's roof clean off. *clears his throat roughly* Right. Enough reminiscing. The sheep. Old Mill, east along the creek. Bring them home.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "set_flag": "bramble_cloak_payment_agreed",
+        "give_items": [
+          { "id": "rosemarys-wool-cloak", "count": 1 }
+        ],
+        "gold_advance": 30,
+        "journal_entry": "Farmer Bramble has given us his late wife Rosemary's wool cloak and 30 gold as payment for finding his sheep near the Old Mill."
+      },
+      "next": "sendoff"
+    },
+
+    "accept_immediately": {
+      "text": "*jaw drops, cap nearly falling from his hands* Just like that? No haggling, no questions about the pay? *wipes his eyes with the back of his hand* Bless you, traveler. Bless you a hundred times over. Their tracks lead east along the creek, past the stone bridge, toward the Old Mill. It's been abandoned for years, but there's a walled yard that might have drawn them in for shelter. Watch out for the corrupted wolves that prowl that area -- they've been hunting in packs and getting bolder by the day.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "relationship_bonus": 5,
+        "journal_entry": "We've agreed to find Farmer Bramble's three missing sheep -- Clover, Thistle, and Biscuit -- near the Old Mill east of Oakhollow."
+      },
       "choices": [
-        { "text": "We'll head there now.", "next": "accept-quest" },
-        { "text": "Any dangers we should know about?", "next": "dangers" }
+        {
+          "text": "Consider it done. We'll be back with all three.",
+          "next": "sendoff"
+        },
+        {
+          "text": "What's the reward for bringing them home safely?",
+          "next": "negotiate_reward_accepted"
+        }
       ]
     },
-    "dangers": {
-      "text": "The Whispering Thicket has always had wolves, but lately they've been bolder — more vicious. And I've seen spider webs the size of fishing nets strung between the trees. My neighbor Herschel says he spotted goblins near the old stone bridge last week. Watch yourselves.",
+
+    "accept_heartfelt": {
+      "text": "*grabs your hands and squeezes them with rough, calloused fingers* Thank you. From the bottom of my heart, thank you. Rosemary always said the world had more kindness in it than cruelty -- I'm starting to believe her again. The tracks lead east, past the stone bridge, toward the Old Mill. The enclosed yard there might have given them shelter. Just... bring all three home if you can. Clover's the big one with the black face, always leading the other two into trouble. Thistle has a notched ear from a thorn bush last spring. And Biscuit is the runt -- the wanderer. She's probably the reason they're out there in the first place. Always exploring, that one.",
+      "effects": {
+        "accept_quest": "lost-livestock",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "find_sheep_at_old_mill"
+        },
+        "map_marker": "old_mill",
+        "relationship_bonus": 5,
+        "journal_entry": "We've promised to find Farmer Bramble's three sheep near the Old Mill. Clover has a black face, Thistle has a notched ear, and Biscuit is the smallest."
+      },
+      "next": "sendoff"
+    },
+
+    "sendoff": {
+      "text": "The path along the creek is straightforward -- just keep the water on your left and follow it east. You'll see the Old Mill's broken waterwheel before anything else; it's hard to miss. And traveler? *meets your eyes with desperate sincerity* Please bring them back alive. They're old sheep and they scare easy, so approach gently when you find them. If they're penned in somewhere, just whistle three short notes -- high, low, high. Rosemary trained them to come to that call. They still remember. *voice drops* Some things you never forget, no matter how much time passes.",
+      "effects": {
+        "set_flag": "sheep_whistle_hint"
+      },
+      "next": null
+    },
+
+    "leave_without_helping": {
+      "text": "*watches you walk away, then turns back to stare at the broken fence. The late afternoon sun casts a long shadow across the empty sheep pen. His voice is barely audible, not meant for your ears at all* I'll find you, girls. Old Bramble won't let you down. Not you too. *begins limping toward the forest path alone, clutching a shepherd's crook in one hand and a lantern in the other*",
+      "effects": {
+        "set_flag": "bramble_abandoned",
+        "relationship_penalty": -10,
+        "reputation_penalty": {
+          "oakhollow": -5
+        }
+      },
+      "next": null
+    },
+
+    "return_with_sheep_honest": {
+      "text": "*comes running from the farmhouse as fast as his bad knees will carry him, arms thrown wide open* CLOVER! THISTLE! BISCUIT! Oh, my girls! My sweet, foolish, wonderful girls! *drops to his knees in the dirt as the three sheep crowd around him, bleating and nudging with their noses. He buries his face in Clover's wool, shoulders shaking with silent sobs* ...I was so afraid. Every night since you left, I sat by the window and I was so afraid I'd lost you too. *finally looks up at you, tears streaming freely down his sun-browned cheeks* You brought them home. You actually brought them home.",
+      "condition": {
+        "type": "quest_progress",
+        "questId": "lost-livestock",
+        "objectiveComplete": "find_sheep_at_old_mill",
+        "flag": "sheep_returned_honest"
+      },
       "choices": [
-        { "text": "Noted. We'll find your sheep.", "next": "accept-quest" }
+        {
+          "text": "They were huddled in the mill yard, just like you said. A few corrupted wolves tried to stop us, but nothing we couldn't handle.",
+          "next": "honest_return_detail"
+        },
+        {
+          "text": "They're safe now, Bramble. That's what matters.",
+          "next": "honest_return_humble"
+        },
+        {
+          "text": "About that reward we discussed...",
+          "next": "honest_claim_reward"
+        }
       ]
     },
-    "reward": {
-      "text": "I'm not a wealthy man, but I can offer 50 gold and all the wool you can carry. My wife Marta also brews the finest herbal remedies in Oakhollow — she'll make you healing salves. And if you find them alive, I'll give you old Barnaby's enchanted wool cloak. It was woven by the elves decades ago — keeps you warm in any weather.",
-      "choices": [
-        { "text": "That's generous. We'll help.", "next": "accept-quest" },
-        { "text": "Tell me more about this enchanted cloak.", "next": "cloak-info" },
-        { "text": "We'll think about it.", "next": "think-about-it" }
-      ]
+
+    "honest_return_detail": {
+      "text": "*nods, absently stroking Thistle's notched ear* Wolves. Aye, I feared as much. Those poor girls must have been terrified the whole time. *Biscuit butts her head against his knee and he laughs through his tears* But they're home now, safe in old Bramble's arms, and that's all that matters in this world. Let me get your reward -- you've earned every bit of it and then some.",
+      "next": "honest_reward_branch"
     },
-    "cloak-info": {
-      "text": "*eyes light up* The Enchanted Wool Cloak! Made from Barnaby's own fleece by a traveling elven weaver, years ago. It grants resistance to cold and a small boost to nature magic. I've kept it in my chest for a special occasion, but saving my flock seems special enough!",
-      "choices": [
-        { "text": "Deal. We'll bring them home.", "next": "accept-quest" }
-      ]
+
+    "honest_return_humble": {
+      "text": "*stands slowly, one hand still resting on Thistle's wooly back, the other wiping his cheeks* Safe. Aye. That IS what matters. *studies your face with an expression of quiet, profound gratitude* You know, most adventurers I've met over the years are all bluster and greed. But you... Rosemary would have liked you. She always had a sharp eye for good people. Said she could tell a person's soul by how they treated animals and old men. *chuckles wetly* Come. Let me get your reward. You've earned it ten times over.",
+      "effects": {
+        "relationship_bonus": 5
+      },
+      "next": "honest_reward_branch"
     },
-    "accept-quest": {
-      "text": "*grasps your hands* Bless you! Bless you all! Head east past the windmill and across the old stone bridge. Follow the stream northeast into the Whispering Thicket. And please... be gentle with them if you can. Woolbacks are gentle souls.",
-      "choices": [],
-      "action": { "type": "accept_quest", "questId": "the-lost-woolbacks" }
+
+    "honest_claim_reward": {
+      "text": "*chuckles through his tears, not offended in the slightest* Of course, of course. Business is business, and you risked your lives for three old sheep. A deal's a deal, and old Bramble keeps his word. Let me fetch what I owe you.",
+      "next": "honest_reward_branch"
     },
-    "return-sheep-alive": {
-      "text": "*bursts into tears of joy* BARNABY! DAISY! Oh, you beautiful creatures! *hugs the nearest sheep* Thank you! Thank you so much! Here — take everything I promised and more. You've given an old farmer hope again.",
-      "choices": [
-        { "text": "Glad we could help.", "next": "end-alive-noble" },
-        { "text": "About that cloak...", "next": "end-alive-reward" }
+
+    "honest_reward_branch": {
+      "text": "*disappears into the farmhouse and returns a moment later carrying a carefully wrapped bundle and a coin pouch. He sets them on the fence post and looks at you with warm eyes*",
+      "condition_branches": [
+        {
+          "condition": {
+            "type": "flag_check",
+            "flag": "bramble_refused_payment"
+          },
+          "next": "reward_refused_payment_bonus"
+        },
+        {
+          "condition": {
+            "type": "flag_check",
+            "flag": "bramble_gold_only"
+          },
+          "next": "reward_gold_plus_surprise"
+        },
+        {
+          "condition": {
+            "type": "flag_check",
+            "flag": "bramble_full_payment_agreed"
+          },
+          "next": "reward_full_as_promised"
+        },
+        {
+          "condition": {
+            "type": "flag_check",
+            "flag": "bramble_cloak_payment_agreed"
+          },
+          "next": "reward_cloak_already_given"
+        }
       ],
-      "condition": { "questProgress": "the-lost-woolbacks", "outcome": "sheep-alive" }
+      "next": "reward_default"
     },
-    "return-sheep-corrupted": {
-      "text": "*takes Barnaby's bell with trembling hands* I... I knew. In my heart, I knew they were gone when I heard those terrible sounds. You did the right thing. They're at peace now. *wipes eyes* Here's your reward. You earned it — and my eternal gratitude for ending their suffering.",
+
+    "reward_refused_payment_bonus": {
+      "text": "*presses the bundle firmly into your hands before you can protest* Now listen here. You refused payment before, and I respected that -- it showed real character. But I will NOT have it said that old Bramble lets a debt of kindness go unpaid. Take this: fifty gold and Rosemary's wool cloak. *holds up a hand to silence any objection* She would have wanted someone with a good heart to wear it. I've already told half the village what you did for me, asking nothing in return. You'll find warm smiles and open doors wherever you go in Oakhollow from now on. You've earned that.",
+      "effects": {
+        "rewards": {
+          "gold": 50,
+          "xp": 150,
+          "items": [
+            { "id": "rosemarys-wool-cloak", "count": 1 }
+          ],
+          "reputation": {
+            "oakhollow": 15
+          }
+        },
+        "complete_quest": "lost-livestock",
+        "achievement": "shepherds_heart"
+      },
+      "next": "honest_farewell"
+    },
+
+    "reward_gold_plus_surprise": {
+      "text": "You told me to keep Rosemary's cloak before, and I appreciated that more than you'll ever know. But I've been sitting here these past days thinking on it, and... *unfolds the cloak with careful hands, its silver threading catching the light* ...Rosemary would want someone who does good in this world to carry her warmth with them. Take it. Please. Along with fifty gold -- twenty more than we agreed, because you brought all three home alive and because you had the decency to let an old man keep his memories until he was ready to let go on his own terms.",
+      "effects": {
+        "rewards": {
+          "gold": 50,
+          "xp": 120,
+          "items": [
+            { "id": "rosemarys-wool-cloak", "count": 1 }
+          ],
+          "reputation": {
+            "oakhollow": 10
+          }
+        },
+        "complete_quest": "lost-livestock"
+      },
+      "next": "honest_farewell"
+    },
+
+    "reward_full_as_promised": {
+      "text": "The cloak's already in your pack from before, so here's the gold: fifty, not thirty. I had a bit more squirreled away than I let on -- a farmer's habit, always keeping a few coins where the tax collector can't find them. *small smile* You brought all three home alive and whole, and that's worth every extra copper. May Rosemary's cloak serve you as well as it served her. She wore it the night I proposed, you know. Said she'd never been warmer in her life. Course, she might've meant something else by that.",
+      "effects": {
+        "rewards": {
+          "gold": 50,
+          "xp": 100,
+          "reputation": {
+            "oakhollow": 5
+          }
+        },
+        "complete_quest": "lost-livestock"
+      },
+      "next": "honest_farewell"
+    },
+
+    "reward_cloak_already_given": {
+      "text": "You already have Rosemary's cloak, so here's the rest: fifty gold instead of the thirty we agreed on. Call the extra twenty a bonus for bringing all three back without a scratch on them. *hands over the pouch with a satisfied nod* Thank you, traveler. Truly. You've given this old farmer the best news he's had in two long years.",
+      "effects": {
+        "rewards": {
+          "gold": 50,
+          "xp": 100,
+          "reputation": {
+            "oakhollow": 5
+          }
+        },
+        "complete_quest": "lost-livestock"
+      },
+      "next": "honest_farewell"
+    },
+
+    "reward_default": {
+      "text": "Here, take this: fifty gold and Rosemary's wool cloak. *holds out the bundle with both hands, his expression a mixture of pride and bittersweet grief* The cloak is the finest thing I own, woven from our sheep's first shearing and threaded with silver from our wedding rings. Rosemary spent three months at the loom, and every thread was placed with love. It's warm as a hearth and light as air. She would have wanted someone brave to carry it into the world.",
+      "effects": {
+        "rewards": {
+          "gold": 50,
+          "xp": 120,
+          "items": [
+            { "id": "rosemarys-wool-cloak", "count": 1 }
+          ],
+          "reputation": {
+            "oakhollow": 10
+          }
+        },
+        "complete_quest": "lost-livestock"
+      },
+      "next": "honest_farewell"
+    },
+
+    "honest_farewell": {
+      "text": "*watches the three sheep settle back into their freshly mended pen, a look of deep, bone-weary contentment spreading across his weathered face. Biscuit immediately begins investigating the fence repairs* You know, Rosemary used to say something that stuck with me. She said the measure of a person isn't what they do when the whole world watches -- it's what they do for three old sheep that nobody else gives a damn about. *meets your eyes with quiet conviction* By that measure, traveler, you're the finest people I've ever had the privilege to meet. If you ever need a hot meal, a warm barn to sleep in, or just someone to sit and share a quiet evening with... old Bramble's door is always open. Always.",
+      "effects": {
+        "set_flag": "bramble_friend",
+        "unlock": "bramble_farm_rest_point"
+      },
+      "next": null
+    },
+
+    "merchant_encounter": {
+      "text": "*a thin man in a dark traveling coat steps from the shadows near the mill's broken doorframe, eyeing the sheep with the cool, appraising gaze of someone who sees prices instead of animals* Psst. Traveler. Hold up a moment. Those are fine-looking sheep you've got there. Elderwood stock, if I'm not mistaken -- don't see that quality often anymore. I'll give you 75 gold for the lot, right here, right now, no questions asked. My buyer in Thornwick pays premium for quality wool on the hoof. The old farmer'll never know what happened. Just tell him the wolves got to them first. Everybody believes wolves.",
+      "condition": {
+        "type": "quest_progress",
+        "questId": "lost-livestock",
+        "objectiveComplete": "find_sheep_at_old_mill",
+        "flag_not_set": "sheep_returned_honest"
+      },
+      "speaker_override": "Shady Merchant",
+      "portrait_override": "shady-merchant",
       "choices": [
-        { "text": "We're sorry for your loss.", "next": "end-corrupted-kind" },
-        { "text": "The corruption is getting worse. Be careful.", "next": "end-corrupted-warning" }
-      ],
-      "condition": { "questProgress": "the-lost-woolbacks", "outcome": "sheep-corrupted" }
+        {
+          "text": "75 gold? That's more than Bramble offered. You've got a deal.",
+          "next": "sell_sheep_accept"
+        },
+        {
+          "text": "[CHA >= 12] 75 for premium Elderwood sheep? I want 100 gold, or I walk.",
+          "next": "sell_sheep_haggle",
+          "condition": {
+            "type": "stat_check",
+            "stat": "CHA",
+            "minimum": 12
+          }
+        },
+        {
+          "text": "These sheep belong to a grieving old man. Get lost before I make you regret this conversation.",
+          "next": "refuse_merchant_aggressive"
+        },
+        {
+          "text": "No deal. I made a promise to their owner.",
+          "next": "refuse_merchant_calm"
+        }
+      ]
     },
-    "return-sold-sheep": {
-      "text": "*squints suspiciously* You found them alive but... sold them? To WHO? My sheep — my livelihood — sold to strangers?! *face reddens* Get out of my sight! I'll tell the whole village what kind of 'heroes' you really are!",
+
+    "sell_sheep_accept": {
+      "text": "*grins, revealing a gold tooth that matches the gleam in his eyes* Smart choice, friend. Cold coin spends better than warm feelings. *produces a clinking pouch from inside his coat* Seventy-five gold, as agreed. The sheep will be well cared for in Thornwick -- for a while, at least. *chuckles at his own dark humor* Now, when you head back to the old man, just put on your saddest face and say the wolves got to them before you could. Easy as breathing. Everybody's lost animals to wolves lately -- who's going to question it?",
+      "effects": {
+        "gold_bonus": 75,
+        "set_flag": "sheep_sold_to_merchant",
+        "set_flag": "sheep_dishonest_path",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "return_to_bramble_sold"
+        }
+      },
       "choices": [
-        { "text": "It was the practical choice.", "next": "end-sold-cold" },
-        { "text": "We're sorry. Here's the money.", "next": "end-sold-apologize" }
-      ],
-      "condition": { "questProgress": "the-lost-woolbacks", "outcome": "sheep-sold" }
+        {
+          "text": "[Take the gold and head back to Bramble]",
+          "next": "post_sale_conscience"
+        },
+        {
+          "text": "Wait -- I changed my mind. Give them back. Now.",
+          "next": "undo_sale"
+        }
+      ]
     },
-    "end-alive-noble": {
-      "text": "*still hugging sheep* You're heroes, all of you. Come by anytime — Marta will have fresh bread and healing salves waiting. The forest needs more folk like you.",
-      "choices": [],
-      "action": {
-        "type": "complete_quest",
-        "questId": "the-lost-woolbacks",
-        "rewards": { "xp": 120, "gold": 75, "items": ["enchanted-wool-cloak"], "reputation": { "oakhollow": 25 } }
-      }
+
+    "sell_sheep_haggle": {
+      "text": "*whistles low through the gap in his teeth* A negotiator, are we? You'd have made a fine merchant yourself. Alright, alright -- one hundred gold. But only because these beauties will fetch twice that at the Thornwick wool auction. *counts out the coins with practiced speed* You drive a hard bargain, friend. Do we have a deal, or are you going to keep squeezing?",
+      "choices": [
+        {
+          "text": "Deal. Pleasure doing business.",
+          "next": "sell_sheep_haggle_accept"
+        },
+        {
+          "text": "Actually, no. No amount of gold is worth an old man's heartbreak. The sheep go home.",
+          "next": "refuse_merchant_calm"
+        }
+      ]
     },
-    "end-alive-reward": {
-      "text": "Of course! A deal's a deal. *fetches a shimmering cloak from his chest* The Enchanted Wool Cloak — may it serve you well on the road ahead. And here's the gold I promised, plus a little extra. You've earned it!",
-      "choices": [],
-      "action": {
-        "type": "complete_quest",
-        "questId": "the-lost-woolbacks",
-        "rewards": { "xp": 120, "gold": 75, "items": ["enchanted-wool-cloak", "healing-salve", "healing-salve", "healing-salve"], "reputation": { "oakhollow": 20 } }
-      }
+
+    "sell_sheep_haggle_accept": {
+      "text": "*shakes his head with grudging admiration* You've got a merchant's instinct, I'll say that much. Here -- one hundred gold, counted and true. *hands over a heavy pouch* The sheep are mine now, and what I do with them is my business. When old Bramble asks, the wolves were very thorough. Very hungry. Nothing left to find. *winks, then clicks his tongue at the sheep, who follow him reluctantly down the eastern road*",
+      "effects": {
+        "gold_bonus": 100,
+        "set_flag": "sheep_sold_to_merchant",
+        "set_flag": "sheep_dishonest_path",
+        "set_flag": "sheep_sold_premium",
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "return_to_bramble_sold"
+        }
+      },
+      "choices": [
+        {
+          "text": "[Head back to Bramble]",
+          "next": "post_sale_conscience"
+        }
+      ]
     },
-    "end-corrupted-kind": {
-      "text": "*clutches the bell to his chest* Thank you for being honest with me. This corruption... it's taking everything from us. Please stop it. For my sheep, and for all of Oakhollow.",
-      "choices": [],
-      "action": {
-        "type": "complete_quest",
-        "questId": "the-lost-woolbacks",
-        "rewards": { "xp": 100, "gold": 50, "items": ["healing-salve", "healing-salve"], "reputation": { "oakhollow": 15 } }
-      }
+
+    "post_sale_conscience": {
+      "text": "*the merchant disappears down the eastern road with the three sheep in tow, moving quickly. The last thing you hear is Biscuit's plaintive bleating fading into the distance -- a small, confused sound that carries further than it should. The gold weighs heavy in your pocket as you turn back toward Oakhollow and the image of Farmer Bramble's hopeful, waiting face*",
+      "choices": [
+        {
+          "text": "[Return to Farmer Bramble]",
+          "next": "return_sold_sheep"
+        }
+      ]
     },
-    "end-corrupted-warning": {
-      "text": "*nods grimly* I know. I've been thinking of sending Marta to stay with her sister in Thornwick. It's not safe here anymore. *looks at the bell* Stop this darkness. For all of us.",
-      "choices": [],
-      "action": {
-        "type": "complete_quest",
-        "questId": "the-lost-woolbacks",
-        "rewards": { "xp": 100, "gold": 50, "items": ["healing-salve", "healing-salve"], "reputation": { "oakhollow": 15 }, "setFlag": "bramble-warned" }
-      }
+
+    "undo_sale": {
+      "text": "*eyes narrow dangerously, the friendly mask slipping for just a moment to reveal something cold underneath* Changed your mind? We had a DEAL, friend. In my line of work, deals are-- *sees your hand move toward your weapon and reconsiders the trajectory of this conversation very quickly* ...Fine. Fine! Take the wretched sheep back. Sentiment over silver -- your funeral. *shoves the sheep roughly toward you and vanishes down the road, muttering about 'heroes and their bleeding hearts' under his breath*",
+      "effects": {
+        "clear_flag": "sheep_sold_to_merchant",
+        "set_flag": "merchant_refused"
+      },
+      "choices": [
+        {
+          "text": "[Return the sheep to Farmer Bramble]",
+          "next": "return_with_sheep_honest"
+        }
+      ]
     },
-    "end-sold-cold": {
-      "text": "*shaking with anger* Practical?! Those were living creatures — my friends! Get out! And don't expect any help from Oakhollow. Word travels fast in a small village.",
-      "choices": [],
-      "action": {
-        "type": "complete_quest",
-        "questId": "the-lost-woolbacks",
-        "rewards": { "xp": 60, "gold": 0, "reputation": { "oakhollow": -30 } },
-        "setFlag": "bramble-hostile"
-      }
+
+    "refuse_merchant_aggressive": {
+      "text": "*takes a sharp step backward, hands flying up in surrender* Easy! EASY there! No need for violence, friend -- just a simple business proposition between reasonable adults! *backs away toward the mill, eyes darting for escape routes* Forget I said anything. The sheep are yours. All yours. I was never here. *turns and bolts around the corner of the mill, shouting over his shoulder* You'll regret this! Good wool doesn't grow on-- well, it DOES, but that's beside the point!",
+      "effects": {
+        "set_flag": "merchant_threatened",
+        "reputation_bonus": {
+          "oakhollow": 5
+        }
+      },
+      "choices": [
+        {
+          "text": "[Return the sheep to Farmer Bramble]",
+          "next": "return_with_sheep_honest"
+        }
+      ]
     },
-    "end-sold-apologize": {
-      "text": "*snatches the gold* This doesn't make it right. But... *sighs heavily* ...at least they're alive somewhere. Just go. I don't want to see you right now.",
-      "choices": [],
-      "action": {
-        "type": "complete_quest",
-        "questId": "the-lost-woolbacks",
-        "rewards": { "xp": 80, "gold": -30, "reputation": { "oakhollow": -10 } }
-      }
+
+    "refuse_merchant_calm": {
+      "text": "*shrugs with exaggerated indifference, though a flicker of annoyance crosses his face* Your loss, hero. Promises don't buy healing potions, and honor doesn't keep you warm at night. But have it your way -- take the walking sweaters back to their dotty old owner. I'm sure his gratitude will be very... filling. *tips his hat with mocking courtesy and melts back into the shadows between the mill buildings*",
+      "effects": {
+        "set_flag": "merchant_refused_calmly"
+      },
+      "choices": [
+        {
+          "text": "[Return the sheep to Farmer Bramble]",
+          "next": "return_with_sheep_honest"
+        }
+      ]
     },
-    "decline": {
-      "text": "*shoulders sag* I understand. You have bigger problems to deal with. But if you change your mind... seven lives are counting on someone. *turns back to stare at the empty pasture*",
-      "choices": [],
-      "action": { "type": "end_dialogue", "setFlag": "bramble-quest-available" }
+
+    "return_sold_sheep": {
+      "text": "*Farmer Bramble comes hurrying out of his farmhouse the moment he spots you on the path, scanning behind you with frantic, eager eyes. His face slowly crumbles as he sees you're alone. The hope drains out of him like water through cupped hands* ...Where are they? Where are Clover and Thistle and little Biscuit? *his voice is small and fragile, the voice of a man bracing for another blow* The wolves? Did the wolves get to them first?",
+      "condition": {
+        "type": "flag_check",
+        "flag": "sheep_sold_to_merchant"
+      },
+      "choices": [
+        {
+          "text": "I'm sorry, Bramble. The wolves got to them before we could. There was nothing left to bring back.",
+          "next": "lie_to_bramble"
+        },
+        {
+          "text": "[Tell the truth] I... I sold them. To a merchant near the mill. I'm sorry, Bramble.",
+          "next": "confess_to_bramble"
+        }
+      ]
     },
-    "think-about-it": {
-      "text": "Of course, take your time. But please... don't take too long. Every night they're out there, the forest grows darker. I'll be here, waiting.",
-      "choices": [],
-      "action": { "type": "end_dialogue", "setFlag": "bramble-quest-available" }
+
+    "lie_to_bramble": {
+      "text": "*sinks onto the porch step like a puppet whose strings have been cut. He stares at the empty sheep pen for a long, terrible silence. A robin sings somewhere nearby, obscenely cheerful* The wolves. Of course it was the wolves. *voice hollow as a dead tree* I should have gone myself. Bad knees or not, I should have been there with them. They must have been so frightened at the end. Biscuit especially -- she was always the timid one, always hiding behind Clover. *buries his face in his hands* Thank you for trying, at least. I know you did your best out there. *fumbles in his pocket and produces a small pouch* Here. Ten gold. It's not much, but... you tried. That counts for something in this dark world.",
+      "effects": {
+        "rewards": {
+          "gold": 10,
+          "xp": 25
+        },
+        "reputation_penalty": {
+          "oakhollow": -10
+        },
+        "relationship_penalty": -20,
+        "set_flag": "bramble_lied_to",
+        "karma_penalty": -15,
+        "complete_quest": "lost-livestock",
+        "quest_outcome": "failed_dishonest"
+      },
+      "choices": [
+        {
+          "text": "[Take the gold and leave in silence]",
+          "next": "dishonest_departure_silent"
+        },
+        {
+          "text": "Keep your gold, Bramble. I... don't deserve it.",
+          "next": "dishonest_departure_refuse_gold"
+        },
+        {
+          "text": "Wait. I lied to you just now. I sold them to a merchant at the mill. I'm sorry.",
+          "next": "confess_after_lie"
+        }
+      ]
+    },
+
+    "confess_to_bramble": {
+      "text": "*blinks several times, as if the words are in a language he doesn't speak. Then understanding dawns, and with it, a look of betrayal that cuts deeper than any blade you've ever faced* You... sold them? You sold my Rosemary's sheep? *stands up slowly, his whole body trembling* How much were they worth to you? How many coins did it take to throw away a promise to a lonely old man? *voice breaks* I trusted you. I looked you in the eye and I TRUSTED you, and you sold my girls like they were sacks of grain. *turns his back to you* Get off my land. Don't ever come back to this farm.",
+      "effects": {
+        "rewards": {
+          "xp": 50
+        },
+        "reputation_penalty": {
+          "oakhollow": -15
+        },
+        "relationship_penalty": -25,
+        "set_flag": "bramble_knows_truth",
+        "karma_penalty": -10,
+        "complete_quest": "lost-livestock",
+        "quest_outcome": "failed_confessed"
+      },
+      "choices": [
+        {
+          "text": "[Leave without another word]",
+          "next": "confess_departure"
+        },
+        {
+          "text": "I'll find the merchant and get them back. I'll make this right, Bramble. I swear it.",
+          "next": "promise_recovery"
+        }
+      ]
+    },
+
+    "confess_after_lie": {
+      "text": "*looks up from his hands, confusion giving way to disbelief, then to a cold, shaking fury that transforms his gentle farmer's face into something you hadn't thought possible* You LIED to me? First you sell my sheep -- my Rosemary's sheep -- and then you stand there and LIE to my face about it? *voice rising to a shout that carries across the quiet farmstead* Those sheep were all I had left of her! ALL I HAD LEFT! You took that from me and then you tried to make me mourn a lie! *collapses back onto the porch step, the anger draining away and leaving only devastation* Just... go. Take whatever blood money you got from the merchant and go. I can't bear to look at you anymore.",
+      "effects": {
+        "reputation_penalty": {
+          "oakhollow": -20
+        },
+        "relationship_penalty": -30,
+        "set_flag": "bramble_double_betrayed",
+        "karma_penalty": -20,
+        "complete_quest": "lost-livestock",
+        "quest_outcome": "failed_worst"
+      },
+      "choices": [
+        {
+          "text": "[Leave in shame]",
+          "next": "worst_departure"
+        },
+        {
+          "text": "I'll get them back. I swear on everything I am, I'll get them back.",
+          "next": "promise_recovery"
+        }
+      ]
+    },
+
+    "promise_recovery": {
+      "text": "*looks at you with guarded, wounded eyes -- the eyes of a man deciding whether to let himself hope one more time* Get them back? The merchant's halfway to Thornwick by now with a head start and a fast horse. But if you actually mean it -- if this isn't another lie... *jaw tightens* ...the eastern trade road passes through the Thornwick market square. If you can find the merchant there and buy my sheep back -- or take them back by force if you must -- and return them to me alive and unharmed... then maybe. MAYBE. I'll believe there's still a shred of decency buried somewhere in you. But this is your last chance, traveler. Don't you DARE make another promise you can't keep.",
+      "effects": {
+        "set_objective": {
+          "questId": "lost-livestock",
+          "objective": "recover_sheep_from_merchant"
+        },
+        "map_marker": "thornwick_market",
+        "quest_outcome": "recovery_attempt",
+        "reopen_quest": "lost-livestock"
+      },
+      "next": null
+    },
+
+    "dishonest_departure_silent": {
+      "text": "*Bramble doesn't watch you leave. He sits on the porch step with his elbows on his knees, staring at the empty sheep pen as the evening light turns everything gold and red. The sound of your footsteps on the dirt path seems impossibly loud in the stillness. Behind you, you hear him begin to hum -- softly, brokenly -- a tune that might have been a lullaby*",
+      "effects": {
+        "set_flag": "bramble_betrayed"
+      },
+      "next": null
+    },
+
+    "dishonest_departure_refuse_gold": {
+      "text": "*looks at the pouch in his hand, then at your retreating back* ...Don't deserve it? *a flicker of suspicion crosses his weathered face, but grief is a heavier thing than curiosity, and he lets the question die* Odd thing to say. Very odd. *sets the gold aside on the porch railing and goes back to staring at the empty pen, his lips moving in what might be a prayer or might be the names of three sheep he'll never see again*",
+      "effects": {
+        "set_flag": "bramble_suspicious",
+        "karma_penalty": -5
+      },
+      "next": null
+    },
+
+    "confess_departure": {
+      "text": "*you walk away from the farm, the sound of Bramble's quiet, hitching breaths fading behind you like the last notes of a song nobody wanted to hear. A pair of villagers who were passing on the road and overheard the exchange give you cold, hard stares as you pass. One of them spits in the dirt*",
+      "effects": {
+        "set_flag": "oakhollow_distrusted"
+      },
+      "next": null
+    },
+
+    "worst_departure": {
+      "text": "*as you leave Bramble's farm, you hear the heavy thud of his door closing and the scrape of a lock being drawn. A neighboring farmer who heard the shouting leans on his fence and watches you pass with undisguised contempt. 'No better than the corruption itself,' he mutters, loud enough to be sure you hear. The warmth of Oakhollow's welcome -- the friendly waves, the open doors, the smell of fresh bread -- has turned to ice*",
+      "effects": {
+        "set_flag": "oakhollow_hostile",
+        "shop_price_increase": {
+          "location": "oakhollow",
+          "multiplier": 1.5
+        }
+      },
+      "next": null
+    },
+
+    "return_recovered_sheep": {
+      "text": "*hears the bleating before he sees them. The farmhouse door flies open and Bramble stands frozen in the threshold, disbelief and desperate hope fighting for control of his face. Then Biscuit rounds the corner of the fence and he makes a sound that's half laugh, half sob* BISCUIT! CLOVER! THISTLE! Oh, my girls -- oh, my sweet, brave girls! *drops to his knees as all three sheep swarm around him, bleating and pressing close. He holds them tightly, his face pressed against Clover's woolly side. When he finally looks up at you, his expression is layered and complex -- relief and gratitude tangled inextricably with the lingering ache of betrayal* You actually did it. You went and got them back. I... I'll be honest. I didn't think you would.",
+      "condition": {
+        "type": "quest_progress",
+        "questId": "lost-livestock",
+        "objectiveComplete": "recover_sheep_from_merchant"
+      },
+      "choices": [
+        {
+          "text": "I'm sorry, Bramble. For everything. What I did was wrong, and it won't happen again.",
+          "next": "recovered_apology"
+        },
+        {
+          "text": "I owed you a debt. Consider it paid.",
+          "next": "recovered_pragmatic"
+        }
+      ]
+    },
+
+    "recovered_apology": {
+      "text": "*studies you for a long, searching moment -- the kind of look that weighs a person's entire soul on a scale and waits to see which way it tips. Then, slowly, he nods* My Rosemary used to say something. She said a person who makes a mistake and goes back to fix it is worth ten people who never make mistakes at all. I'm not... I'm not sure I fully believe that yet. What you did, it hurt. It hurt in a place that was already raw. *extends a weathered, dirt-stained hand* But you came back. You spent your own coin and your own time to set things right when you could have just kept walking. That has to count for something. No extra reward this time -- the lesson was its own cost. But we're square. And my door... *sighs deeply, then manages a small, tired smile* ...my door is open to you. Cautiously.",
+      "effects": {
+        "rewards": {
+          "xp": 100
+        },
+        "reputation_bonus": {
+          "oakhollow": 5
+        },
+        "clear_flag": "oakhollow_distrusted",
+        "clear_flag": "oakhollow_hostile",
+        "set_flag": "bramble_forgiven",
+        "complete_quest": "lost-livestock",
+        "quest_outcome": "redeemed"
+      },
+      "next": null
+    },
+
+    "recovered_pragmatic": {
+      "text": "*nods curtly, his jaw set in a firm line* Aye. A debt paid is a debt paid. I can respect that, at least. *turns back to the sheep, running his hands over their wool with practiced care, checking for injuries* They're unharmed. Frightened and road-weary, but whole. That's... that's what matters. *without looking at you* I won't pretend what you did doesn't still sting. The selling. The deception. That'll take time to fade, if it ever does. But you came back and you set it right, and that's more than most in this world would bother to do. We'll leave it at that. Go on, now. You've got bigger battles ahead.",
+      "effects": {
+        "rewards": {
+          "xp": 75
+        },
+        "clear_flag": "oakhollow_distrusted",
+        "set_flag": "bramble_grudging_respect",
+        "complete_quest": "lost-livestock",
+        "quest_outcome": "redeemed_cold"
+      },
+      "next": null
     }
   }
 }
