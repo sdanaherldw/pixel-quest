@@ -96,7 +96,10 @@ export abstract class Scene {
    * Guaranteed to be called after `init()` has resolved.
    */
   public async enter(): Promise<void> {
-    /* no-op by default */
+    // Default: reset camera to screen-space so (0,0) = top-left.
+    // Gameplay scenes (OverworldScene, DungeonScene) override this
+    // to set up camera following instead.
+    this._engine.camera.resetToScreenSpace();
   }
 
   /**

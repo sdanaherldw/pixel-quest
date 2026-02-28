@@ -203,6 +203,8 @@ export class BootScene extends Scene {
   }
 
   public async enter(): Promise<void> {
+    await super.enter();
+
     const w = this.engine.width;
     const h = this.engine.height;
 

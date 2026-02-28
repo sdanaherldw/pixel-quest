@@ -16,8 +16,8 @@ async function main(): Promise<void> {
   const engine = new Engine();
 
   await engine.start({
-    width: 1280,
-    height: 720,
+    width: window.innerWidth,
+    height: window.innerHeight,
     backgroundColor: 0x0a0a0a,
     antialias: true,
     resolution: window.devicePixelRatio,
@@ -33,7 +33,6 @@ async function main(): Promise<void> {
   };
 
   window.addEventListener('resize', resize);
-  resize(); // apply immediately
 
   // --- Push the initial boot scene ---
   await engine.loadScene(new BootScene());

@@ -180,6 +180,20 @@ export class Camera {
     this._viewportHeight = height;
   }
 
+  /**
+   * Reset the camera so that world coordinate (0, 0) maps to the
+   * top-left corner of the screen.  Use this in menu / UI scenes
+   * that draw content in screen-space coordinates.
+   */
+  public resetToScreenSpace(): void {
+    this.x = this._viewportWidth / 2;
+    this.y = this._viewportHeight / 2;
+    this.zoom = 1;
+    this.rotation = 0;
+    this.worldBounds = null;
+    this.follow(null);
+  }
+
   // ------------------------------------------------------------------
   // Follow
   // ------------------------------------------------------------------
