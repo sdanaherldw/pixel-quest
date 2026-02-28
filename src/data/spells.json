@@ -1,0 +1,443 @@
+{
+  "spellSchools": ["fire", "ice", "lightning", "holy", "healing", "nature", "shadow", "utility"],
+  "spells": [
+    {
+      "id": "spark",
+      "name": "Spark",
+      "school": "fire",
+      "level": 1,
+      "manaCost": 5,
+      "cooldown": 1.0,
+      "damage": { "base": 8, "scaling": { "int": 0.8 } },
+      "range": 250,
+      "projectile": { "speed": 400, "sprite": "spark", "trail": "fire_small" },
+      "castAnimation": "cast_quick",
+      "description": "Launches a small spark of flame at the target."
+    },
+    {
+      "id": "fireball",
+      "name": "Fireball",
+      "school": "fire",
+      "level": 3,
+      "manaCost": 15,
+      "cooldown": 4.0,
+      "damage": { "base": 25, "scaling": { "int": 1.5 } },
+      "range": 400,
+      "aoe": { "type": "circle", "radius": 80 },
+      "effects": [
+        { "type": "burn", "damage": 5, "duration": 3.0, "chance": 0.4 }
+      ],
+      "projectile": { "speed": 350, "sprite": "fireball", "trail": "fire_trail" },
+      "castAnimation": "cast_overhead",
+      "description": "Hurls a ball of fire that explodes on impact, burning nearby enemies."
+    },
+    {
+      "id": "fire-wall",
+      "name": "Fire Wall",
+      "school": "fire",
+      "level": 5,
+      "manaCost": 25,
+      "cooldown": 8.0,
+      "damage": { "base": 15, "scaling": { "int": 1.0 }, "tickRate": 0.5 },
+      "range": 300,
+      "aoe": { "type": "line", "width": 200, "height": 100 },
+      "duration": 5.0,
+      "effects": [
+        { "type": "burn", "damage": 8, "duration": 2.0, "chance": 0.6 }
+      ],
+      "castAnimation": "cast_ground",
+      "description": "Creates a wall of flame that damages enemies passing through it."
+    },
+    {
+      "id": "inferno",
+      "name": "Inferno",
+      "school": "fire",
+      "level": 8,
+      "manaCost": 45,
+      "cooldown": 15.0,
+      "damage": { "base": 60, "scaling": { "int": 2.5 } },
+      "range": 350,
+      "aoe": { "type": "circle", "radius": 150 },
+      "effects": [
+        { "type": "burn", "damage": 12, "duration": 5.0, "chance": 0.8 }
+      ],
+      "castAnimation": "cast_channel",
+      "channelTime": 1.5,
+      "description": "Channels a devastating inferno that engulfs a large area in flames."
+    },
+    {
+      "id": "frost-bolt",
+      "name": "Frost Bolt",
+      "school": "ice",
+      "level": 1,
+      "manaCost": 6,
+      "cooldown": 1.5,
+      "damage": { "base": 10, "scaling": { "int": 0.9 } },
+      "range": 300,
+      "effects": [
+        { "type": "slow", "value": 0.3, "duration": 2.0, "chance": 0.5 }
+      ],
+      "projectile": { "speed": 380, "sprite": "frost_bolt", "trail": "ice_trail" },
+      "castAnimation": "cast_quick",
+      "description": "Fires a bolt of ice that may slow the target."
+    },
+    {
+      "id": "ice-shield",
+      "name": "Ice Shield",
+      "school": "ice",
+      "level": 3,
+      "manaCost": 20,
+      "cooldown": 12.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "self",
+      "effects": [
+        { "type": "shield", "value": 40, "scaling": { "int": 1.5 }, "duration": 10.0 },
+        { "type": "cold_thorns", "damage": 5, "description": "Damages melee attackers" }
+      ],
+      "castAnimation": "cast_self",
+      "description": "Surrounds the caster with a shield of ice that absorbs damage and chills attackers."
+    },
+    {
+      "id": "blizzard",
+      "name": "Blizzard",
+      "school": "ice",
+      "level": 7,
+      "manaCost": 40,
+      "cooldown": 18.0,
+      "damage": { "base": 10, "scaling": { "int": 0.8 }, "tickRate": 0.5 },
+      "range": 350,
+      "aoe": { "type": "circle", "radius": 200 },
+      "duration": 6.0,
+      "effects": [
+        { "type": "slow", "value": 0.5, "duration": 2.0, "chance": 0.7 },
+        { "type": "freeze", "duration": 2.0, "chance": 0.15 }
+      ],
+      "castAnimation": "cast_channel",
+      "channelTime": 1.0,
+      "description": "Summons a blizzard that slows and damages enemies over a wide area."
+    },
+    {
+      "id": "static-shock",
+      "name": "Static Shock",
+      "school": "lightning",
+      "level": 1,
+      "manaCost": 7,
+      "cooldown": 1.2,
+      "damage": { "base": 12, "scaling": { "int": 1.0 } },
+      "range": 200,
+      "effects": [
+        { "type": "stun", "duration": 0.5, "chance": 0.2 }
+      ],
+      "projectile": { "speed": 600, "sprite": "lightning_bolt", "trail": "electric_arc" },
+      "castAnimation": "cast_quick",
+      "description": "Zaps the target with a bolt of lightning. Fast but short range."
+    },
+    {
+      "id": "chain-lightning",
+      "name": "Chain Lightning",
+      "school": "lightning",
+      "level": 5,
+      "manaCost": 30,
+      "cooldown": 8.0,
+      "damage": { "base": 30, "scaling": { "int": 1.8 } },
+      "range": 350,
+      "chainTargets": 4,
+      "chainDamageDecay": 0.75,
+      "effects": [
+        { "type": "stun", "duration": 0.8, "chance": 0.3 }
+      ],
+      "projectile": { "speed": 800, "sprite": "chain_lightning", "trail": "electric_arc" },
+      "castAnimation": "cast_overhead",
+      "description": "Lightning that arcs between up to 4 enemies, dealing reduced damage to each."
+    },
+    {
+      "id": "smite",
+      "name": "Smite",
+      "school": "holy",
+      "level": 1,
+      "manaCost": 8,
+      "cooldown": 2.0,
+      "damage": { "base": 15, "scaling": { "wis": 1.2 } },
+      "range": 250,
+      "effects": [
+        { "type": "bonus_vs_undead", "multiplier": 2.0 }
+      ],
+      "projectile": { "speed": 500, "sprite": "holy_bolt", "trail": "holy_glow" },
+      "castAnimation": "cast_quick",
+      "description": "Hurls a bolt of holy energy. Deals double damage to undead."
+    },
+    {
+      "id": "turn-undead",
+      "name": "Turn Undead",
+      "school": "holy",
+      "level": 3,
+      "manaCost": 15,
+      "cooldown": 10.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "aoe": { "type": "circle", "radius": 200 },
+      "targetType": "self-aoe",
+      "effects": [
+        { "type": "fear_undead", "duration": 5.0, "chance": 0.8 },
+        { "type": "damage_undead", "value": 30, "scaling": { "wis": 2.0 } }
+      ],
+      "castAnimation": "cast_channel",
+      "channelTime": 0.8,
+      "description": "Emits a wave of holy power that terrifies and damages undead enemies."
+    },
+    {
+      "id": "divine-shield",
+      "name": "Divine Shield",
+      "school": "holy",
+      "level": 6,
+      "manaCost": 35,
+      "cooldown": 30.0,
+      "damage": { "base": 0 },
+      "range": 100,
+      "targetType": "ally",
+      "effects": [
+        { "type": "invulnerability", "duration": 3.0 }
+      ],
+      "castAnimation": "cast_touch",
+      "description": "Grants an ally complete invulnerability for 3 seconds."
+    },
+    {
+      "id": "cure-wounds",
+      "name": "Cure Wounds",
+      "school": "healing",
+      "level": 1,
+      "manaCost": 10,
+      "cooldown": 3.0,
+      "damage": { "base": 0 },
+      "healing": { "base": 25, "scaling": { "wis": 1.5 } },
+      "range": 150,
+      "targetType": "ally",
+      "castAnimation": "cast_touch",
+      "description": "Heals an ally's wounds with divine energy."
+    },
+    {
+      "id": "rejuvenate",
+      "name": "Rejuvenate",
+      "school": "healing",
+      "level": 3,
+      "manaCost": 15,
+      "cooldown": 5.0,
+      "damage": { "base": 0 },
+      "healing": { "base": 8, "scaling": { "wis": 0.5 }, "tickRate": 1.0 },
+      "duration": 8.0,
+      "range": 150,
+      "targetType": "ally",
+      "castAnimation": "cast_touch",
+      "description": "Places a healing effect on an ally that restores health over time."
+    },
+    {
+      "id": "heal-all",
+      "name": "Heal All",
+      "school": "healing",
+      "level": 6,
+      "manaCost": 40,
+      "cooldown": 15.0,
+      "damage": { "base": 0 },
+      "healing": { "base": 35, "scaling": { "wis": 2.0 } },
+      "range": 0,
+      "targetType": "all-allies",
+      "aoe": { "type": "circle", "radius": 300 },
+      "castAnimation": "cast_channel",
+      "channelTime": 1.0,
+      "description": "Channels a wave of healing energy that restores health to all nearby allies."
+    },
+    {
+      "id": "resurrect",
+      "name": "Resurrect",
+      "school": "healing",
+      "level": 8,
+      "manaCost": 60,
+      "cooldown": 60.0,
+      "damage": { "base": 0 },
+      "healing": { "base": 0, "percentHP": 0.5 },
+      "range": 100,
+      "targetType": "dead-ally",
+      "castAnimation": "cast_channel",
+      "channelTime": 3.0,
+      "description": "Brings a fallen party member back to life with 50% HP."
+    },
+    {
+      "id": "entangle",
+      "name": "Entangle",
+      "school": "nature",
+      "level": 2,
+      "manaCost": 12,
+      "cooldown": 6.0,
+      "damage": { "base": 5, "scaling": { "wis": 0.3 }, "tickRate": 1.0 },
+      "range": 300,
+      "aoe": { "type": "circle", "radius": 100 },
+      "duration": 4.0,
+      "effects": [
+        { "type": "root", "duration": 4.0, "chance": 0.7 }
+      ],
+      "castAnimation": "cast_ground",
+      "description": "Vines erupt from the ground, rooting and damaging enemies in the area."
+    },
+    {
+      "id": "barkskin",
+      "name": "Barkskin",
+      "school": "nature",
+      "level": 3,
+      "manaCost": 15,
+      "cooldown": 20.0,
+      "damage": { "base": 0 },
+      "range": 100,
+      "targetType": "ally",
+      "duration": 15.0,
+      "effects": [
+        { "type": "armor_buff", "value": 15, "duration": 15.0 },
+        { "type": "thorn_damage", "value": 3, "description": "Damages melee attackers" }
+      ],
+      "castAnimation": "cast_touch",
+      "description": "Coats an ally's skin in bark, increasing defense and damaging melee attackers."
+    },
+    {
+      "id": "shadowstep",
+      "name": "Shadowstep",
+      "school": "shadow",
+      "level": 2,
+      "manaCost": 15,
+      "cooldown": 8.0,
+      "damage": { "base": 0 },
+      "range": 300,
+      "targetType": "position",
+      "effects": [
+        { "type": "teleport", "description": "Instantly teleport to target position" },
+        { "type": "stealth", "duration": 1.5, "description": "Brief invisibility after teleporting" }
+      ],
+      "castAnimation": "cast_instant",
+      "description": "Vanish into shadow and reappear at a nearby location."
+    },
+    {
+      "id": "poison-blade",
+      "name": "Poison Blade",
+      "school": "shadow",
+      "level": 3,
+      "manaCost": 12,
+      "cooldown": 15.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "self",
+      "duration": 20.0,
+      "effects": [
+        { "type": "weapon_enchant", "element": "poison", "bonusDamage": 8, "duration": 20.0 },
+        { "type": "poison_on_hit", "damage": 4, "duration": 4.0, "chance": 0.5, "tickRate": 1.0 }
+      ],
+      "castAnimation": "cast_self",
+      "description": "Coats your weapon in poison, adding poison damage to attacks."
+    },
+    {
+      "id": "smoke-bomb",
+      "name": "Smoke Bomb",
+      "school": "shadow",
+      "level": 4,
+      "manaCost": 18,
+      "cooldown": 12.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "self-aoe",
+      "aoe": { "type": "circle", "radius": 150 },
+      "effects": [
+        { "type": "blind", "duration": 3.0, "chance": 0.8 },
+        { "type": "stealth_all_allies", "duration": 2.0, "radius": 150 }
+      ],
+      "castAnimation": "cast_instant",
+      "description": "Throws a smoke bomb that blinds enemies and briefly cloaks nearby allies."
+    },
+    {
+      "id": "light",
+      "name": "Light",
+      "school": "utility",
+      "level": 1,
+      "manaCost": 3,
+      "cooldown": 0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "self",
+      "duration": 300.0,
+      "effects": [
+        { "type": "light_radius", "value": 200, "description": "Illuminates dark areas" }
+      ],
+      "castAnimation": "cast_instant",
+      "description": "Creates a magical light that follows the caster, illuminating dark areas."
+    },
+    {
+      "id": "detect-traps",
+      "name": "Detect Traps",
+      "school": "utility",
+      "level": 2,
+      "manaCost": 8,
+      "cooldown": 30.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "self-aoe",
+      "aoe": { "type": "circle", "radius": 400 },
+      "duration": 20.0,
+      "effects": [
+        { "type": "reveal_traps", "radius": 400, "duration": 20.0 },
+        { "type": "reveal_hidden", "radius": 200, "duration": 20.0 }
+      ],
+      "castAnimation": "cast_self",
+      "description": "Reveals nearby traps and hidden passages for a duration."
+    },
+    {
+      "id": "identify",
+      "name": "Identify",
+      "school": "utility",
+      "level": 1,
+      "manaCost": 5,
+      "cooldown": 0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "item",
+      "effects": [
+        { "type": "identify_item", "description": "Reveals an unidentified item's properties" }
+      ],
+      "castAnimation": "cast_quick",
+      "description": "Magically identifies an unknown item, revealing its properties."
+    },
+    {
+      "id": "town-portal",
+      "name": "Town Portal",
+      "school": "utility",
+      "level": 4,
+      "manaCost": 30,
+      "cooldown": 60.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "party",
+      "effects": [
+        { "type": "teleport_town", "description": "Opens a portal to the nearest visited town" }
+      ],
+      "castAnimation": "cast_channel",
+      "channelTime": 3.0,
+      "castInterruptible": true,
+      "description": "Opens a portal to the nearest visited town. Interrupted by taking damage."
+    },
+    {
+      "id": "bless",
+      "name": "Bless",
+      "school": "holy",
+      "level": 2,
+      "manaCost": 12,
+      "cooldown": 20.0,
+      "damage": { "base": 0 },
+      "range": 0,
+      "targetType": "all-allies",
+      "aoe": { "type": "circle", "radius": 250 },
+      "duration": 30.0,
+      "effects": [
+        { "type": "stat_buff", "stats": { "str": 2, "dex": 2, "con": 2 }, "duration": 30.0 }
+      ],
+      "castAnimation": "cast_channel",
+      "channelTime": 1.0,
+      "description": "Blesses all nearby allies, temporarily boosting their physical stats."
+    }
+  ]
+}

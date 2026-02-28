@@ -1,0 +1,117 @@
+{
+  "xpCurve": {
+    "formula": "baseXP * level^exponent",
+    "baseXP": 100,
+    "exponent": 1.5,
+    "table": [0, 100, 283, 520, 800, 1118, 1470, 1852, 2263, 2700, 3162, 3647, 4153, 4680, 5226, 5791, 6373, 6971, 7585, 8214, 8858, 9516, 10187, 10871, 11568, 12277, 12998, 13730, 14473, 15228],
+    "maxLevel": 30
+  },
+  "statFormulas": {
+    "hp": {
+      "formula": "(CON * 8) + (level * hpPerLevel) + classBonus",
+      "conMultiplier": 8,
+      "description": "Base HP from constitution and level"
+    },
+    "mp": {
+      "formula": "(INT * 6) + (WIS * 3) + (level * mpPerLevel) + classBonus",
+      "intMultiplier": 6,
+      "wisMultiplier": 3,
+      "description": "Base MP from intelligence and wisdom"
+    },
+    "atk": {
+      "melee": "weaponDamage + (STR * 0.7)",
+      "ranged": "weaponDamage + (DEX * 0.7)",
+      "magic": "spellBase + (INT * 1.2)",
+      "strScaling": 0.7,
+      "dexScaling": 0.7,
+      "intScaling": 1.2
+    },
+    "def": {
+      "formula": "armorRating + (CON * 0.3) + shieldBonus",
+      "conScaling": 0.3,
+      "description": "Damage reduction from armor and constitution"
+    },
+    "speed": {
+      "formula": "baseSpeed + (DEX * 0.15) - armorPenalty",
+      "dexScaling": 0.15,
+      "description": "Movement and attack speed"
+    },
+    "critChance": {
+      "formula": "5 + (DEX * 0.5) + equipmentBonus",
+      "baseCrit": 5,
+      "dexScaling": 0.5,
+      "maxCrit": 75,
+      "description": "Percentage chance for critical hit"
+    },
+    "critDamage": {
+      "base": 1.5,
+      "description": "Critical hit damage multiplier (150% base)"
+    },
+    "dodgeChance": {
+      "formula": "(DEX * 0.4) + lightArmorBonus",
+      "dexScaling": 0.4,
+      "lightArmorBonus": 5,
+      "maxDodge": 50,
+      "description": "Percentage chance to dodge attacks"
+    }
+  },
+  "damageFormulas": {
+    "physical": {
+      "formula": "ATK * (100 / (100 + targetDEF)) * randomVariance",
+      "varianceMin": 0.9,
+      "varianceMax": 1.1,
+      "description": "Standard physical damage with armor mitigation"
+    },
+    "magical": {
+      "formula": "spellDamage * (100 / (100 + targetSpellResist)) * randomVariance",
+      "varianceMin": 0.85,
+      "varianceMax": 1.15,
+      "description": "Magical damage with spell resistance mitigation"
+    }
+  },
+  "combatTiming": {
+    "globalCooldown": 0.5,
+    "invincibilityFrames": 0.3,
+    "knockbackDuration": 0.2,
+    "deathAnimationDuration": 1.0,
+    "respawnDelay": 3.0
+  },
+  "partySize": {
+    "min": 1,
+    "max": 6,
+    "recommended": 4
+  },
+  "levelScaling": {
+    "statPointsPerLevel": 3,
+    "skillPointsPerLevel": 1,
+    "hpRegenRate": 0.01,
+    "mpRegenRate": 0.02
+  },
+  "shopPrices": {
+    "buyMultiplier": 1.0,
+    "sellMultiplier": 0.4,
+    "charismaDiscount": 0.02,
+    "maxDiscount": 0.3,
+    "description": "CHA reduces prices by 2% per point, max 30% discount"
+  },
+  "enemyScaling": {
+    "hpPerLevel": 1.15,
+    "damagePerLevel": 1.12,
+    "xpPerLevel": 1.2,
+    "goldPerLevel": 1.15,
+    "description": "Multiplicative scaling per level difference from base"
+  },
+  "cragHackBerserkerBlood": {
+    "thresholds": [
+      { "hpPercent": 0.5, "damageMultiplier": 1.0, "note": "Above 50%: no bonus" },
+      { "hpPercent": 0.4, "damageMultiplier": 1.3, "note": "40% HP: 1.3x" },
+      { "hpPercent": 0.3, "damageMultiplier": 1.6, "note": "30% HP: 1.6x" },
+      { "hpPercent": 0.25, "damageMultiplier": 1.85, "note": "25% HP: 1.85x" },
+      { "hpPercent": 0.2, "damageMultiplier": 2.0, "note": "20% HP: 2.0x" },
+      { "hpPercent": 0.15, "damageMultiplier": 2.25, "note": "15% HP: 2.25x" },
+      { "hpPercent": 0.1, "damageMultiplier": 2.5, "note": "10% HP: 2.5x (maximum)" }
+    ],
+    "visualEffect": "red-aura-intensity-scales",
+    "soundEffect": "heartbeat-intensifies"
+  }
+}

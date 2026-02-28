@@ -1,0 +1,1526 @@
+{
+  "skillTrees": {
+    "barbarian-ravager": {
+      "classId": "barbarian",
+      "branch": "Ravager",
+      "description": "Pure destructive power. Ravagers live for the thrill of combat, channeling fury into devastating attacks that leave nothing standing.",
+      "nodes": [
+        {
+          "id": "frenzy",
+          "name": "Frenzy",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Enter a frenzy, increasing attack speed by 15/25/35% for 8 seconds. Each kill during Frenzy extends the duration by 2s.",
+          "effects": [
+            { "type": "attack_speed_buff", "values": [0.15, 0.25, 0.35] },
+            { "type": "duration", "values": [8.0, 8.0, 8.0] },
+            { "type": "kill_extension", "value": 2.0 }
+          ],
+          "manaCost": 10,
+          "cooldown": 18.0
+        },
+        {
+          "id": "rend",
+          "name": "Rend",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["frenzy"],
+          "type": "active",
+          "description": "A savage slash that rips into the target, causing them to bleed for 5/8/12 damage per second for 6 seconds. Bleed stacks up to 3 times.",
+          "effects": [
+            { "type": "bleed_dot", "damagePerTick": [5, 8, 12], "tickRate": 1.0, "duration": 6.0 },
+            { "type": "max_stacks", "value": 3 }
+          ],
+          "manaCost": 8,
+          "cooldown": 3.0
+        },
+        {
+          "id": "savage-blow",
+          "name": "Savage Blow",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["rend"],
+          "type": "active",
+          "description": "A brutal overhead strike dealing 200/250/300% weapon damage. Deals 50% bonus damage to bleeding targets.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [2.0, 2.5, 3.0] },
+            { "type": "bleed_bonus", "value": 0.5 }
+          ],
+          "manaCost": 14,
+          "cooldown": 6.0
+        },
+        {
+          "id": "earthquake",
+          "name": "Earthquake",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["savage-blow"],
+          "type": "active",
+          "description": "Slam the ground with devastating force, dealing 180/220/260% weapon damage in a wide area and stunning enemies for 1.5s.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [1.8, 2.2, 2.6] },
+            { "type": "aoe", "shape": "circle", "radius": 150 },
+            { "type": "stun", "duration": 1.5 }
+          ],
+          "manaCost": 20,
+          "cooldown": 12.0
+        },
+        {
+          "id": "blood-frenzy",
+          "name": "Blood Frenzy",
+          "tier": 5,
+          "maxRank": 3,
+          "prerequisites": ["earthquake"],
+          "type": "passive",
+          "description": "Each kill grants 5/8/12% increased damage and 3/5/7% lifesteal for 10 seconds. Stacks up to 5 times.",
+          "effects": [
+            { "type": "on_kill_damage_buff", "values": [0.05, 0.08, 0.12] },
+            { "type": "on_kill_lifesteal", "values": [0.03, 0.05, 0.07] },
+            { "type": "buff_duration", "value": 10.0 },
+            { "type": "max_stacks", "value": 5 }
+          ]
+        },
+        {
+          "id": "ragnarok",
+          "name": "Ragnarok",
+          "tier": 6,
+          "maxRank": 1,
+          "prerequisites": ["blood-frenzy"],
+          "type": "legendary",
+          "description": "Unleash the apocalypse. For 12 seconds, attack speed doubles, every hit deals AoE damage in a radius around the target, and each kill causes a fiery explosion dealing 400% weapon damage. Berserker Blood is maximized for the duration regardless of HP.",
+          "effects": [
+            { "type": "attack_speed_buff", "value": 1.0 },
+            { "type": "hit_aoe", "radius": 100, "damagePercent": 0.6 },
+            { "type": "kill_explosion", "damageMultiplier": 4.0, "radius": 120, "damageType": "fire" },
+            { "type": "force_berserker_blood_max", "value": true },
+            { "type": "duration", "value": 12.0 }
+          ],
+          "manaCost": 0,
+          "resourceCost": { "type": "current_hp_percent", "value": 0.3, "description": "Costs 30% of current HP to activate" },
+          "cooldown": 120.0
+        }
+      ]
+    },
+    "barbarian-warlord": {
+      "classId": "barbarian",
+      "branch": "Warlord",
+      "description": "Leadership through raw intimidation. Warlords bolster allies with war cries and break enemy morale with their terrifying presence.",
+      "nodes": [
+        {
+          "id": "war-cry",
+          "name": "War Cry",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Let out a mighty war cry, increasing all party members' attack damage by 10/15/20% and movement speed by 10% for 12 seconds.",
+          "effects": [
+            { "type": "party_damage_buff", "values": [0.10, 0.15, 0.20] },
+            { "type": "party_speed_buff", "value": 0.10 },
+            { "type": "aoe", "shape": "circle", "radius": 300 },
+            { "type": "duration", "value": 12.0 }
+          ],
+          "manaCost": 12,
+          "cooldown": 20.0
+        },
+        {
+          "id": "intimidate",
+          "name": "Intimidate",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["war-cry"],
+          "type": "active",
+          "description": "Unleash a terrifying roar that fears nearby enemies for 2/3/4 seconds. Feared enemies take 15% increased damage and have 30% reduced defense.",
+          "effects": [
+            { "type": "fear", "duration": [2.0, 3.0, 4.0] },
+            { "type": "damage_taken_debuff", "value": 0.15 },
+            { "type": "defense_reduction", "value": 0.30 },
+            { "type": "aoe", "shape": "circle", "radius": 200 }
+          ],
+          "manaCost": 15,
+          "cooldown": 16.0
+        },
+        {
+          "id": "rally",
+          "name": "Rally",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["intimidate"],
+          "type": "active",
+          "description": "Rally your allies with an inspiring shout, healing all party members for 15/20/25% of their maximum HP and removing one debuff each.",
+          "effects": [
+            { "type": "party_heal_percent", "values": [0.15, 0.20, 0.25] },
+            { "type": "cleanse_debuffs", "count": 1 },
+            { "type": "aoe", "shape": "circle", "radius": 300 }
+          ],
+          "manaCost": 18,
+          "cooldown": 25.0
+        },
+        {
+          "id": "command-presence",
+          "name": "Command Presence",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["rally"],
+          "type": "passive",
+          "description": "Passive aura. Nearby allies gain 3/5/8% increased critical chance and 5/8/12% increased defense. Radius: 250.",
+          "effects": [
+            { "type": "aura_crit_buff", "values": [0.03, 0.05, 0.08], "radius": 250 },
+            { "type": "aura_defense_buff", "values": [0.05, 0.08, 0.12], "radius": 250 }
+          ]
+        },
+        {
+          "id": "unbreakable-will",
+          "name": "Unbreakable Will",
+          "tier": 5,
+          "maxRank": 3,
+          "prerequisites": ["command-presence"],
+          "type": "passive",
+          "description": "The Warlord's resolve is infectious. When below 50% HP, nearby allies gain 10/15/20% damage reduction. When any ally falls, the Warlord gains 25% attack speed for 10s.",
+          "effects": [
+            { "type": "low_hp_party_dr", "values": [0.10, 0.15, 0.20], "threshold": 0.5, "radius": 250 },
+            { "type": "ally_death_buff", "attackSpeedBonus": 0.25, "duration": 10.0 }
+          ]
+        },
+        {
+          "id": "army-of-one",
+          "name": "Army of One",
+          "tier": 6,
+          "maxRank": 1,
+          "prerequisites": ["unbreakable-will"],
+          "type": "legendary",
+          "description": "When no allies are within range (or all allies have fallen), the Warlord becomes an Army of One for 20 seconds: +50% damage, +30% damage reduction, +25% lifesteal, and all Warlord cooldowns are reset. A true leader needs no army.",
+          "effects": [
+            { "type": "solo_damage_buff", "value": 0.50 },
+            { "type": "solo_damage_reduction", "value": 0.30 },
+            { "type": "solo_lifesteal", "value": 0.25 },
+            { "type": "reset_warlord_cooldowns", "value": true },
+            { "type": "duration", "value": 20.0 },
+            { "type": "trigger", "condition": "no_allies_in_range", "range": 400 }
+          ],
+          "manaCost": 0,
+          "cooldown": 90.0
+        }
+      ]
+    },
+    "barbarian-unkillable": {
+      "classId": "barbarian",
+      "branch": "Unkillable",
+      "description": "Survival through sheer stubbornness. The Unkillable tree turns Crag Hack into an unstoppable juggernaut who refuses to die no matter what punishment he endures.",
+      "nodes": [
+        {
+          "id": "thick-skin",
+          "name": "Thick Skin",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "passive",
+          "description": "Years of battle have hardened your flesh. Gain 5/10/15% passive damage reduction. This stacks with armor.",
+          "effects": [
+            { "type": "damage_reduction", "values": [0.05, 0.10, 0.15] }
+          ]
+        },
+        {
+          "id": "second-wind",
+          "name": "Second Wind",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["thick-skin"],
+          "type": "passive",
+          "description": "When dropping below 30% HP, automatically heal for 15/20/25% of max HP over 5 seconds. This effect can only occur once every 45/35/25 seconds.",
+          "effects": [
+            { "type": "auto_heal_threshold", "value": 0.30 },
+            { "type": "heal_percent", "values": [0.15, 0.20, 0.25] },
+            { "type": "heal_duration", "value": 5.0 },
+            { "type": "internal_cooldown", "values": [45.0, 35.0, 25.0] }
+          ]
+        },
+        {
+          "id": "unyielding",
+          "name": "Unyielding",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["second-wind"],
+          "type": "passive",
+          "description": "Immune to stun and knockback effects. Additionally, gain 2/4/6% damage reduction for each negative status effect currently on you (max 5 stacks).",
+          "effects": [
+            { "type": "cc_immunity", "immunities": ["stun", "knockback"] },
+            { "type": "debuff_dr", "values": [0.02, 0.04, 0.06], "maxStacks": 5 }
+          ]
+        },
+        {
+          "id": "blood-pact",
+          "name": "Blood Pact",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["unyielding"],
+          "type": "active",
+          "description": "Sacrifice 15% of current HP to gain 20/30/40% increased damage for 10 seconds. While Blood Pact is active, all healing received is increased by 50%. Synergizes with Berserker Blood passive.",
+          "effects": [
+            { "type": "hp_sacrifice", "value": 0.15 },
+            { "type": "damage_buff", "values": [0.20, 0.30, 0.40] },
+            { "type": "healing_amplification", "value": 0.50 },
+            { "type": "duration", "value": 10.0 }
+          ],
+          "manaCost": 0,
+          "cooldown": 15.0
+        },
+        {
+          "id": "pain-is-fuel",
+          "name": "Pain is Fuel",
+          "tier": 5,
+          "maxRank": 3,
+          "prerequisites": ["blood-pact"],
+          "type": "passive",
+          "description": "Convert suffering into strength. 3/5/8% of all damage taken is stored (max 200/350/500). Your next attack releases all stored damage as bonus physical damage. Visual indicator shows stored pain.",
+          "effects": [
+            { "type": "damage_stored_percent", "values": [0.03, 0.05, 0.08] },
+            { "type": "max_stored_damage", "values": [200, 350, 500] },
+            { "type": "release_trigger", "condition": "next_attack" }
+          ]
+        },
+        {
+          "id": "undying-fury",
+          "name": "Undying Fury",
+          "tier": 6,
+          "maxRank": 1,
+          "prerequisites": ["pain-is-fuel"],
+          "type": "legendary",
+          "description": "Cheat death. When reduced to 0 HP, instead become immune to death for 10 seconds. During this time: HP cannot drop below 1, all damage dealt heals for 100%, attack speed increased by 50%, and movement speed increased by 30%. When Undying Fury ends, heal to 25% max HP. Once per combat encounter.",
+          "effects": [
+            { "type": "cheat_death", "value": true },
+            { "type": "undying_duration", "value": 10.0 },
+            { "type": "min_hp", "value": 1 },
+            { "type": "full_lifesteal", "value": 1.0 },
+            { "type": "attack_speed_buff", "value": 0.50 },
+            { "type": "movement_speed_buff", "value": 0.30 },
+            { "type": "end_heal_percent", "value": 0.25 },
+            { "type": "uses_per_encounter", "value": 1 }
+          ],
+          "manaCost": 0,
+          "cooldown": 0,
+          "cooldownNote": "Once per combat encounter — resets when out of combat for 30 seconds"
+        }
+      ]
+    },
+    "knight-valor": {
+      "classId": "knight",
+      "branch": "Valor",
+      "description": "Offensive melee combat mastery. Valor knights are relentless attackers who overwhelm foes with powerful strikes and weapon techniques.",
+      "nodes": [
+        {
+          "id": "power-strike",
+          "name": "Power Strike",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "A mighty overhead strike dealing 150/175/200% weapon damage.",
+          "effects": [{ "type": "damage_multiplier", "values": [1.5, 1.75, 2.0] }],
+          "manaCost": 8,
+          "cooldown": 4.0
+        },
+        {
+          "id": "blade-flurry",
+          "name": "Blade Flurry",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["power-strike"],
+          "type": "active",
+          "description": "Unleash a rapid series of 3/4/5 strikes, each dealing 60% weapon damage.",
+          "effects": [
+            { "type": "multi_hit", "hitCount": [3, 4, 5] },
+            { "type": "per_hit_multiplier", "value": 0.6 }
+          ],
+          "manaCost": 12,
+          "cooldown": 6.0
+        },
+        {
+          "id": "weapon-mastery",
+          "name": "Weapon Mastery",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["blade-flurry"],
+          "type": "passive",
+          "description": "Passive mastery over all melee weapons. Increases critical hit chance by 3/5/8% and critical damage by 10/20/30%.",
+          "effects": [
+            { "type": "crit_chance", "values": [0.03, 0.05, 0.08] },
+            { "type": "crit_damage", "values": [0.10, 0.20, 0.30] }
+          ]
+        },
+        {
+          "id": "executioners-strike",
+          "name": "Executioner's Strike",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["weapon-mastery"],
+          "type": "active",
+          "description": "A precision strike that deals 250/300/350% weapon damage. Deals 50% bonus damage to targets below 30% HP.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [2.5, 3.0, 3.5] },
+            { "type": "execute_bonus", "threshold": 0.3, "bonusDamage": 0.5 }
+          ],
+          "manaCost": 18,
+          "cooldown": 10.0
+        },
+        {
+          "id": "relentless-assault",
+          "name": "Relentless Assault",
+          "tier": 5,
+          "maxRank": 3,
+          "prerequisites": ["executioners-strike"],
+          "type": "passive",
+          "description": "Each consecutive hit on the same target increases damage by 2/3/5%, stacking up to 10 times. Resets when switching targets.",
+          "effects": [
+            { "type": "stacking_damage", "values": [0.02, 0.03, 0.05], "maxStacks": 10 }
+          ]
+        },
+        {
+          "id": "champions-fury",
+          "name": "Champion's Fury",
+          "tier": 6,
+          "maxRank": 1,
+          "prerequisites": ["relentless-assault"],
+          "type": "legendary",
+          "description": "Enter a state of supreme martial prowess for 15 seconds. All attacks are guaranteed critical hits, attack speed increased by 30%, and Power Strike has no cooldown.",
+          "effects": [
+            { "type": "guaranteed_crit", "value": true },
+            { "type": "attack_speed_buff", "value": 0.30 },
+            { "type": "remove_cooldown", "skillId": "power-strike" },
+            { "type": "duration", "value": 15.0 }
+          ],
+          "manaCost": 25,
+          "cooldown": 90.0
+        }
+      ]
+    },
+    "knight-bulwark": {
+      "classId": "knight",
+      "branch": "Bulwark",
+      "description": "Defensive mastery and shield techniques. Bulwark knights are immovable walls that protect allies and punish attackers.",
+      "nodes": [
+        {
+          "id": "shield-wall",
+          "name": "Shield Wall",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Raise your shield, reducing all incoming damage by 30/40/50% for 5 seconds. Movement speed reduced by 50%.",
+          "effects": [
+            { "type": "damage_reduction", "values": [0.30, 0.40, 0.50] },
+            { "type": "duration", "value": 5.0 },
+            { "type": "movement_penalty", "value": 0.50 }
+          ],
+          "manaCost": 10,
+          "cooldown": 12.0
+        },
+        {
+          "id": "shield-bash",
+          "name": "Shield Bash",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["shield-wall"],
+          "type": "active",
+          "description": "Bash an enemy with your shield, dealing 100/130/160% weapon damage and stunning for 1.5 seconds.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [1.0, 1.3, 1.6] },
+            { "type": "stun", "duration": 1.5 }
+          ],
+          "manaCost": 8,
+          "cooldown": 8.0
+        },
+        {
+          "id": "fortify",
+          "name": "Fortify",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["shield-bash"],
+          "type": "passive",
+          "description": "Increase armor rating by 10/18/25% and HP by 5/8/12%.",
+          "effects": [
+            { "type": "armor_percent", "values": [0.10, 0.18, 0.25] },
+            { "type": "hp_percent", "values": [0.05, 0.08, 0.12] }
+          ]
+        },
+        {
+          "id": "retaliation",
+          "name": "Retaliation",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["fortify"],
+          "type": "passive",
+          "description": "When blocking or taking a hit, 15/25/35% chance to automatically counter-attack for 80% weapon damage.",
+          "effects": [
+            { "type": "counter_attack_chance", "values": [0.15, 0.25, 0.35] },
+            { "type": "counter_damage_multiplier", "value": 0.80 }
+          ]
+        }
+      ]
+    },
+    "knight-commander": {
+      "classId": "knight",
+      "branch": "Commander",
+      "description": "Tactical leadership and party support. Commanders inspire their allies through presence and battlefield tactics.",
+      "nodes": [
+        {
+          "id": "rallying-cry",
+          "name": "Rallying Cry",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Bolster nearby allies, granting 5/8/12% increased damage and 10% movement speed for 15 seconds.",
+          "effects": [
+            { "type": "party_damage_buff", "values": [0.05, 0.08, 0.12] },
+            { "type": "party_speed_buff", "value": 0.10 },
+            { "type": "aoe", "shape": "circle", "radius": 250 },
+            { "type": "duration", "value": 15.0 }
+          ],
+          "manaCost": 10,
+          "cooldown": 25.0
+        },
+        {
+          "id": "tactical-strike",
+          "name": "Tactical Strike",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["rallying-cry"],
+          "type": "active",
+          "description": "Mark a target for the party. Marked target takes 8/12/18% increased damage from all sources for 8 seconds.",
+          "effects": [
+            { "type": "mark_target", "damageAmp": [0.08, 0.12, 0.18], "duration": 8.0 }
+          ],
+          "manaCost": 6,
+          "cooldown": 10.0
+        },
+        {
+          "id": "hold-the-line",
+          "name": "Hold the Line",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["tactical-strike"],
+          "type": "active",
+          "description": "Plant your banner, creating a zone that grants allies 10/15/20% damage reduction while inside. Lasts 12 seconds.",
+          "effects": [
+            { "type": "zone_dr", "values": [0.10, 0.15, 0.20] },
+            { "type": "zone_radius", "value": 200 },
+            { "type": "duration", "value": 12.0 }
+          ],
+          "manaCost": 15,
+          "cooldown": 20.0
+        },
+        {
+          "id": "inspiring-presence",
+          "name": "Inspiring Presence",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["hold-the-line"],
+          "type": "passive",
+          "description": "Passive aura that grants nearby allies 2/3/5% lifesteal and 5/8/10 HP regen per second.",
+          "effects": [
+            { "type": "aura_lifesteal", "values": [0.02, 0.03, 0.05], "radius": 200 },
+            { "type": "aura_hp_regen", "values": [5, 8, 10], "radius": 200 }
+          ]
+        }
+      ]
+    },
+    "paladin-devotion": {
+      "classId": "paladin",
+      "branch": "Devotion",
+      "description": "Holy healing and protective magic. Devotion paladins are the ultimate support, keeping allies alive through divine intervention.",
+      "nodes": [
+        {
+          "id": "holy-light",
+          "name": "Holy Light",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Channel divine energy to heal an ally for 30/45/60 HP plus 120% WIS scaling.",
+          "effects": [
+            { "type": "heal", "baseValues": [30, 45, 60], "scaling": { "wis": 1.2 } }
+          ],
+          "manaCost": 12,
+          "cooldown": 4.0
+        },
+        {
+          "id": "sanctuary",
+          "name": "Sanctuary",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["holy-light"],
+          "type": "active",
+          "description": "Create a sanctuary that heals allies within for 8/12/16 HP per second for 10 seconds.",
+          "effects": [
+            { "type": "zone_heal", "values": [8, 12, 16], "tickRate": 1.0, "radius": 150, "duration": 10.0 }
+          ],
+          "manaCost": 20,
+          "cooldown": 18.0
+        },
+        {
+          "id": "divine-protection",
+          "name": "Divine Protection",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["sanctuary"],
+          "type": "active",
+          "description": "Shield an ally with divine light, absorbing 50/80/120 damage over 8 seconds.",
+          "effects": [
+            { "type": "shield", "values": [50, 80, 120], "duration": 8.0 }
+          ],
+          "manaCost": 15,
+          "cooldown": 12.0
+        },
+        {
+          "id": "martyrdom",
+          "name": "Martyrdom",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["divine-protection"],
+          "type": "passive",
+          "description": "When an ally within range takes fatal damage, redirect 30/50/70% of that hit to yourself instead. 60s internal cooldown.",
+          "effects": [
+            { "type": "redirect_damage", "values": [0.30, 0.50, 0.70], "range": 200, "internalCooldown": 60.0 }
+          ]
+        }
+      ]
+    },
+    "paladin-retribution": {
+      "classId": "paladin",
+      "branch": "Retribution",
+      "description": "Holy offensive power. Retribution paladins wield divine wrath to smite enemies, dealing extra damage to the undead and unholy.",
+      "nodes": [
+        {
+          "id": "holy-smite",
+          "name": "Holy Smite",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Infuse your weapon with holy energy, dealing 140/170/200% weapon damage plus 20 holy damage. Double damage to undead.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [1.4, 1.7, 2.0] },
+            { "type": "holy_bonus", "value": 20 },
+            { "type": "bonus_vs_undead", "multiplier": 2.0 }
+          ],
+          "manaCost": 10,
+          "cooldown": 5.0
+        },
+        {
+          "id": "consecrate",
+          "name": "Consecrate",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["holy-smite"],
+          "type": "active",
+          "description": "Consecrate the ground, dealing 10/15/20 holy damage per second to enemies standing in the area for 8 seconds.",
+          "effects": [
+            { "type": "zone_damage", "values": [10, 15, 20], "tickRate": 1.0, "radius": 120, "duration": 8.0, "damageType": "holy" }
+          ],
+          "manaCost": 18,
+          "cooldown": 14.0
+        },
+        {
+          "id": "zealots-fervor",
+          "name": "Zealot's Fervor",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["consecrate"],
+          "type": "passive",
+          "description": "Each attack against undead or corrupted enemies restores 2/4/6 mana and 1/2/3% HP.",
+          "effects": [
+            { "type": "mana_on_hit_vs_type", "values": [2, 4, 6], "targetTypes": ["undead", "corrupted"] },
+            { "type": "heal_on_hit_vs_type", "values": [0.01, 0.02, 0.03], "targetTypes": ["undead", "corrupted"] }
+          ]
+        },
+        {
+          "id": "divine-storm",
+          "name": "Divine Storm",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["zealots-fervor"],
+          "type": "active",
+          "description": "Spin with divine energy, hitting all nearby enemies for 180/220/260% weapon damage as holy damage.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [1.8, 2.2, 2.6] },
+            { "type": "aoe", "shape": "circle", "radius": 140 },
+            { "type": "damageType", "value": "holy" }
+          ],
+          "manaCost": 22,
+          "cooldown": 10.0
+        }
+      ]
+    },
+    "paladin-protection": {
+      "classId": "paladin",
+      "branch": "Protection",
+      "description": "Holy defensive mastery. Protection paladins use divine magic to shield themselves and allies, becoming nearly indestructible.",
+      "nodes": [
+        {
+          "id": "righteous-guard",
+          "name": "Righteous Guard",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Activate a holy shield that reduces all damage taken by 20/30/40% for 6 seconds.",
+          "effects": [
+            { "type": "damage_reduction", "values": [0.20, 0.30, 0.40], "duration": 6.0 }
+          ],
+          "manaCost": 12,
+          "cooldown": 15.0
+        },
+        {
+          "id": "lay-on-hands",
+          "name": "Lay on Hands",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["righteous-guard"],
+          "type": "active",
+          "description": "Instantly heal a target for 40/60/80% of their maximum HP. Long cooldown.",
+          "effects": [
+            { "type": "heal_percent_max_hp", "values": [0.40, 0.60, 0.80] }
+          ],
+          "manaCost": 30,
+          "cooldown": 60.0
+        },
+        {
+          "id": "aura-of-devotion",
+          "name": "Aura of Devotion",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["lay-on-hands"],
+          "type": "passive",
+          "description": "Passive aura granting all nearby allies 5/8/12% damage reduction and immunity to fear effects.",
+          "effects": [
+            { "type": "aura_dr", "values": [0.05, 0.08, 0.12], "radius": 200 },
+            { "type": "aura_fear_immunity", "value": true, "radius": 200 }
+          ]
+        },
+        {
+          "id": "divine-bulwark",
+          "name": "Divine Bulwark",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["aura-of-devotion"],
+          "type": "active",
+          "description": "Grant all nearby allies invulnerability for 1.5/2/3 seconds. Extremely long cooldown.",
+          "effects": [
+            { "type": "party_invulnerability", "duration": [1.5, 2.0, 3.0], "radius": 200 }
+          ],
+          "manaCost": 40,
+          "cooldown": 90.0
+        }
+      ]
+    },
+    "ranger-marksmanship": {
+      "classId": "ranger",
+      "branch": "Marksmanship",
+      "description": "Ranged combat perfection. Marksmanship rangers never miss, striking from afar with deadly precision.",
+      "nodes": [
+        {
+          "id": "steady-shot",
+          "name": "Steady Shot",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "A carefully aimed shot dealing 160/190/220% weapon damage with guaranteed hit.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [1.6, 1.9, 2.2] },
+            { "type": "guaranteed_hit", "value": true }
+          ],
+          "manaCost": 6,
+          "cooldown": 3.0
+        },
+        {
+          "id": "multi-shot",
+          "name": "Multi-Shot",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["steady-shot"],
+          "type": "active",
+          "description": "Fire 3/4/5 arrows in a cone, each dealing 70% weapon damage.",
+          "effects": [
+            { "type": "projectile_count", "values": [3, 4, 5] },
+            { "type": "per_projectile_multiplier", "value": 0.7 },
+            { "type": "aoe", "shape": "cone", "angle": 60 }
+          ],
+          "manaCost": 12,
+          "cooldown": 6.0
+        },
+        {
+          "id": "eagle-eye",
+          "name": "Eagle Eye",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["multi-shot"],
+          "type": "passive",
+          "description": "Increase ranged attack range by 15/25/35% and critical chance with ranged weapons by 5/8/12%.",
+          "effects": [
+            { "type": "range_increase", "values": [0.15, 0.25, 0.35] },
+            { "type": "ranged_crit_chance", "values": [0.05, 0.08, 0.12] }
+          ]
+        },
+        {
+          "id": "piercing-arrow",
+          "name": "Piercing Arrow",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["eagle-eye"],
+          "type": "active",
+          "description": "Fire an arrow that pierces through all enemies in a line, dealing 200/250/300% weapon damage and ignoring 50% armor.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [2.0, 2.5, 3.0] },
+            { "type": "pierce", "value": true },
+            { "type": "armor_penetration", "value": 0.50 }
+          ],
+          "manaCost": 15,
+          "cooldown": 8.0
+        }
+      ]
+    },
+    "ranger-beastmaster": {
+      "classId": "ranger",
+      "branch": "Beastmaster",
+      "description": "Bond with nature's creatures. Beastmasters summon and command animal companions that fight alongside them.",
+      "nodes": [
+        {
+          "id": "call-companion",
+          "name": "Call Companion",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Summon a wolf/bear/eagle companion that fights alongside you. Companion scales with your level.",
+          "effects": [
+            { "type": "summon", "companions": ["wolf", "bear", "eagle"], "hpScaling": [0.3, 0.5, 0.7], "damageScaling": [0.3, 0.4, 0.5] }
+          ],
+          "manaCost": 15,
+          "cooldown": 30.0
+        },
+        {
+          "id": "pack-tactics",
+          "name": "Pack Tactics",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["call-companion"],
+          "type": "passive",
+          "description": "While your companion is alive, both you and your companion deal 5/10/15% increased damage.",
+          "effects": [
+            { "type": "shared_damage_buff", "values": [0.05, 0.10, 0.15], "condition": "companion_alive" }
+          ]
+        },
+        {
+          "id": "feral-bond",
+          "name": "Feral Bond",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["pack-tactics"],
+          "type": "passive",
+          "description": "Your companion gains 10/20/30% of your armor and regenerates 2/4/6% HP per second.",
+          "effects": [
+            { "type": "companion_armor_share", "values": [0.10, 0.20, 0.30] },
+            { "type": "companion_hp_regen", "values": [0.02, 0.04, 0.06] }
+          ]
+        },
+        {
+          "id": "alpha-command",
+          "name": "Alpha Command",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["feral-bond"],
+          "type": "active",
+          "description": "Command your companion to perform a powerful attack dealing 250/300/400% of its base damage. Wolf: lunges and bleeds. Bear: mauls and stuns. Eagle: dive-bombs multiple targets.",
+          "effects": [
+            { "type": "companion_special_attack", "damageMultiplier": [2.5, 3.0, 4.0] }
+          ],
+          "manaCost": 10,
+          "cooldown": 12.0
+        }
+      ]
+    },
+    "ranger-trapper": {
+      "classId": "ranger",
+      "branch": "Trapper",
+      "description": "Cunning trap placement and area denial. Trappers control the battlefield by laying deadly snares and explosive devices.",
+      "nodes": [
+        {
+          "id": "bear-trap",
+          "name": "Bear Trap",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Place a trap that roots the first enemy to walk over it for 2/3/4 seconds and deals 80% weapon damage.",
+          "effects": [
+            { "type": "trap", "triggerType": "proximity" },
+            { "type": "root", "duration": [2.0, 3.0, 4.0] },
+            { "type": "damage_multiplier", "value": 0.80 }
+          ],
+          "manaCost": 8,
+          "cooldown": 10.0
+        },
+        {
+          "id": "explosive-trap",
+          "name": "Explosive Trap",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["bear-trap"],
+          "type": "active",
+          "description": "Place an explosive trap that detonates for 120/160/200% weapon damage in an area when triggered.",
+          "effects": [
+            { "type": "trap", "triggerType": "proximity" },
+            { "type": "damage_multiplier", "values": [1.2, 1.6, 2.0] },
+            { "type": "aoe", "shape": "circle", "radius": 100 }
+          ],
+          "manaCost": 12,
+          "cooldown": 12.0
+        },
+        {
+          "id": "trap-mastery",
+          "name": "Trap Mastery",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["explosive-trap"],
+          "type": "passive",
+          "description": "Traps deal 15/25/40% more damage and can have 1/2/3 additional active traps placed at once.",
+          "effects": [
+            { "type": "trap_damage_bonus", "values": [0.15, 0.25, 0.40] },
+            { "type": "max_active_traps_bonus", "values": [1, 2, 3] }
+          ]
+        },
+        {
+          "id": "minefield",
+          "name": "Minefield",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["trap-mastery"],
+          "type": "active",
+          "description": "Scatter 5/7/10 small explosive traps across a wide area. Each deals 60% weapon damage on detonation.",
+          "effects": [
+            { "type": "multi_trap", "count": [5, 7, 10] },
+            { "type": "per_trap_multiplier", "value": 0.6 },
+            { "type": "aoe", "shape": "circle", "radius": 250 }
+          ],
+          "manaCost": 20,
+          "cooldown": 25.0
+        }
+      ]
+    },
+    "sorcerer-fire": {
+      "classId": "sorcerer",
+      "branch": "Fire",
+      "description": "Destructive fire magic. Fire sorcerers specialize in raw damage output and area-of-effect devastation.",
+      "nodes": [
+        {
+          "id": "ignite",
+          "name": "Ignite",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Set an enemy ablaze, dealing 8/12/16 fire damage per second for 6 seconds.",
+          "effects": [
+            { "type": "burn_dot", "values": [8, 12, 16], "tickRate": 1.0, "duration": 6.0 }
+          ],
+          "manaCost": 8,
+          "cooldown": 5.0
+        },
+        {
+          "id": "pyroblast",
+          "name": "Pyroblast",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["ignite"],
+          "type": "active",
+          "description": "Hurl a massive ball of fire dealing 200/260/320% INT scaling as fire damage. 1.5s cast time.",
+          "effects": [
+            { "type": "damage", "scaling": { "int": [2.0, 2.6, 3.2] }, "damageType": "fire" }
+          ],
+          "manaCost": 22,
+          "cooldown": 8.0,
+          "castTime": 1.5
+        },
+        {
+          "id": "combustion",
+          "name": "Combustion",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["pyroblast"],
+          "type": "passive",
+          "description": "Burning enemies have a 10/15/25% chance to explode when hit, dealing 50% of the hit's damage to nearby enemies.",
+          "effects": [
+            { "type": "burn_explosion_chance", "values": [0.10, 0.15, 0.25] },
+            { "type": "explosion_damage_ratio", "value": 0.50 },
+            { "type": "explosion_radius", "value": 80 }
+          ]
+        },
+        {
+          "id": "meteor",
+          "name": "Meteor",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["combustion"],
+          "type": "active",
+          "description": "Call down a meteor dealing 400/500/600% INT scaling as fire damage in a large area. 2s delay before impact.",
+          "effects": [
+            { "type": "damage", "scaling": { "int": [4.0, 5.0, 6.0] }, "damageType": "fire" },
+            { "type": "aoe", "shape": "circle", "radius": 180 },
+            { "type": "impact_delay", "value": 2.0 }
+          ],
+          "manaCost": 45,
+          "cooldown": 20.0
+        }
+      ]
+    },
+    "sorcerer-ice": {
+      "classId": "sorcerer",
+      "branch": "Ice",
+      "description": "Freezing crowd control and sustained damage. Ice sorcerers lock down the battlefield while whittling enemies away.",
+      "nodes": [
+        {
+          "id": "frost-nova",
+          "name": "Frost Nova",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Release a burst of frost, dealing 100/130/160% INT scaling as ice damage and slowing enemies by 30% for 4s.",
+          "effects": [
+            { "type": "damage", "scaling": { "int": [1.0, 1.3, 1.6] }, "damageType": "ice" },
+            { "type": "slow", "value": 0.30, "duration": 4.0 },
+            { "type": "aoe", "shape": "circle", "radius": 120 }
+          ],
+          "manaCost": 12,
+          "cooldown": 8.0
+        },
+        {
+          "id": "glacial-spike",
+          "name": "Glacial Spike",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["frost-nova"],
+          "type": "active",
+          "description": "Launch a spike of ice that deals 180/220/260% INT scaling and has a 30% chance to freeze the target for 2s.",
+          "effects": [
+            { "type": "damage", "scaling": { "int": [1.8, 2.2, 2.6] }, "damageType": "ice" },
+            { "type": "freeze", "chance": 0.30, "duration": 2.0 }
+          ],
+          "manaCost": 15,
+          "cooldown": 6.0
+        },
+        {
+          "id": "shatter",
+          "name": "Shatter",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["glacial-spike"],
+          "type": "passive",
+          "description": "Frozen enemies take 20/35/50% increased damage from all sources. When a frozen enemy dies, they shatter dealing ice damage to nearby foes.",
+          "effects": [
+            { "type": "frozen_damage_amp", "values": [0.20, 0.35, 0.50] },
+            { "type": "shatter_on_death", "damagePercent": 0.30, "radius": 80 }
+          ]
+        },
+        {
+          "id": "absolute-zero",
+          "name": "Absolute Zero",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["shatter"],
+          "type": "active",
+          "description": "Freeze all enemies in a large area for 3/4/5 seconds. Frozen enemies take 200% INT scaling ice damage when the freeze ends.",
+          "effects": [
+            { "type": "mass_freeze", "duration": [3.0, 4.0, 5.0] },
+            { "type": "thaw_damage", "scaling": { "int": 2.0 }, "damageType": "ice" },
+            { "type": "aoe", "shape": "circle", "radius": 200 }
+          ],
+          "manaCost": 40,
+          "cooldown": 25.0
+        }
+      ]
+    },
+    "sorcerer-lightning": {
+      "classId": "sorcerer",
+      "branch": "Lightning",
+      "description": "Fast-casting chain damage. Lightning sorcerers excel at rapid casts and chaining damage between groups of enemies.",
+      "nodes": [
+        {
+          "id": "arc-bolt",
+          "name": "Arc Bolt",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Fire a bolt of electricity dealing 120/150/180% INT scaling. Chains to 1/2/3 additional targets at 70% damage each.",
+          "effects": [
+            { "type": "damage", "scaling": { "int": [1.2, 1.5, 1.8] }, "damageType": "lightning" },
+            { "type": "chain", "additionalTargets": [1, 2, 3], "chainDecay": 0.70 }
+          ],
+          "manaCost": 8,
+          "cooldown": 2.0
+        },
+        {
+          "id": "overcharge",
+          "name": "Overcharge",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["arc-bolt"],
+          "type": "passive",
+          "description": "Lightning spells have a 10/15/20% chance to critically strike for 200% damage. Critical lightning strikes stun for 0.5s.",
+          "effects": [
+            { "type": "spell_crit_chance", "values": [0.10, 0.15, 0.20], "school": "lightning" },
+            { "type": "spell_crit_damage", "value": 2.0 },
+            { "type": "crit_stun", "duration": 0.5 }
+          ]
+        },
+        {
+          "id": "thunderstorm",
+          "name": "Thunderstorm",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["overcharge"],
+          "type": "active",
+          "description": "Summon a thunderstorm that strikes 6/8/10 random enemies with lightning bolts over 6 seconds, each dealing 150% INT scaling.",
+          "effects": [
+            { "type": "random_strikes", "count": [6, 8, 10], "duration": 6.0 },
+            { "type": "per_strike_damage", "scaling": { "int": 1.5 }, "damageType": "lightning" },
+            { "type": "aoe", "shape": "circle", "radius": 250 }
+          ],
+          "manaCost": 30,
+          "cooldown": 18.0
+        },
+        {
+          "id": "ball-lightning",
+          "name": "Ball Lightning",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["thunderstorm"],
+          "type": "active",
+          "description": "Create a ball of lightning that slowly moves forward, zapping all nearby enemies for 40/60/80 damage per second for 8 seconds.",
+          "effects": [
+            { "type": "persistent_projectile", "damagePerSecond": [40, 60, 80], "duration": 8.0, "damageType": "lightning" },
+            { "type": "zap_radius", "value": 120 },
+            { "type": "movement_speed", "value": 100 }
+          ],
+          "manaCost": 35,
+          "cooldown": 20.0
+        }
+      ]
+    },
+    "cleric-restoration": {
+      "classId": "cleric",
+      "branch": "Restoration",
+      "description": "Pure healing mastery. Restoration clerics are the strongest healers in the realm, capable of mending any wound.",
+      "nodes": [
+        {
+          "id": "mending-touch",
+          "name": "Mending Touch",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Heal a target for 35/50/70 HP with 150% WIS scaling. Removes one poison or disease effect.",
+          "effects": [
+            { "type": "heal", "baseValues": [35, 50, 70], "scaling": { "wis": 1.5 } },
+            { "type": "cleanse", "types": ["poison", "disease"], "count": 1 }
+          ],
+          "manaCost": 10,
+          "cooldown": 3.0
+        },
+        {
+          "id": "prayer-of-healing",
+          "name": "Prayer of Healing",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["mending-touch"],
+          "type": "active",
+          "description": "Heal all allies within range for 20/30/45 HP with 100% WIS scaling. 1.5s cast time.",
+          "effects": [
+            { "type": "party_heal", "baseValues": [20, 30, 45], "scaling": { "wis": 1.0 }, "radius": 250 }
+          ],
+          "manaCost": 25,
+          "cooldown": 10.0,
+          "castTime": 1.5
+        },
+        {
+          "id": "healing-mastery",
+          "name": "Healing Mastery",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["prayer-of-healing"],
+          "type": "passive",
+          "description": "All healing spells are 10/18/25% more effective. Critical heals (5% base chance) heal for 150% amount.",
+          "effects": [
+            { "type": "healing_amplification", "values": [0.10, 0.18, 0.25] },
+            { "type": "heal_crit_chance", "value": 0.05 },
+            { "type": "heal_crit_multiplier", "value": 1.5 }
+          ]
+        },
+        {
+          "id": "miracle",
+          "name": "Miracle",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["healing-mastery"],
+          "type": "active",
+          "description": "Channel a miracle that heals all allies to full HP and removes all debuffs. 3s channel, interrupted by damage. Extremely long cooldown.",
+          "effects": [
+            { "type": "full_party_heal", "value": 1.0 },
+            { "type": "full_cleanse", "value": true },
+            { "type": "radius", "value": 300 }
+          ],
+          "manaCost": 60,
+          "cooldown": 120.0,
+          "castTime": 3.0,
+          "interruptible": true
+        }
+      ]
+    },
+    "cleric-divine-wrath": {
+      "classId": "cleric",
+      "branch": "Divine Wrath",
+      "description": "Offensive holy magic. Divine Wrath clerics harness righteous fury to destroy enemies, particularly the undead and corrupted.",
+      "nodes": [
+        {
+          "id": "sacred-flame",
+          "name": "Sacred Flame",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Call down a sacred flame on a target, dealing 130/160/190% WIS scaling as holy damage.",
+          "effects": [
+            { "type": "damage", "scaling": { "wis": [1.3, 1.6, 1.9] }, "damageType": "holy" }
+          ],
+          "manaCost": 8,
+          "cooldown": 3.0
+        },
+        {
+          "id": "holy-nova",
+          "name": "Holy Nova",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["sacred-flame"],
+          "type": "active",
+          "description": "Emit a burst of holy energy dealing 100/140/180% WIS scaling to enemies and healing allies for 50% of damage dealt.",
+          "effects": [
+            { "type": "damage", "scaling": { "wis": [1.0, 1.4, 1.8] }, "damageType": "holy" },
+            { "type": "damage_to_heal_allies", "ratio": 0.50 },
+            { "type": "aoe", "shape": "circle", "radius": 150 }
+          ],
+          "manaCost": 18,
+          "cooldown": 8.0
+        },
+        {
+          "id": "wrathful-conviction",
+          "name": "Wrathful Conviction",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["holy-nova"],
+          "type": "passive",
+          "description": "Holy damage spells deal 10/20/30% additional damage. Killing an undead enemy restores 5% max mana.",
+          "effects": [
+            { "type": "holy_damage_amp", "values": [0.10, 0.20, 0.30] },
+            { "type": "undead_kill_mana_restore", "value": 0.05 }
+          ]
+        },
+        {
+          "id": "pillar-of-light",
+          "name": "Pillar of Light",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["wrathful-conviction"],
+          "type": "active",
+          "description": "Call down a devastating pillar of divine light dealing 350/450/550% WIS scaling as holy damage. Triples damage against undead.",
+          "effects": [
+            { "type": "damage", "scaling": { "wis": [3.5, 4.5, 5.5] }, "damageType": "holy" },
+            { "type": "bonus_vs_undead", "multiplier": 3.0 },
+            { "type": "aoe", "shape": "circle", "radius": 100 }
+          ],
+          "manaCost": 35,
+          "cooldown": 15.0
+        }
+      ]
+    },
+    "cleric-benediction": {
+      "classId": "cleric",
+      "branch": "Benediction",
+      "description": "Blessings and utility support. Benediction clerics enhance the entire party with powerful long-duration buffs.",
+      "nodes": [
+        {
+          "id": "blessing-of-might",
+          "name": "Blessing of Might",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Bless an ally, increasing their STR and DEX by 3/5/8 for 60 seconds.",
+          "effects": [
+            { "type": "stat_buff", "stats": { "str": [3, 5, 8], "dex": [3, 5, 8] }, "duration": 60.0 }
+          ],
+          "manaCost": 10,
+          "cooldown": 5.0
+        },
+        {
+          "id": "shield-of-faith",
+          "name": "Shield of Faith",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["blessing-of-might"],
+          "type": "active",
+          "description": "Grant an ally a divine shield that absorbs 60/90/130 damage. Lasts 30 seconds or until depleted.",
+          "effects": [
+            { "type": "shield", "values": [60, 90, 130], "duration": 30.0 }
+          ],
+          "manaCost": 14,
+          "cooldown": 12.0
+        },
+        {
+          "id": "blessed-endurance",
+          "name": "Blessed Endurance",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["shield-of-faith"],
+          "type": "passive",
+          "description": "All buff durations you apply are extended by 15/25/40%. Your buffs also grant 1/2/3 HP regen per second.",
+          "effects": [
+            { "type": "buff_duration_extension", "values": [0.15, 0.25, 0.40] },
+            { "type": "buff_hp_regen", "values": [1, 2, 3] }
+          ]
+        },
+        {
+          "id": "divine-intervention",
+          "name": "Divine Intervention",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["blessed-endurance"],
+          "type": "active",
+          "description": "When cast, the next instance of fatal damage to any ally within range is negated entirely. Lasts 30s or until triggered. Cooldown: 120/100/80s.",
+          "effects": [
+            { "type": "prevent_lethal_damage", "count": 1, "radius": 250, "duration": 30.0 }
+          ],
+          "manaCost": 40,
+          "cooldown": [120.0, 100.0, 80.0]
+        }
+      ]
+    },
+    "rogue-assassination": {
+      "classId": "rogue",
+      "branch": "Assassination",
+      "description": "Lethal precision from the shadows. Assassination rogues deliver devastating single-target damage through stealth and critical strikes.",
+      "nodes": [
+        {
+          "id": "backstab",
+          "name": "Backstab",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Strike from behind dealing 180/220/260% weapon damage. Always crits if attacking from stealth.",
+          "effects": [
+            { "type": "damage_multiplier", "values": [1.8, 2.2, 2.6] },
+            { "type": "stealth_auto_crit", "value": true },
+            { "type": "position_requirement", "value": "behind" }
+          ],
+          "manaCost": 8,
+          "cooldown": 4.0
+        },
+        {
+          "id": "envenom",
+          "name": "Envenom",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["backstab"],
+          "type": "active",
+          "description": "Coat your daggers in deadly venom. Next 3/4/5 attacks deal 15 bonus poison damage and apply a stacking poison DoT.",
+          "effects": [
+            { "type": "weapon_enchant", "charges": [3, 4, 5], "bonusDamage": 15, "element": "poison" },
+            { "type": "poison_dot", "damagePerStack": 5, "maxStacks": 5, "duration": 8.0 }
+          ],
+          "manaCost": 12,
+          "cooldown": 15.0
+        },
+        {
+          "id": "death-mark",
+          "name": "Death Mark",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["envenom"],
+          "type": "active",
+          "description": "Mark a target for death. After 5 seconds, the mark detonates dealing 150/200/250% of all damage dealt during the mark as bonus damage.",
+          "effects": [
+            { "type": "delayed_damage_echo", "echoPercent": [1.5, 2.0, 2.5], "delay": 5.0 }
+          ],
+          "manaCost": 15,
+          "cooldown": 20.0
+        },
+        {
+          "id": "execute",
+          "name": "Execute",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["death-mark"],
+          "type": "active",
+          "description": "Attempt to instantly kill a target below 15/20/25% HP. If the target survives, deal 400% weapon damage instead. Bosses take the damage.",
+          "effects": [
+            { "type": "instant_kill_threshold", "values": [0.15, 0.20, 0.25] },
+            { "type": "fail_damage_multiplier", "value": 4.0 },
+            { "type": "boss_immunity", "value": true }
+          ],
+          "manaCost": 20,
+          "cooldown": 25.0
+        }
+      ]
+    },
+    "rogue-subtlety": {
+      "classId": "rogue",
+      "branch": "Subtlety",
+      "description": "Stealth and evasion mastery. Subtlety rogues are ghosts on the battlefield, impossible to pin down and always striking from the shadows.",
+      "nodes": [
+        {
+          "id": "vanish",
+          "name": "Vanish",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "Instantly enter stealth, even in combat. Stealth lasts 3/4/5 seconds or until you attack. First attack from stealth deals 50% bonus damage.",
+          "effects": [
+            { "type": "combat_stealth", "duration": [3.0, 4.0, 5.0] },
+            { "type": "stealth_break_bonus", "value": 0.50 }
+          ],
+          "manaCost": 12,
+          "cooldown": 18.0
+        },
+        {
+          "id": "evasion",
+          "name": "Evasion",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["vanish"],
+          "type": "active",
+          "description": "Dramatically increase dodge chance by 40/55/70% for 6 seconds.",
+          "effects": [
+            { "type": "dodge_buff", "values": [0.40, 0.55, 0.70], "duration": 6.0 }
+          ],
+          "manaCost": 10,
+          "cooldown": 20.0
+        },
+        {
+          "id": "shadow-dance",
+          "name": "Shadow Dance",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["evasion"],
+          "type": "passive",
+          "description": "While in stealth, movement speed increased by 15/25/35%. Stealth cooldowns reduced by 15/25/35%.",
+          "effects": [
+            { "type": "stealth_speed", "values": [0.15, 0.25, 0.35] },
+            { "type": "stealth_cdr", "values": [0.15, 0.25, 0.35] }
+          ]
+        },
+        {
+          "id": "shadow-clone",
+          "name": "Shadow Clone",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["shadow-dance"],
+          "type": "active",
+          "description": "Create a shadow clone that mimics your attacks for 6/8/10 seconds, dealing 30% of your damage. Enemies cannot tell which is real.",
+          "effects": [
+            { "type": "clone", "damagePercent": 0.30, "duration": [6.0, 8.0, 10.0] },
+            { "type": "aggro_split", "value": true }
+          ],
+          "manaCost": 18,
+          "cooldown": 25.0
+        }
+      ]
+    },
+    "rogue-scoundrel": {
+      "classId": "rogue",
+      "branch": "Scoundrel",
+      "description": "Dirty tricks and opportunism. Scoundrels fight without honor, using every dirty trick to gain an advantage.",
+      "nodes": [
+        {
+          "id": "cheap-shot",
+          "name": "Cheap Shot",
+          "tier": 1,
+          "maxRank": 3,
+          "prerequisites": [],
+          "type": "active",
+          "description": "A dirty strike to a vulnerable spot, stunning the target for 1.5/2/2.5 seconds and dealing 100% weapon damage.",
+          "effects": [
+            { "type": "damage_multiplier", "value": 1.0 },
+            { "type": "stun", "duration": [1.5, 2.0, 2.5] }
+          ],
+          "manaCost": 6,
+          "cooldown": 10.0
+        },
+        {
+          "id": "pocket-sand",
+          "name": "Pocket Sand",
+          "tier": 2,
+          "maxRank": 3,
+          "prerequisites": ["cheap-shot"],
+          "type": "active",
+          "description": "Throw sand in enemies' eyes, blinding all targets in a cone for 3/4/5 seconds. Blinded enemies have 50% reduced hit chance.",
+          "effects": [
+            { "type": "blind", "duration": [3.0, 4.0, 5.0], "hitReduction": 0.50 },
+            { "type": "aoe", "shape": "cone", "angle": 90, "range": 150 }
+          ],
+          "manaCost": 8,
+          "cooldown": 12.0
+        },
+        {
+          "id": "lucky-coin",
+          "name": "Lucky Coin",
+          "tier": 3,
+          "maxRank": 3,
+          "prerequisites": ["pocket-sand"],
+          "type": "passive",
+          "description": "Enemies drop 15/25/40% more gold. 5/8/12% chance on kill to drop a rare item.",
+          "effects": [
+            { "type": "gold_bonus", "values": [0.15, 0.25, 0.40] },
+            { "type": "rare_drop_chance", "values": [0.05, 0.08, 0.12] }
+          ]
+        },
+        {
+          "id": "dirty-fighting",
+          "name": "Dirty Fighting",
+          "tier": 4,
+          "maxRank": 3,
+          "prerequisites": ["lucky-coin"],
+          "type": "passive",
+          "description": "Attacks against stunned, blinded, or debuffed enemies deal 15/25/35% bonus damage and have double critical chance.",
+          "effects": [
+            { "type": "cc_bonus_damage", "values": [0.15, 0.25, 0.35] },
+            { "type": "cc_crit_multiplier", "value": 2.0 }
+          ]
+        }
+      ]
+    }
+  },
+  "tierRequirements": {
+    "1": { "characterLevel": 1, "skillPointsInBranch": 0 },
+    "2": { "characterLevel": 3, "skillPointsInBranch": 1 },
+    "3": { "characterLevel": 6, "skillPointsInBranch": 3 },
+    "4": { "characterLevel": 10, "skillPointsInBranch": 5 },
+    "5": { "characterLevel": 15, "skillPointsInBranch": 8 },
+    "6": { "characterLevel": 20, "skillPointsInBranch": 12 }
+  },
+  "skillPointAllocation": {
+    "pointsPerLevel": 1,
+    "bonusPointLevels": [5, 10, 15, 20, 25, 30],
+    "maxPointsPerTree": 18,
+    "respecCost": {
+      "formula": "level * 50",
+      "currency": "gold",
+      "description": "Respec cost scales with character level"
+    }
+  }
+}

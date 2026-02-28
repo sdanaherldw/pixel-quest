@@ -1,0 +1,530 @@
+{
+  "name": "The Astral Convergence",
+  "description": "When all five Astral Shards unite, the barriers between realms shatter and the hidden truth of the world is revealed. The Astral Convergence is the final act — a shattered plane where fragments of all five realms merge into something beautiful and terrifying.",
+  "unlockCondition": "all_region_bosses_defeated",
+  "requiredBossIds": [
+    "forest-guardian",
+    "frost-queen",
+    "sand-wyrm-ancient",
+    "lich-king",
+    "pyraxis"
+  ],
+  "astralShards": [
+    {
+      "id": "shard-elderwood",
+      "name": "Shard of Growth",
+      "region": "elderwood",
+      "location": "Ancient Elven Ruins — boss room, behind the fallen Forest Guardian",
+      "description": "A verdant crystal pulsing with the heartbeat of ancient forests. Leaves spiral around it perpetually, and the scent of rain-soaked earth fills the air.",
+      "lore": "The first forests grew from a single seed watered by this shard's light. When the Forest Guardian fell, the shard wept emerald tears.",
+      "purifyCondition": "spare_forest_guardian_spirit",
+      "corruptCondition": "harvest_guardian_essence",
+      "visualEffect": "emerald_glow_with_leaf_particles"
+    },
+    {
+      "id": "shard-frostpeak",
+      "name": "Shard of Stillness",
+      "region": "frostpeak",
+      "location": "The Frozen Throne — after defeating the Ice Queen in her sanctum",
+      "description": "An ice-blue crystal that radiates absolute calm. Sound dies near it. Snowflakes hang motionless in its light, frozen between moments.",
+      "lore": "Time itself slows near this shard. The Ice Queen sought to freeze the world in a single perfect moment — and nearly succeeded.",
+      "purifyCondition": "break_ice_queens_crown_peacefully",
+      "corruptCondition": "shatter_ice_queen_by_force",
+      "visualEffect": "azure_shimmer_with_frozen_motes"
+    },
+    {
+      "id": "shard-scorched",
+      "name": "Shard of Fury",
+      "region": "scorched",
+      "location": "The Sand Wyrm's Gullet — carved from the heart of the ancient wyrm",
+      "description": "A blazing amber crystal that pulses with barely contained rage. The air around it crackles with heat, and sand swirls in tiny cyclones at its base.",
+      "lore": "Born in the first eruption of the world's core, this shard carries the fury of creation itself. It calls to those whose blood runs hot.",
+      "purifyCondition": "calm_the_sand_wyrm_with_ancient_song",
+      "corruptCondition": "slay_the_sand_wyrm_while_enraged",
+      "visualEffect": "amber_flame_with_sand_particles"
+    },
+    {
+      "id": "shard-shadowmire",
+      "name": "Shard of Twilight",
+      "region": "shadowmire",
+      "location": "The Necropolis — in the Lich King's phylactery chamber",
+      "description": "A deep violet crystal that exists in two states simultaneously — solid and shadow. Looking at it from different angles reveals different realities.",
+      "lore": "This shard bridges the living and the dead. The Lich King used its power to blur the boundary — but the boundary exists for a reason.",
+      "purifyCondition": "release_trapped_souls_before_destroying_phylactery",
+      "corruptCondition": "absorb_lich_kings_power",
+      "visualEffect": "violet_shadowflame_with_spectral_wisps"
+    },
+    {
+      "id": "shard-cinder",
+      "name": "Shard of Creation",
+      "region": "cinder",
+      "location": "The World Forge — hidden within Pyraxis's molten heart",
+      "description": "A radiant crimson crystal that glows like a newborn star. It is unbearably hot to any who are not worthy, yet cool as morning dew to those who have proven themselves.",
+      "lore": "The gods used this shard to forge the world itself. Pyraxis, Lord of Cinders, was created to guard it — and became consumed by its power instead.",
+      "purifyCondition": "defeat_pyraxis_without_using_fire_damage",
+      "corruptCondition": "use_pyraxis_power_to_reforge_the_shard",
+      "visualEffect": "crimson_starglow_with_ember_trails"
+    }
+  ],
+  "convergenceRealm": {
+    "description": "A shattered plane where fragments of all five realms merge into a kaleidoscopic otherworld. Forest canopies grow from floating ice shards above rivers of lava. Desert dunes ripple through swamp fog. The sky is an aurora of all five shard colors, shifting and flowing like a living painting.",
+    "accessMethod": "Place all five shards on the Astral Altar in Oakhollow's ancient grove (discovered after collecting all 5)",
+    "zones": [
+      {
+        "id": "astral-nexus",
+        "name": "The Astral Nexus",
+        "description": "The central hub where all five shard energies converge. Reality fractures into prismatic shards, and pathways split into each realm's echo. A massive astral tree grows at the center, its branches reaching into different dimensions.",
+        "level": 26,
+        "environment": "prismatic_fractured_landscape",
+        "music": "astral-nexus-theme",
+        "enemies": ["astral-phantom", "memory-echo", "shard-golem"],
+        "exits": ["memory-garden", "watcher-sanctum", "echo-battlefield"]
+      },
+      {
+        "id": "memory-garden",
+        "name": "Garden of Memories",
+        "description": "Every quest decision the player made manifests as a living flower in this surreal garden. Choices that brought joy bloom in radiant colors; choices that caused suffering wilt and weep shadow. Walking through it replays whispered echoes of every major story moment.",
+        "level": 27,
+        "environment": "living_memory_landscape",
+        "music": "memory-garden-theme",
+        "enemies": ["memory-echo", "regret-shade", "forgotten-guardian"],
+        "mechanic": "Past decisions affect garden layout and enemy types. Pure gardens have fewer enemies but harder moral puzzles. Corrupted gardens have stronger enemies but clearer paths.",
+        "exits": ["astral-nexus", "watcher-sanctum"]
+      },
+      {
+        "id": "echo-battlefield",
+        "name": "The Echo Battlefield",
+        "description": "A vast field where spectral recreations of every boss fight play out simultaneously. Echoes of fallen bosses wander the field, stronger than their original forms, wielding combinations of abilities they never had in life.",
+        "level": 28,
+        "environment": "ghostly_warfield",
+        "music": "echo-battlefield-theme",
+        "enemies": ["echo-forest-guardian", "echo-ice-queen", "echo-pyraxis"],
+        "mechanic": "Boss echoes combine abilities from multiple bosses. Defeating all echoes reveals the path to The Watcher.",
+        "exits": ["astral-nexus"]
+      },
+      {
+        "id": "watcher-sanctum",
+        "name": "The Watcher's Sanctum",
+        "description": "A vast library at the edge of existence where every event in the world's history is recorded on crystalline tablets. At the center sits The Watcher — the entity that has observed your entire journey. The truth of the world is written on the final tablet, waiting to be read.",
+        "level": 30,
+        "environment": "crystalline_library",
+        "music": "watcher-sanctum-theme",
+        "enemies": ["void-sentinel", "truth-seeker"],
+        "mechanic": "The Watcher's encounter changes based on shard purity. All pure = recruitment path. Any corrupted = confrontation path.",
+        "exits": ["astral-nexus"]
+      }
+    ],
+    "enemies": [
+      {
+        "id": "astral-phantom",
+        "name": "Astral Phantom",
+        "level": 26,
+        "type": "normal",
+        "stats": { "hp": 800, "atk": 45, "def": 25, "spd": 18, "crit": 12 },
+        "description": "Translucent beings of pure astral energy. They phase between dimensions, becoming untargetable for brief moments.",
+        "abilities": [
+          { "name": "Phase Strike", "damage": 55, "type": "shadow", "description": "Strikes from another dimension, ignoring armor" },
+          { "name": "Dimensional Shift", "damage": 0, "type": "shadow", "cooldown": 6, "description": "Becomes untargetable for 2 seconds" }
+        ],
+        "loot": [
+          { "itemId": "astral-dust", "chance": 0.4 },
+          { "gold": { "min": 80, "max": 150 } }
+        ]
+      },
+      {
+        "id": "memory-echo",
+        "name": "Memory Echo",
+        "level": 27,
+        "type": "elite",
+        "stats": { "hp": 1500, "atk": 55, "def": 30, "spd": 14, "crit": 15 },
+        "description": "Takes the form of previously defeated bosses, wielding their signature abilities at reduced power. Each echo remembers how it was defeated and adapts.",
+        "abilities": [
+          { "name": "Echoed Assault", "damage": 65, "type": "physical", "description": "Mimics a boss's signature attack at 70% power" },
+          { "name": "Adaptation", "damage": 0, "type": "nature", "cooldown": 10, "description": "Gains resistance to the damage type that defeated the original boss" }
+        ],
+        "loot": [
+          { "itemId": "echo-crystal", "chance": 0.25 },
+          { "gold": { "min": 100, "max": 200 } }
+        ]
+      },
+      {
+        "id": "shard-golem",
+        "name": "Shard Golem",
+        "level": 27,
+        "type": "normal",
+        "stats": { "hp": 1200, "atk": 40, "def": 45, "spd": 6, "crit": 5 },
+        "description": "Massive constructs formed from crystallized shard energy. They change element based on which realm fragment they're standing on.",
+        "abilities": [
+          { "name": "Prismatic Slam", "damage": 70, "type": "physical", "description": "Devastating ground pound that sends shockwaves" },
+          { "name": "Elemental Shift", "damage": 0, "type": "nature", "cooldown": 8, "description": "Shifts element to match the current terrain fragment" }
+        ],
+        "loot": [
+          { "itemId": "shard-fragment", "chance": 0.3 },
+          { "gold": { "min": 90, "max": 170 } }
+        ]
+      },
+      {
+        "id": "regret-shade",
+        "name": "Regret Shade",
+        "level": 27,
+        "type": "normal",
+        "stats": { "hp": 600, "atk": 60, "def": 15, "spd": 22, "crit": 20 },
+        "description": "Born from decisions the player made that caused suffering. These shades whisper the consequences of your choices as they attack.",
+        "abilities": [
+          { "name": "Guilt Lash", "damage": 50, "type": "shadow", "description": "Psychic damage that bypasses physical defense" },
+          { "name": "Whisper of Regret", "damage": 30, "type": "shadow", "cooldown": 5, "description": "Reduces target's attack for 4 seconds" }
+        ],
+        "loot": [
+          { "itemId": "tear-of-regret", "chance": 0.2 },
+          { "gold": { "min": 60, "max": 120 } }
+        ]
+      },
+      {
+        "id": "void-sentinel",
+        "name": "Void Sentinel",
+        "level": 28,
+        "type": "elite",
+        "stats": { "hp": 2000, "atk": 65, "def": 50, "spd": 10, "crit": 8 },
+        "description": "Ancient guardians of the space between worlds. They wield weapons forged from pure nothingness and can temporarily erase things from existence.",
+        "abilities": [
+          { "name": "Void Cleave", "damage": 80, "type": "shadow", "description": "Sweeping attack that temporarily erases a section of the arena" },
+          { "name": "Existence Denial", "damage": 0, "type": "shadow", "cooldown": 12, "description": "Banishes one party member to the void for 3 seconds" },
+          { "name": "Null Shield", "damage": 0, "type": "shadow", "cooldown": 15, "description": "Absorbs all damage for 4 seconds, then retaliates with stored damage" }
+        ],
+        "loot": [
+          { "itemId": "void-essence", "chance": 0.15 },
+          { "gold": { "min": 150, "max": 300 } }
+        ]
+      },
+      {
+        "id": "forgotten-guardian",
+        "name": "Forgotten Guardian",
+        "level": 28,
+        "type": "elite",
+        "stats": { "hp": 1800, "atk": 50, "def": 40, "spd": 12, "crit": 10 },
+        "description": "Warriors from ages past whose names have been erased from history. They fight with styles unknown to the current era.",
+        "abilities": [
+          { "name": "Lost Art", "damage": 70, "type": "physical", "description": "Uses a forgotten combat technique — pattern is randomized each encounter" },
+          { "name": "Nameless Fury", "damage": 50, "type": "physical", "cooldown": 8, "description": "Multi-hit combo that changes pattern each time" }
+        ],
+        "loot": [
+          { "itemId": "ancient-technique-scroll", "chance": 0.1 },
+          { "gold": { "min": 120, "max": 250 } }
+        ]
+      },
+      {
+        "id": "truth-seeker",
+        "name": "Truth Seeker",
+        "level": 29,
+        "type": "elite",
+        "stats": { "hp": 1600, "atk": 55, "def": 35, "spd": 16, "crit": 18 },
+        "description": "Spectral scholars who discovered forbidden truths and were consumed by the knowledge. They attack by weaponizing revelations.",
+        "abilities": [
+          { "name": "Revelation", "damage": 75, "type": "holy", "description": "Floods the target's mind with overwhelming truth — holy damage" },
+          { "name": "Forbidden Knowledge", "damage": 40, "type": "shadow", "cooldown": 7, "description": "Debuffs target's wisdom and intelligence for 5 seconds" }
+        ],
+        "loot": [
+          { "itemId": "tome-of-truth", "chance": 0.12 },
+          { "gold": { "min": 130, "max": 260 } }
+        ]
+      }
+    ],
+    "finalBoss": {
+      "id": "the-watcher",
+      "name": "The Watcher",
+      "level": 30,
+      "description": "The entity that has been observing your journey from the very beginning. Neither god nor mortal, The Watcher exists at the intersection of all possibilities. It knows every choice you've made, every life you've saved, every soul you've condemned.",
+      "stats": { "hp": 50000, "atk": 80, "def": 60, "spd": 15, "crit": 20 },
+      "phases": [
+        {
+          "name": "The Observer",
+          "hpThreshold": 1.0,
+          "description": "The Watcher tests you with echoes of your past battles. It creates perfect replicas of your toughest moments.",
+          "abilities": [
+            { "name": "Echo Summon", "description": "Summons memory echoes of past bosses" },
+            { "name": "Time Sight", "description": "Predicts and counters your next action" }
+          ]
+        },
+        {
+          "name": "The Judge",
+          "hpThreshold": 0.75,
+          "description": "The Watcher judges your worthiness based on your choices. Pure shards empower your party; corrupted shards empower The Watcher.",
+          "abilities": [
+            { "name": "Judgment Ray", "damage": 100, "type": "holy", "description": "Massive beam attack based on corruption level" },
+            { "name": "Shard Resonance", "description": "Uses shard powers based on purity — pure heals party, corrupt damages" }
+          ]
+        },
+        {
+          "name": "The Revelation",
+          "hpThreshold": 0.50,
+          "description": "The Watcher reveals the truth: it created this world as a test, and you are its greatest experiment.",
+          "abilities": [
+            { "name": "Reality Fracture", "description": "Splits the arena into fragments of all five realms" },
+            { "name": "Astral Storm", "damage": 120, "type": "lightning", "description": "Devastating AoE that shifts elements each cast" }
+          ]
+        },
+        {
+          "name": "The Choice",
+          "hpThreshold": 0.25,
+          "description": "The Watcher offers you a choice: join it as an equal and reshape reality, or destroy it and let the world be free.",
+          "abilities": [
+            { "name": "World Rewrite", "description": "Temporarily changes the rules of combat (gravity, elements, time)" },
+            { "name": "Final Observation", "damage": 150, "type": "shadow", "description": "The Watcher's ultimate attack — damages based on your total playtime" }
+          ]
+        },
+        {
+          "name": "The Farewell",
+          "hpThreshold": 0.10,
+          "description": "Regardless of the path, The Watcher acknowledges your strength and delivers its final lesson.",
+          "abilities": [
+            { "name": "Last Light", "description": "A desperate all-or-nothing attack that tests party coordination" },
+            { "name": "Acceptance", "description": "The Watcher begins to fade, its purpose fulfilled" }
+          ]
+        }
+      ],
+      "recruitPath": {
+        "condition": "all_shards_pure",
+        "description": "If all five shards were purified through compassionate choices, The Watcher reveals it was testing whether mortals could be trusted with the power of creation. Impressed by your mercy, it offers to join as the Astral Sage — the ultimate party member.",
+        "reward": {
+          "characterId": "the-watcher",
+          "name": "The Watcher (Astral Sage)",
+          "classId": "astral-sage",
+          "level": 30,
+          "stats": { "str": 15, "int": 25, "wis": 25, "dex": 15, "con": 18, "cha": 20 },
+          "specialAbility": "Astral Sight — can see hidden paths, reveal enemy weaknesses, and once per battle rewind time 5 seconds"
+        }
+      },
+      "confrontPath": {
+        "condition": "any_shard_corrupted",
+        "description": "If any shard was corrupted, The Watcher declares that mortals cannot be trusted and must be reset. The fight becomes significantly harder as The Watcher uses corrupted shard power against you. Victory earns The Watcher's grudging respect — and the Astral Crown.",
+        "bonusDifficulty": {
+          "hpMultiplier": 1.5,
+          "damageMultiplier": 1.3,
+          "additionalAbility": "Corruption Wave — AoE that drains all party MP"
+        },
+        "reward": {
+          "itemId": "astral-crown",
+          "name": "Astral Crown",
+          "rarity": "legendary",
+          "stats": { "int": 10, "wis": 10, "cha": 8 },
+          "effect": "All spells cost 25% less MP, all spell damage +20%"
+        }
+      }
+    },
+    "superbosses": [
+      {
+        "id": "the-nameless-one",
+        "name": "The Nameless One",
+        "level": 99,
+        "description": "An entity so ancient that its name has been erased from all realities. It exists in the void between dimensions, and it grows stronger with each attempt to defeat it. The ultimate test for those who seek perfection.",
+        "stats": { "hp": 999999, "atk": 100, "def": 80, "spd": 20, "crit": 25 },
+        "scaling": {
+          "type": "adaptive",
+          "description": "The Nameless One remembers every attempt. With each defeat, it gains +10% HP, +5% ATK, and learns to counter the player's most-used abilities. It never truly resets.",
+          "hpPerAttempt": 0.10,
+          "atkPerAttempt": 0.05,
+          "counterMemory": 3,
+          "maxScaling": 10.0
+        },
+        "phases": [
+          { "name": "Silence", "hpThreshold": 1.0, "description": "Fights in complete silence. No music, no sound effects. Only the clash of combat." },
+          { "name": "Echoes", "hpThreshold": 0.75, "description": "Whispers of all defeated enemies fill the arena. Their voices grant it power." },
+          { "name": "Convergence", "hpThreshold": 0.50, "description": "All five elements merge into a single devastating force." },
+          { "name": "Nameless", "hpThreshold": 0.25, "description": "Reality breaks down. The arena becomes void. Pure skill is all that remains." }
+        ],
+        "reward": {
+          "itemId": "mark-of-the-nameless",
+          "name": "Mark of the Nameless",
+          "description": "A scar that marks you as one who has faced the void and survived. Permanently grants +5 to all stats and a unique visual aura.",
+          "rarity": "legendary"
+        },
+        "location": "The Void Gate — appears in the Astral Nexus after completing the Convergence",
+        "unlockCondition": "defeat_the_watcher"
+      },
+      {
+        "id": "mirror-party",
+        "name": "Mirror Party",
+        "level": 30,
+        "description": "Perfect reflections of your own party members, conjured from a dimensional mirror. They have all your equipment, all your abilities, all your combos — but they fight with perfect coordination and zero hesitation. The only way to defeat yourself is to become better than you've ever been.",
+        "stats": {
+          "note": "Mirror copies match player party exactly",
+          "hpMultiplier": 1.0,
+          "damageMultiplier": 1.0,
+          "mirrorEquipment": true,
+          "mirrorSpells": true,
+          "mirrorSkills": true
+        },
+        "mechanic": {
+          "type": "mirrors_player_party",
+          "description": "Creates an exact copy of the player's current party with all equipment, spells, and skill trees. Mirror copies have perfect AI coordination and prioritize the most dangerous party member first.",
+          "uniqueRules": [
+            "Mirror copies use the same combos the player has unlocked",
+            "Mirror copies can use Limit Breaks (charge starts at 50%)",
+            "Mirror Crag Hack has Berserker Blood active from the start",
+            "Defeating a mirror copy doesn't remove them — they resurrect after 30 seconds unless all mirrors are defeated within 10 seconds of each other",
+            "The final surviving mirror gains 50% damage and 25% damage reduction"
+          ]
+        },
+        "reward": {
+          "itemId": "mirror-shard",
+          "name": "Mirror Shard",
+          "description": "A fragment of the dimensional mirror. When equipped, allows the wielder to briefly create a combat shadow that mimics their last 3 attacks.",
+          "rarity": "legendary",
+          "effect": "Once per battle, summon a shadow clone that repeats your last 3 actions"
+        },
+        "location": "The Mirror Chamber — hidden room in The Watcher's Sanctum",
+        "unlockCondition": "defeat_the_watcher"
+      }
+    ]
+  },
+  "newGamePlus": {
+    "description": "After defeating The Watcher (or being defeated and choosing to restart), New Game Plus begins. The world resets but you carry forward your power — and the world fights back harder.",
+    "awakened_crag_hack": {
+      "description": "In NG+, Crag Hack's Berserker Blood evolves. His eyes glow permanently, flame particles trail his movements, and his rage knows no bounds.",
+      "name": "Awakened Crag Hack",
+      "bonuses": {
+        "allStats": 5,
+        "berserkerBloodMultiplier": 1.5,
+        "newAbility": {
+          "name": "Primordial Rage",
+          "description": "Unleashes the primal fury of creation itself. For 5 seconds, all attacks deal 3x damage in a massive AoE. Crag Hack becomes immune to CC and knockback. 60 second cooldown.",
+          "damage": 3.0,
+          "duration": 5,
+          "cooldown": 60,
+          "visualEffect": "volcanic_eruption_aura_with_obsidian_shards"
+        }
+      },
+      "visualChanges": [
+        "Eyes glow molten orange permanently",
+        "Flame particle trail on movement",
+        "Obsidian Great Axe gains flowing lava cracks",
+        "Body has faint volcanic vein patterns",
+        "Screen subtly shakes when Berserker Blood activates"
+      ]
+    },
+    "ascension_system": {
+      "description": "Legendary and Epic items can be Ascended at the World Forge (available in NG+). Each Ascension level enhances stats and adds new visual effects.",
+      "ascensionLevels": [
+        {
+          "level": 1,
+          "name": "Golden Ascension",
+          "statMultiplier": 1.15,
+          "cost": { "gold": 10000, "materials": ["ascension-crystal"] },
+          "visualEffect": "golden_shimmer_overlay",
+          "newEffect": "5% chance to deal bonus elemental damage on hit"
+        },
+        {
+          "level": 2,
+          "name": "Crystalline Ascension",
+          "statMultiplier": 1.32,
+          "cost": { "gold": 25000, "materials": ["ascension-crystal", "void-essence"] },
+          "visualEffect": "crystalline_refraction_particles",
+          "newEffect": "Regenerate 1% max HP per second while equipped"
+        },
+        {
+          "level": 3,
+          "name": "Ethereal Ascension",
+          "statMultiplier": 1.52,
+          "cost": { "gold": 50000, "materials": ["ascension-crystal", "void-essence", "shard-fragment"] },
+          "visualEffect": "ethereal_translucent_glow_with_constellation_pattern",
+          "newEffect": "10% chance to negate incoming damage completely"
+        }
+      ],
+      "eligibleRarities": ["epic", "legendary"]
+    },
+    "difficulty_scaling": {
+      "levels": [
+        {
+          "ngLevel": 1,
+          "name": "New Game +",
+          "enemyHpMultiplier": 2.0,
+          "enemyDamageMultiplier": 1.5,
+          "xpMultiplier": 1.5,
+          "newMechanics": [
+            "Elite modifiers on all enemies (random: Enraged, Shielded, Vampiric, Thorns)",
+            "Boss rage timers halved",
+            "New rare enemy variants appear"
+          ]
+        },
+        {
+          "ngLevel": 2,
+          "name": "New Game ++",
+          "enemyHpMultiplier": 4.0,
+          "enemyDamageMultiplier": 2.25,
+          "xpMultiplier": 2.25,
+          "newMechanics": [
+            "All bosses gain new attack patterns and phase transitions",
+            "Environmental hazards deal double damage",
+            "Mini-bosses appear in dungeon corridors"
+          ]
+        },
+        {
+          "ngLevel": 3,
+          "name": "New Game +++",
+          "enemyHpMultiplier": 6.0,
+          "enemyDamageMultiplier": 3.0,
+          "xpMultiplier": 3.0,
+          "newMechanics": [
+            "Enemy groups increased by 50%",
+            "Mini-bosses in regular dungeon rooms",
+            "Cursed equipment drops (high stats but with drawbacks)"
+          ]
+        },
+        {
+          "ngLevel": 4,
+          "name": "New Game ++++",
+          "enemyHpMultiplier": 8.0,
+          "enemyDamageMultiplier": 4.0,
+          "xpMultiplier": 4.0,
+          "newMechanics": [
+            "All enemies have two elite modifiers",
+            "Boss enrage is permanent after timer expires",
+            "One-shot mechanics on certain boss attacks"
+          ]
+        },
+        {
+          "ngLevel": 5,
+          "name": "Legendary",
+          "enemyHpMultiplier": 10.0,
+          "enemyDamageMultiplier": 5.0,
+          "xpMultiplier": 5.0,
+          "newMechanics": [
+            "Permadeath mode available (optional)",
+            "All enemies have three elite modifiers",
+            "Boss fights have no checkpoints",
+            "The Nameless One's scaling carries over from previous NG cycles",
+            "New secret ending if all challenges completed on Legendary"
+          ]
+        }
+      ]
+    },
+    "carryOver": {
+      "levels": true,
+      "equipment": true,
+      "goldPercentage": 50,
+      "spells": true,
+      "codex": true,
+      "skillPoints": true,
+      "questProgress": false,
+      "worldState": false,
+      "achievements": true,
+      "notes": "Quest progress and world state reset to allow re-experiencing the story with new difficulty. All discovered codex entries and achievement progress carries over."
+    }
+  },
+  "secretHints": {
+    "visualShimmer": {
+      "description": "Astral Shard locations emit a subtle prismatic shimmer visible only during specific times of day. Dawn and dusk are the best viewing times.",
+      "mechanic": "A faint particle effect appears near shard locations during the dawn and dusk periods of the day/night cycle. Players who explore at these times may notice the shimmer and investigate."
+    },
+    "mysteriousNPCChain": {
+      "description": "A hooded figure appears in each region's main town after the region boss is defeated. They speak in riddles about 'fragments of the first light' and provide cryptic clues about shard locations.",
+      "npcs": [
+        { "region": "elderwood", "location": "Oakhollow well at midnight", "hint": "The guardian's heart holds more than bark and sap..." },
+        { "region": "frostpeak", "location": "Glacierholm tavern during a blizzard", "hint": "Her crown was cold, but the shard within was colder still..." },
+        { "region": "scorched", "location": "Sandport oasis at high noon", "hint": "The wyrm swallowed more than sand when it consumed the desert's heart..." },
+        { "region": "shadowmire", "location": "Bogtown cemetery during a full moon", "hint": "The lich feared death, but feared the twilight more..." },
+        { "region": "cinder", "location": "Forgehaven during an eruption event", "hint": "The Lord of Cinders guards the last piece of the First Fire..." }
+      ]
+    }
+  }
+}

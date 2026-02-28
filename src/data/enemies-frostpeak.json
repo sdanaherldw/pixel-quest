@@ -1,0 +1,938 @@
+{
+  "region": "frostpeak",
+  "regionName": "Frostpeak Mountains",
+  "enemies": [
+    {
+      "id": "ice-wolf",
+      "name": "Ice Wolf",
+      "region": "frostpeak",
+      "level": 8,
+      "stats": { "hp": 120, "atk": 28, "def": 12, "spd": 5.0 },
+      "xpReward": 65,
+      "goldDrop": { "min": 5, "max": 12 },
+      "lootTable": "ice-wolf-common",
+      "behavior": "pack-hunter",
+      "abilities": ["frost-bite", "howl-of-the-north", "pack-rush"],
+      "abilityDetails": [
+        {
+          "id": "frost-bite",
+          "name": "Frost Bite",
+          "description": "Lunges at the target with ice-encrusted fangs, dealing physical damage and applying a 3-second slow that reduces movement speed by 40%.",
+          "damage": 15,
+          "cooldown": 4.0,
+          "effect": { "type": "slow", "value": 0.4, "duration": 3.0 }
+        },
+        {
+          "id": "howl-of-the-north",
+          "name": "Howl of the North",
+          "description": "Releases a bone-chilling howl that buffs all nearby Ice Wolves with +20% attack speed for 8 seconds.",
+          "cooldown": 12.0,
+          "aoe": { "type": "circle", "radius": 200 },
+          "effect": { "type": "buff-allies", "stat": "atkSpd", "value": 0.2, "duration": 8.0 }
+        },
+        {
+          "id": "pack-rush",
+          "name": "Pack Rush",
+          "description": "All wolves in the pack charge a single target simultaneously, each dealing 80% of their normal damage. Devastating when the pack is large.",
+          "cooldown": 15.0,
+          "damageMultiplier": 0.8,
+          "requiresPackSize": 2
+        }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["ice"],
+      "packSize": { "min": 3, "max": 5 },
+      "description": "Pale-furred wolves with eyes like frozen sapphires, whose breath crystallizes in the air even in summer. They hunt in coordinated packs across the snowfields, herding prey toward ambush points with unsettling intelligence.",
+      "sprite": { "base": "wolf", "variant": "ice", "width": 36, "height": 28 }
+    },
+    {
+      "id": "frost-elemental",
+      "name": "Frost Elemental",
+      "region": "frostpeak",
+      "level": 9,
+      "stats": { "hp": 150, "atk": 32, "def": 18, "spd": 2.5, "int": 16 },
+      "xpReward": 80,
+      "goldDrop": { "min": 8, "max": 18 },
+      "lootTable": "frost-elemental-uncommon",
+      "behavior": "ranged-hover",
+      "abilities": ["ice-shard-volley", "frost-nova", "ice-armor"],
+      "abilityDetails": [
+        {
+          "id": "ice-shard-volley",
+          "name": "Ice Shard Volley",
+          "description": "Hurls a rapid burst of razor-sharp ice crystals in a cone, dealing ice damage to all targets caught in the blast.",
+          "damage": 20,
+          "cooldown": 5.0,
+          "aoe": { "type": "cone", "angle": 45, "range": 200 }
+        },
+        {
+          "id": "frost-nova",
+          "name": "Frost Nova",
+          "description": "Explodes in a sphere of freezing energy, dealing heavy ice damage and rooting all nearby enemies in place for 2 seconds.",
+          "damage": 35,
+          "cooldown": 12.0,
+          "aoe": { "type": "circle", "radius": 120 },
+          "effect": { "type": "root", "duration": 2.0 }
+        },
+        {
+          "id": "ice-armor",
+          "name": "Ice Armor",
+          "description": "Encases itself in a shell of dense ice, gaining +50% DEF for 6 seconds but becoming unable to move.",
+          "cooldown": 18.0,
+          "effect": { "type": "buff-self", "stat": "def", "value": 0.5, "duration": 6.0 },
+          "immobilizes": true
+        }
+      ],
+      "weaknesses": ["fire", "physical"],
+      "resistances": ["ice", "lightning"],
+      "immunities": ["ice"],
+      "description": "A swirling vortex of animate ice and snow given malevolent purpose. Frost Elementals coalesce from blizzards themselves, their forms constantly shifting — a face of jagged ice appears and dissolves, replaced by grasping claws of hoarfrost.",
+      "sprite": { "base": "elemental", "variant": "frost", "width": 40, "height": 48 }
+    },
+    {
+      "id": "snow-troll",
+      "name": "Snow Troll",
+      "region": "frostpeak",
+      "level": 10,
+      "stats": { "hp": 250, "atk": 35, "def": 20, "spd": 2.0 },
+      "xpReward": 95,
+      "goldDrop": { "min": 10, "max": 25 },
+      "lootTable": "snow-troll-uncommon",
+      "behavior": "aggressive-melee-tank",
+      "abilities": ["boulder-hurl", "frost-regeneration", "ground-pound"],
+      "abilityDetails": [
+        {
+          "id": "boulder-hurl",
+          "name": "Boulder Hurl",
+          "description": "Rips a chunk of frozen rock from the ground and hurls it at a distant target, dealing massive physical damage and stunning for 1.5 seconds.",
+          "damage": 45,
+          "cooldown": 8.0,
+          "range": 350,
+          "effect": { "type": "stun", "duration": 1.5 }
+        },
+        {
+          "id": "frost-regeneration",
+          "name": "Frost Regeneration",
+          "description": "Passively regenerates 3% of max HP per second while standing on snow or ice terrain. Fire damage disables this for 5 seconds.",
+          "type": "passive",
+          "healPercent": 0.03,
+          "tickRate": 1.0,
+          "disabledBy": "fire"
+        },
+        {
+          "id": "ground-pound",
+          "name": "Ground Pound",
+          "description": "Slams both fists into the ground, creating a shockwave that damages and knocks back all nearby enemies.",
+          "damage": 30,
+          "cooldown": 10.0,
+          "aoe": { "type": "circle", "radius": 100 },
+          "effect": { "type": "knockback", "distance": 80 }
+        }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["ice", "physical"],
+      "description": "Hulking brutes standing twelve feet tall, with matted white fur and tusks of solid ice. Snow Trolls make their dens in mountain caves, hoarding the frozen carcasses of their kills like a grotesque larder. Their regenerative ability makes them nearly unkillable in their native element.",
+      "sprite": { "base": "troll", "variant": "snow", "width": 48, "height": 56 }
+    },
+    {
+      "id": "yeti",
+      "name": "Yeti",
+      "region": "frostpeak",
+      "level": 11,
+      "stats": { "hp": 280, "atk": 38, "def": 22, "spd": 3.5 },
+      "xpReward": 110,
+      "goldDrop": { "min": 12, "max": 30 },
+      "lootTable": "yeti-rare",
+      "behavior": "territorial-ambush",
+      "abilities": ["blinding-snowstorm", "rending-claws", "savage-roar", "ice-slide"],
+      "abilityDetails": [
+        {
+          "id": "blinding-snowstorm",
+          "name": "Blinding Snowstorm",
+          "description": "Whips up a localized blizzard around itself, reducing all enemy accuracy by 35% and dealing periodic ice damage for 6 seconds.",
+          "cooldown": 15.0,
+          "aoe": { "type": "circle", "radius": 150 },
+          "damage": 8,
+          "tickRate": 1.0,
+          "duration": 6.0,
+          "effect": { "type": "accuracy-debuff", "value": -0.35, "duration": 6.0 }
+        },
+        {
+          "id": "rending-claws",
+          "name": "Rending Claws",
+          "description": "Slashes with razor-sharp ice claws in a two-hit combo, each strike applying a bleed that stacks up to 3 times.",
+          "damage": 25,
+          "hits": 2,
+          "cooldown": 6.0,
+          "effect": { "type": "bleed", "damage": 5, "duration": 6.0, "maxStacks": 3 }
+        },
+        {
+          "id": "savage-roar",
+          "name": "Savage Roar",
+          "description": "A terrifying roar that has a 40% chance to fear nearby enemies for 2 seconds, causing them to flee uncontrollably.",
+          "cooldown": 20.0,
+          "aoe": { "type": "circle", "radius": 180 },
+          "effect": { "type": "fear", "chance": 0.4, "duration": 2.0 }
+        },
+        {
+          "id": "ice-slide",
+          "name": "Ice Slide",
+          "description": "Creates a path of slick ice and charges along it at triple speed, slamming into the target for bonus damage.",
+          "damage": 40,
+          "cooldown": 10.0,
+          "speedMultiplier": 3.0
+        }
+      ],
+      "weaknesses": ["fire", "holy"],
+      "resistances": ["ice", "shadow"],
+      "description": "The apex predator of the Frostpeak Mountains — a massive, shaggy beast of terrifying intelligence that ambushes travelers from behind snowdrifts and ice formations. Unlike the brutish trolls, yetis are cunning tacticians who use the terrain to their devastating advantage.",
+      "sprite": { "base": "yeti", "variant": "alpine", "width": 52, "height": 60 }
+    },
+    {
+      "id": "ice-wraith",
+      "name": "Ice Wraith",
+      "region": "frostpeak",
+      "level": 10,
+      "stats": { "hp": 100, "atk": 30, "def": 8, "spd": 4.5, "int": 20 },
+      "xpReward": 85,
+      "goldDrop": { "min": 15, "max": 35 },
+      "lootTable": "ice-wraith-uncommon",
+      "behavior": "phase-ambush",
+      "abilities": ["soul-chill", "phase-shift", "frost-chain"],
+      "abilityDetails": [
+        {
+          "id": "soul-chill",
+          "name": "Soul Chill",
+          "description": "Reaches into the target's body with spectral hands, dealing ice damage that bypasses armor and reducing their max MP by 15% for 10 seconds.",
+          "damage": 28,
+          "cooldown": 6.0,
+          "ignoresArmor": true,
+          "effect": { "type": "mana-drain", "value": 0.15, "duration": 10.0 }
+        },
+        {
+          "id": "phase-shift",
+          "name": "Phase Shift",
+          "description": "Becomes incorporeal for 3 seconds, immune to all physical damage but unable to attack. Can pass through walls while phased.",
+          "cooldown": 12.0,
+          "duration": 3.0,
+          "effect": { "type": "invulnerable-physical", "duration": 3.0 }
+        },
+        {
+          "id": "frost-chain",
+          "name": "Frost Chain",
+          "description": "Launches a chain of freezing energy that bounces between up to 3 nearby targets, dealing ice damage and slowing each.",
+          "damage": 18,
+          "cooldown": 8.0,
+          "bounces": 3,
+          "bounceRange": 100,
+          "effect": { "type": "slow", "value": 0.3, "duration": 3.0 }
+        }
+      ],
+      "weaknesses": ["fire", "holy"],
+      "resistances": ["ice", "physical", "shadow"],
+      "description": "The vengeful spirits of mountaineers who perished in blizzards, their translucent forms drift through the frozen passes trailing wisps of spectral frost. They are drawn to warmth and life, which they seek to extinguish with a jealous fury born of their own frozen demise.",
+      "sprite": { "base": "wraith", "variant": "ice", "width": 36, "height": 44 }
+    },
+    {
+      "id": "mountain-goat-berserker",
+      "name": "Mountain Goat Berserker",
+      "region": "frostpeak",
+      "level": 9,
+      "stats": { "hp": 160, "atk": 34, "def": 16, "spd": 4.0 },
+      "xpReward": 75,
+      "goldDrop": { "min": 5, "max": 15 },
+      "lootTable": "goat-berserker-common",
+      "behavior": "charge-aggressive",
+      "abilities": ["headbutt-charge", "mountain-leap", "stubborn-stance"],
+      "abilityDetails": [
+        {
+          "id": "headbutt-charge",
+          "name": "Headbutt Charge",
+          "description": "Lowers its massive iron-capped horns and charges in a straight line, dealing heavy damage and knocking the target off ledges or cliffs if near an edge.",
+          "damage": 40,
+          "cooldown": 7.0,
+          "effect": { "type": "knockback", "distance": 120 },
+          "environmentalNote": "Can knock players off cliffs for fall damage"
+        },
+        {
+          "id": "mountain-leap",
+          "name": "Mountain Leap",
+          "description": "Leaps to a higher elevation and slams down on a target from above, dealing increased damage based on height differential.",
+          "damage": 30,
+          "cooldown": 10.0,
+          "bonusDamagePerHeight": 5
+        },
+        {
+          "id": "stubborn-stance",
+          "name": "Stubborn Stance",
+          "description": "Digs hooves into the ground, becoming immune to knockback and gaining 25% damage reduction for 4 seconds.",
+          "cooldown": 14.0,
+          "duration": 4.0,
+          "effect": { "type": "damage-reduction", "value": 0.25 }
+        }
+      ],
+      "weaknesses": ["lightning", "fire"],
+      "resistances": ["physical"],
+      "description": "Enormous mountain goats twisted by the ambient magical corruption into belligerent, iron-horned monstrosities. They rule the cliff paths with territorial fury, charging anything that enters their domain with bone-shattering headbutts that can send a fully armored knight tumbling into the abyss.",
+      "sprite": { "base": "goat", "variant": "berserker", "width": 40, "height": 36 }
+    },
+    {
+      "id": "dwarven-ghost",
+      "name": "Dwarven Ghost",
+      "region": "frostpeak",
+      "level": 10,
+      "stats": { "hp": 130, "atk": 25, "def": 10, "spd": 3.0, "int": 15 },
+      "xpReward": 90,
+      "goldDrop": { "min": 20, "max": 45 },
+      "lootTable": "dwarven-ghost-rare",
+      "behavior": "patrol-fortress",
+      "abilities": ["spectral-warhammer", "shield-wall-formation", "dwarven-warcry", "grudge-mark"],
+      "abilityDetails": [
+        {
+          "id": "spectral-warhammer",
+          "name": "Spectral Warhammer",
+          "description": "Swings a ghostly warhammer that deals both physical and ice damage, with a 25% chance to shatter the target's shield or block.",
+          "damage": 30,
+          "cooldown": 3.0,
+          "damageTypes": ["physical", "ice"],
+          "effect": { "type": "shield-break", "chance": 0.25 }
+        },
+        {
+          "id": "shield-wall-formation",
+          "name": "Shield Wall Formation",
+          "description": "When 3 or more Dwarven Ghosts are present, they form a spectral shield wall that grants all ghosts 40% damage reduction from the front.",
+          "type": "passive-group",
+          "requiresCount": 3,
+          "effect": { "type": "directional-defense", "value": 0.4, "direction": "front" }
+        },
+        {
+          "id": "dwarven-warcry",
+          "name": "Dwarven Warcry",
+          "description": "Bellows an ancient dwarven battle cry that increases all nearby ghosts' attack by 15% and has a 20% chance to intimidate enemies.",
+          "cooldown": 16.0,
+          "aoe": { "type": "circle", "radius": 200 },
+          "effect": { "type": "buff-allies", "stat": "atk", "value": 0.15, "duration": 8.0 }
+        },
+        {
+          "id": "grudge-mark",
+          "name": "Grudge Mark",
+          "description": "Marks a target with an ancient dwarven grudge rune, causing all Dwarven Ghosts to prioritize that target and deal 20% bonus damage to them.",
+          "cooldown": 20.0,
+          "duration": 12.0,
+          "effect": { "type": "taunt-mark", "bonusDamage": 0.2 }
+        }
+      ],
+      "weaknesses": ["holy", "fire"],
+      "resistances": ["physical", "ice"],
+      "description": "The spectral remnants of dwarven warriors who fell defending Khar-Zadul, still marching their eternal patrol routes through the frozen halls. They wear ghostly armor of impeccable craftsmanship and wield phantom weapons that strike with the weight of centuries of unresolved grudges.",
+      "specialInteraction": {
+        "condition": "paladin-class-or-holy-magic",
+        "description": "A Paladin or player with holy magic can attempt to communicate with Dwarven Ghosts instead of fighting them. Successful communication reveals fortress secrets and lore."
+      },
+      "sprite": { "base": "ghost", "variant": "dwarven", "width": 32, "height": 36 }
+    },
+    {
+      "id": "frost-archer",
+      "name": "Frost Archer",
+      "region": "frostpeak",
+      "level": 9,
+      "stats": { "hp": 90, "atk": 35, "def": 8, "spd": 3.5, "dex": 18 },
+      "xpReward": 70,
+      "goldDrop": { "min": 10, "max": 22 },
+      "lootTable": "frost-archer-uncommon",
+      "behavior": "ranged-kite",
+      "abilities": ["ice-arrow", "frost-trap", "blizzard-volley", "disengage"],
+      "abilityDetails": [
+        {
+          "id": "ice-arrow",
+          "name": "Ice Arrow",
+          "description": "Fires an arrow tipped with enchanted ice that deals ice damage and has a 30% chance to freeze the target in place for 1 second.",
+          "damage": 22,
+          "cooldown": 2.5,
+          "range": 400,
+          "effect": { "type": "freeze", "chance": 0.3, "duration": 1.0 }
+        },
+        {
+          "id": "frost-trap",
+          "name": "Frost Trap",
+          "description": "Places an invisible ice trap on the ground that triggers when stepped on, freezing the victim for 2 seconds and dealing ice damage.",
+          "damage": 15,
+          "cooldown": 15.0,
+          "trapDuration": 60.0,
+          "effect": { "type": "freeze", "duration": 2.0 }
+        },
+        {
+          "id": "blizzard-volley",
+          "name": "Blizzard Volley",
+          "description": "Fires 5 arrows into the air that rain down on a target area, dealing ice damage and creating a field of slowing frost for 4 seconds.",
+          "damage": 12,
+          "arrowCount": 5,
+          "cooldown": 18.0,
+          "aoe": { "type": "circle", "radius": 100 },
+          "effect": { "type": "slow-zone", "value": 0.5, "duration": 4.0 }
+        },
+        {
+          "id": "disengage",
+          "name": "Disengage",
+          "description": "Leaps backward while firing a quick shot, creating distance from approaching melee attackers.",
+          "damage": 15,
+          "cooldown": 8.0,
+          "leapDistance": 120
+        }
+      ],
+      "weaknesses": ["fire", "physical-melee"],
+      "resistances": ["ice"],
+      "description": "Corrupted mountain rangers whose flesh has turned pale blue and whose eyes burn with cold light. They perch on high ledges and cliff faces, raining enchanted arrows on travelers below. Their frost traps litter the narrow mountain passes, turning safe ground into killing fields.",
+      "sprite": { "base": "archer", "variant": "frost", "width": 28, "height": 34 }
+    },
+    {
+      "id": "glacial-bear",
+      "name": "Glacial Bear",
+      "region": "frostpeak",
+      "level": 11,
+      "stats": { "hp": 300, "atk": 40, "def": 25, "spd": 2.5 },
+      "xpReward": 100,
+      "goldDrop": { "min": 8, "max": 20 },
+      "lootTable": "glacial-bear-uncommon",
+      "behavior": "territorial-patrol",
+      "abilities": ["maul", "ice-breath", "hibernation-rage"],
+      "abilityDetails": [
+        {
+          "id": "maul",
+          "name": "Maul",
+          "description": "Rears up and slams down with both paws, dealing devastating physical damage and applying a bleed effect.",
+          "damage": 50,
+          "cooldown": 6.0,
+          "effect": { "type": "bleed", "damage": 8, "duration": 5.0 }
+        },
+        {
+          "id": "ice-breath",
+          "name": "Ice Breath",
+          "description": "Exhales a cone of freezing mist that deals ice damage and slows all targets caught in the blast.",
+          "damage": 25,
+          "cooldown": 10.0,
+          "aoe": { "type": "cone", "angle": 60, "range": 150 },
+          "effect": { "type": "slow", "value": 0.5, "duration": 4.0 }
+        },
+        {
+          "id": "hibernation-rage",
+          "name": "Hibernation Rage",
+          "description": "When reduced below 30% HP, enters a berserker state gaining +50% attack and +30% speed but losing 2% HP per second. Cannot be calmed once triggered.",
+          "type": "passive-trigger",
+          "hpThreshold": 0.3,
+          "effect": {
+            "type": "enrage",
+            "atkBonus": 0.5,
+            "spdBonus": 0.3,
+            "selfDamage": { "percent": 0.02, "tickRate": 1.0 }
+          }
+        }
+      ],
+      "weaknesses": ["fire"],
+      "resistances": ["ice", "physical"],
+      "description": "A colossal bear wreathed in a perpetual frost, its fur matted with ice crystals that clatter like chain mail when it moves. Glacial Bears guard their territory with primal ferocity, and the freezing mist that escapes their jaws can slow a charging knight to a crawl.",
+      "sprite": { "base": "bear", "variant": "glacial", "width": 52, "height": 48 }
+    }
+  ],
+  "bosses": [
+    {
+      "id": "crystal-golem",
+      "name": "Crystal Golem",
+      "region": "frostpeak",
+      "dungeon": "crystal-ice-caverns",
+      "level": 10,
+      "isBoss": true,
+      "stats": { "hp": 1200, "atk": 35, "def": 30, "spd": 1.5 },
+      "xpReward": 500,
+      "goldDrop": { "min": 80, "max": 120 },
+      "lootTable": "crystal-golem-boss",
+      "description": "A towering colossus of living crystal that refracts light into blinding prismatic beams. Born from the convergence of a thousand frozen mineral veins, the Crystal Golem guards the deepest chamber of the Ice Caverns with patient, implacable fury. Its crystalline body repairs itself by absorbing ice from the environment, making it nearly indestructible in its native domain.",
+      "phases": [
+        {
+          "name": "Prismatic Guardian",
+          "hpThreshold": 1.0,
+          "abilities": ["crystal-slam", "prismatic-beam", "crystal-shield", "summon-ice-shards"],
+          "behavior": "defensive-tank",
+          "abilityDetails": {
+            "crystal-slam": {
+              "description": "Slams a crystalline fist into the ground, sending shockwaves of sharp crystal fragments outward in all directions.",
+              "damage": 40,
+              "aoe": { "type": "circle", "radius": 120 },
+              "cooldown": 5.0
+            },
+            "prismatic-beam": {
+              "description": "Focuses sunlight through its crystal body into a devastating beam that sweeps across the arena, dealing massive ice damage.",
+              "damage": 55,
+              "aoe": { "type": "line", "width": 40, "sweepAngle": 120 },
+              "cooldown": 12.0,
+              "warningTime": 2.0
+            },
+            "crystal-shield": {
+              "description": "Raises a wall of crystal from the floor that blocks line of sight and projectiles for 8 seconds.",
+              "cooldown": 15.0,
+              "duration": 8.0
+            },
+            "summon-ice-shards": {
+              "description": "Summons 3 floating ice shards that orbit the golem and fire at random targets every 2 seconds.",
+              "cooldown": 20.0,
+              "summonCount": 3,
+              "shardDamage": 12,
+              "shardFireRate": 2.0,
+              "shardHP": 30
+            }
+          }
+        },
+        {
+          "name": "Shattered Fury",
+          "hpThreshold": 0.45,
+          "abilities": ["crystal-eruption", "mirror-images", "prismatic-beam-enhanced", "crystal-cage"],
+          "behavior": "aggressive-caster",
+          "visualChange": "cracks-with-inner-glow",
+          "statBoost": { "atk": 1.4, "spd": 1.3 },
+          "abilityDetails": {
+            "crystal-eruption": {
+              "description": "Detonates crystal formations across the entire arena floor, creating eruptions of razor-sharp shards at random locations.",
+              "damage": 35,
+              "cooldown": 8.0,
+              "eruptionCount": 6,
+              "warningTime": 1.5
+            },
+            "mirror-images": {
+              "description": "Creates 2 crystal copies of itself that deal 50% damage and have 20% of its max HP. Destroying a copy causes it to explode.",
+              "cooldown": 30.0,
+              "copyDamageMultiplier": 0.5,
+              "copyHPPercent": 0.2,
+              "explosionDamage": 40,
+              "explosionRadius": 80
+            },
+            "prismatic-beam-enhanced": {
+              "description": "An empowered version of Prismatic Beam that fires two beams simultaneously in opposite directions.",
+              "damage": 65,
+              "beamCount": 2,
+              "cooldown": 10.0,
+              "warningTime": 1.5
+            },
+            "crystal-cage": {
+              "description": "Encases a random party member in a crystal prison. The imprisoned player takes ice damage over time and must be freed by allies attacking the cage.",
+              "cooldown": 18.0,
+              "cageHP": 200,
+              "dotDamage": 10,
+              "dotTickRate": 1.0
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*the cavern trembles as light refracts through a thousand crystal surfaces, coalescing into a towering humanoid form* YOU... TRESPASS... IN THE... HEART... OF THE... MOUNTAIN...",
+        "phase2": "*cracks spider-web across its crystalline body, and a blinding white light pours from within* SHATTER... ME... AND THE... MOUNTAIN... SHATTERS... WITH YOU...",
+        "defeat": "*the golem crumbles into a cascade of prismatic shards, each one chiming like a tiny bell as it hits the cavern floor. The light dims, and something glints in the rubble — a treasure long entombed in crystal.*"
+      },
+      "sprite": { "base": "golem", "variant": "crystal", "width": 72, "height": 80 }
+    },
+    {
+      "id": "frozen-king",
+      "name": "The Frozen King",
+      "region": "frostpeak",
+      "dungeon": "dwarven-fortress-khar-zadul",
+      "level": 12,
+      "isBoss": true,
+      "stats": { "hp": 2000, "atk": 42, "def": 35, "spd": 2.0, "int": 18 },
+      "xpReward": 800,
+      "goldDrop": { "min": 150, "max": 250 },
+      "lootTable": "frozen-king-boss",
+      "description": "King Thordak Ironmantle, last sovereign of Khar-Zadul, who donned a cursed crown to bind the dragon Frostfang and instead bound himself to an eternity of frozen undeath. He sits upon his throne of ice, clutching a runehammer of staggering power, commanding the ghostly remnants of his royal guard. His eyes burn with cold blue fire, and his voice echoes with the grief of a king who destroyed everything he loved in a single act of desperate pride.",
+      "phases": [
+        {
+          "name": "The King's Court",
+          "hpThreshold": 1.0,
+          "abilities": ["runehammer-strike", "command-the-fallen", "ice-crown-aura", "royal-decree"],
+          "behavior": "melee-commander",
+          "abilityDetails": {
+            "runehammer-strike": {
+              "description": "Swings his runehammer in a massive overhead arc, dealing devastating physical and ice damage. The impact point leaves a patch of permafrost.",
+              "damage": 55,
+              "cooldown": 4.0,
+              "effect": { "type": "permafrost-zone", "slowValue": 0.6, "duration": 10.0 }
+            },
+            "command-the-fallen": {
+              "description": "Raises his hand and summons 4 Dwarven Ghost warriors to fight at his side. They form a shield wall around their king.",
+              "cooldown": 25.0,
+              "summonCount": 4,
+              "summonId": "dwarven-ghost"
+            },
+            "ice-crown-aura": {
+              "description": "The cursed crown radiates an aura of absolute cold, dealing 5 ice damage per second to all enemies within melee range.",
+              "type": "passive-aura",
+              "damage": 5,
+              "tickRate": 1.0,
+              "radius": 80
+            },
+            "royal-decree": {
+              "description": "Points at a single target and commands 'KNEEL!' The target must pass a willpower check or be forced to kneel for 3 seconds, unable to act.",
+              "cooldown": 15.0,
+              "effect": { "type": "incapacitate", "duration": 3.0, "resistedBy": "wis-check-18" }
+            }
+          }
+        },
+        {
+          "name": "Thordak Unleashed",
+          "hpThreshold": 0.6,
+          "abilities": ["frozen-fury-combo", "ice-crown-nova", "throne-slam", "summon-royal-guard"],
+          "behavior": "aggressive-melee",
+          "visualChange": "crown-glows-brighter-ice-cracks-expand",
+          "statBoost": { "atk": 1.3, "spd": 1.4 },
+          "abilityDetails": {
+            "frozen-fury-combo": {
+              "description": "Unleashes a 4-hit combo with his runehammer, each swing growing faster and dealing more damage. The final hit launches an ice shockwave.",
+              "damage": [35, 40, 45, 60],
+              "cooldown": 8.0,
+              "shockwaveDamage": 30,
+              "shockwaveRange": 200
+            },
+            "ice-crown-nova": {
+              "description": "The cursed crown pulses with power, releasing a massive wave of ice that freezes the entire arena floor and deals heavy damage.",
+              "damage": 50,
+              "cooldown": 20.0,
+              "aoe": { "type": "circle", "radius": 300 },
+              "effect": { "type": "freeze-floor", "duration": 8.0, "movementPenalty": 0.5 }
+            },
+            "throne-slam": {
+              "description": "Leaps to his throne and slams down with the combined force of his hammer and the throne's enchantments, creating a massive shockwave.",
+              "damage": 70,
+              "cooldown": 15.0,
+              "aoe": { "type": "circle", "radius": 180 },
+              "warningTime": 2.5
+            },
+            "summon-royal-guard": {
+              "description": "Summons 2 elite Dwarven Ghost Champions with enhanced stats.",
+              "cooldown": 30.0,
+              "summonCount": 2,
+              "summonId": "dwarven-ghost-champion",
+              "summonStats": { "hp": 200, "atk": 30, "def": 20, "spd": 3.0 }
+            }
+          }
+        },
+        {
+          "name": "The Crown's Price",
+          "hpThreshold": 0.25,
+          "abilities": ["crown-of-damnation", "absolute-zero", "desperate-charge", "final-judgment"],
+          "behavior": "desperate-berserk",
+          "visualChange": "crown-cracks-blue-flames-erupt",
+          "statBoost": { "atk": 1.6, "spd": 1.8, "def": 0.6 },
+          "enrageTimer": 120,
+          "abilityDetails": {
+            "crown-of-damnation": {
+              "description": "The cursed crown fully activates, causing the Frozen King to take 1% max HP damage per second but granting him 50% lifesteal on all attacks.",
+              "type": "passive",
+              "selfDamage": { "percent": 0.01, "tickRate": 1.0 },
+              "lifesteal": 0.5
+            },
+            "absolute-zero": {
+              "description": "Channels the full power of the crown into a single point, creating a zone of absolute zero that instantly kills anything caught inside after a 3-second warning.",
+              "cooldown": 25.0,
+              "aoe": { "type": "circle", "radius": 100 },
+              "warningTime": 3.0,
+              "effect": { "type": "instant-kill-zone" }
+            },
+            "desperate-charge": {
+              "description": "Charges at the furthest enemy with unstoppable momentum, dealing massive damage and leaving a trail of ice.",
+              "damage": 80,
+              "cooldown": 10.0,
+              "effect": { "type": "unstoppable", "iceTrailDuration": 6.0 }
+            },
+            "final-judgment": {
+              "description": "At 5% HP, the Frozen King plants his hammer and the cursed crown detonates in a last act of defiance, dealing massive arena-wide ice damage.",
+              "damage": 100,
+              "aoe": { "type": "circle", "radius": 500 },
+              "type": "death-trigger",
+              "hpThreshold": 0.05
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "Another group of warm-blooded fools stumbles into my tomb. *rises from the frozen throne, ice cracking and reforming around every joint* I was a king once. I had a people. A purpose. I wore this crown to SAVE them from the dragon. And it CONSUMED us all. Now I sit on this frozen throne for eternity, and every trespasser I destroy is one more ghost to keep me company. Forgive me for what I am about to do.",
+        "phase2": "You fight well! Better than my guard — better than the dragon's brood! *the crown blazes with cold fire* But the crown demands blood. YOUR blood! And I have not had the strength to deny it in three hundred years!",
+        "phase3": "THE CROWN... I CAN FEEL IT BREAKING... *clutches his head, ice and blue fire erupting from the cracks in the cursed artifact* NO! I will not let it take me quietly! If Thordak Ironmantle falls — HE FALLS FIGHTING! COME, MORTALS! WITNESS THE LAST STAND OF THE KING UNDER THE MOUNTAIN!",
+        "defeat": "*the crown shatters, and the blue fire in the Frozen King's eyes flickers... then softens. For one brief moment, the face beneath the frost is that of a tired old dwarf* Thank you... I could not break those chains alone. The dragon... it still roosts above. Take my hammer. It was forged to slay Frostfang. Finish... what I... could not... *crumbles into ice dust, and the fortress groans as three centuries of winter begin to thaw*"
+      },
+      "sprite": { "base": "king", "variant": "frozen-dwarf", "width": 56, "height": 60 }
+    },
+    {
+      "id": "frostfang-elder-dragon",
+      "name": "Frostfang the Elder Dragon",
+      "region": "frostpeak",
+      "dungeon": "frostfang-summit",
+      "level": 14,
+      "isBoss": true,
+      "isRegionBoss": true,
+      "stats": { "hp": 3500, "atk": 55, "def": 40, "spd": 3.0, "int": 25 },
+      "xpReward": 1500,
+      "goldDrop": { "min": 300, "max": 500 },
+      "lootTable": "frostfang-boss",
+      "description": "The eldest dragon in the known world, a leviathan of frost and fury whose wingspan blackens the sky and whose breath can freeze a river to its bed in a single exhalation. Frostfang has roosted atop the highest peak of the Frostpeak Mountains for three centuries, growing fat on the frozen remains of the dwarven kingdom below. Its scales are thicker than castle walls, its eyes burn with ancient intelligence, and it regards mortals with the bored contempt of an immortal being that has never been truly challenged.",
+      "phases": [
+        {
+          "name": "Ancient Frost",
+          "hpThreshold": 1.0,
+          "abilities": ["frost-breath", "tail-sweep", "wing-buffet", "ice-storm", "dragon-fear"],
+          "behavior": "aerial-assault",
+          "abilityDetails": {
+            "frost-breath": {
+              "description": "Unleashes a devastating cone of freezing breath that deals massive ice damage and leaves a field of permafrost.",
+              "damage": 70,
+              "cooldown": 8.0,
+              "aoe": { "type": "cone", "angle": 45, "range": 300 },
+              "effect": { "type": "permafrost-zone", "slowValue": 0.7, "duration": 12.0 }
+            },
+            "tail-sweep": {
+              "description": "Whips its massive tail in a 180-degree arc behind it, dealing physical damage and knocking back all targets.",
+              "damage": 50,
+              "cooldown": 5.0,
+              "aoe": { "type": "cone", "angle": 180, "range": 150, "direction": "behind" },
+              "effect": { "type": "knockback", "distance": 100 }
+            },
+            "wing-buffet": {
+              "description": "Beats its wings with tremendous force, creating a gale that pushes all enemies away and deflects projectiles.",
+              "damage": 30,
+              "cooldown": 10.0,
+              "aoe": { "type": "circle", "radius": 250 },
+              "effect": { "type": "knockback", "distance": 150 },
+              "projectileDeflect": true
+            },
+            "ice-storm": {
+              "description": "Takes flight and circles the arena, raining down massive ice boulders that shatter on impact and create frozen hazard zones.",
+              "damage": 45,
+              "cooldown": 20.0,
+              "boulderCount": 8,
+              "duration": 6.0,
+              "hazardDuration": 10.0,
+              "dragonAirborne": true
+            },
+            "dragon-fear": {
+              "description": "Roars with the full force of an elder dragon, causing all enemies to make a willpower save or be feared for 3 seconds.",
+              "cooldown": 25.0,
+              "aoe": { "type": "circle", "radius": 400 },
+              "effect": { "type": "fear", "duration": 3.0, "resistedBy": "wis-check-20" }
+            }
+          }
+        },
+        {
+          "name": "Glacial Wrath",
+          "hpThreshold": 0.6,
+          "abilities": ["frost-breath-enhanced", "blizzard-vortex", "ice-pillar-prison", "frozen-earth", "summon-ice-wyrms"],
+          "behavior": "aggressive-mixed",
+          "visualChange": "ice-crystals-grow-on-scales-eyes-glow-brighter",
+          "statBoost": { "atk": 1.3, "int": 1.4 },
+          "abilityDetails": {
+            "frost-breath-enhanced": {
+              "description": "An empowered frost breath that sweeps in a wider arc and applies a stacking frost debuff that slows further with each application.",
+              "damage": 85,
+              "cooldown": 7.0,
+              "aoe": { "type": "cone", "angle": 60, "range": 350 },
+              "effect": { "type": "stacking-slow", "value": 0.15, "maxStacks": 5, "duration": 8.0 }
+            },
+            "blizzard-vortex": {
+              "description": "Creates a massive swirling blizzard at the center of the arena that pulls all enemies toward its center while dealing constant ice damage.",
+              "damage": 20,
+              "tickRate": 0.5,
+              "cooldown": 22.0,
+              "duration": 8.0,
+              "aoe": { "type": "circle", "radius": 200 },
+              "effect": { "type": "pull", "force": 30 }
+            },
+            "ice-pillar-prison": {
+              "description": "Summons 4 pillars of ice that rise around a target, trapping them in a prison that must be destroyed from outside.",
+              "cooldown": 16.0,
+              "pillarHP": 150,
+              "pillarCount": 4,
+              "imprisonedDamage": 15,
+              "imprisonedTickRate": 1.0
+            },
+            "frozen-earth": {
+              "description": "Slams down from the air, freezing the entire arena floor solid. Characters standing still for more than 2 seconds become rooted.",
+              "damage": 60,
+              "cooldown": 18.0,
+              "aoe": { "type": "circle", "radius": 500 },
+              "effect": { "type": "freeze-floor-root", "standStillThreshold": 2.0, "rootDuration": 3.0 }
+            },
+            "summon-ice-wyrms": {
+              "description": "Calls forth 3 juvenile frost wyrms to attack from the air while Frostfang continues its assault from the ground.",
+              "cooldown": 30.0,
+              "summonCount": 3,
+              "wyrmStats": { "hp": 200, "atk": 25, "def": 10, "spd": 5.0 }
+            }
+          }
+        },
+        {
+          "name": "World Freeze",
+          "hpThreshold": 0.25,
+          "abilities": ["absolute-frost-breath", "apocalypse-blizzard", "ice-age", "dragon-fury-combo", "last-winter"],
+          "behavior": "desperate-legendary",
+          "visualChange": "entire-body-glows-ice-blue-arena-freezes-over",
+          "statBoost": { "atk": 1.6, "spd": 1.5, "def": 1.2 },
+          "enrageTimer": 180,
+          "abilityDetails": {
+            "absolute-frost-breath": {
+              "description": "Breathes a beam of absolute zero in a slow 360-degree rotation, instantly killing anything caught in the beam. Must be dodged by jumping or using invulnerability.",
+              "damage": 999,
+              "cooldown": 30.0,
+              "rotationSpeed": "slow",
+              "rotationDuration": 5.0,
+              "warningTime": 3.0
+            },
+            "apocalypse-blizzard": {
+              "description": "The entire arena is engulfed in a supernatural blizzard. Visibility drops to near-zero, ice damage ticks constantly, and Frostfang moves through the storm with perfect vision.",
+              "cooldown": 25.0,
+              "duration": 10.0,
+              "tickDamage": 10,
+              "tickRate": 0.5,
+              "visibilityRadius": 60
+            },
+            "ice-age": {
+              "description": "Channels for 5 seconds, then freezes the entire arena solid. All characters not standing in a safe zone (near fire sources) are frozen for 4 seconds.",
+              "cooldown": 35.0,
+              "channelTime": 5.0,
+              "effect": { "type": "mass-freeze", "duration": 4.0 },
+              "safeZones": "near-fire-sources"
+            },
+            "dragon-fury-combo": {
+              "description": "A devastating melee combination: bite, claw, wing slam, tail sweep, ending with a point-blank frost breath.",
+              "damage": [40, 35, 50, 45, 80],
+              "cooldown": 12.0
+            },
+            "last-winter": {
+              "description": "At 5% HP, Frostfang takes flight one final time and crashes down in the center of the arena with the force of an avalanche, creating a massive ice explosion.",
+              "damage": 120,
+              "aoe": { "type": "circle", "radius": 400 },
+              "type": "death-trigger",
+              "hpThreshold": 0.05,
+              "warningTime": 4.0
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*a thunderous yawn echoes across the summit as one massive eye opens, pupil contracting to a slit* Another band of mortals. How... tediously predictable. *rises slowly, ice cascading from scales the size of tower shields* I have slumbered atop this mountain since before your great-grandparents learned to walk upright. The dwarves sent their king against me. He failed. What makes you believe you will fare any differently?",
+        "phase2": "*the dragon's eyes widen slightly — the first genuine surprise in centuries* You... hurt me. *a rumbling growl that shakes the mountain* That has not happened in three hundred years. Very well, mortals. You have earned the honor of seeing what a true elder dragon is capable of. I shall bury you in ice so deep that the sun itself could not thaw your bones.",
+        "phase3": "*ROARS with such force that the sky itself seems to crack* IMPOSSIBLE! I am FROSTFANG! I am THE MOUNTAIN! I am THE WINTER ITSELF! *ice erupts from every scale, and the temperature plummets beyond mortal endurance* If I am to fall — then I will take this entire peak with me! THE WORLD WILL REMEMBER THE LAST WINTER OF FROSTFANG!",
+        "defeat": "*the great dragon crashes to the ground, the light fading from its ancient eyes. Its voice is a whisper now, but it carries across the summit like wind* Three centuries... I thought I was eternal. *a rumbling chuckle* Perhaps that was my mistake. You fought well, little ones. Better than the dwarves. Better than anyone. In my hoard... beneath the frozen gold... there is something that does not belong to this mountain. Something from below. It whispers of fire... and chains... and something that should never be freed. Heed my warning... and be wary of what burns beneath the earth..."
+      },
+      "sprite": { "base": "dragon", "variant": "elder-frost", "width": 128, "height": 96 }
+    }
+  ],
+  "lootTables": {
+    "ice-wolf-common": {
+      "drops": [
+        { "itemId": "ice-wolf-pelt", "chance": 0.5, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "frozen-fang", "chance": 0.3, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "health-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "frost-elemental-uncommon": {
+      "drops": [
+        { "itemId": "frost-crystal", "chance": 0.4, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "elemental-essence-ice", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "mana-potion", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ice-shard-wand", "chance": 0.05, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "snow-troll-uncommon": {
+      "drops": [
+        { "itemId": "troll-hide", "chance": 0.4, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "troll-blood-vial", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "troll-bone-club", "chance": 0.08, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "yeti-rare": {
+      "drops": [
+        { "itemId": "yeti-fur-cloak", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "yeti-fang", "chance": 0.35, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "permafrost-shard", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.25, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "ice-wraith-uncommon": {
+      "drops": [
+        { "itemId": "wraith-essence", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "spectral-ice-ring", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "mana-potion", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "frost-rune", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "goat-berserker-common": {
+      "drops": [
+        { "itemId": "iron-horn", "chance": 0.4, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "mountain-goat-hide", "chance": 0.35, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "dwarven-ghost-rare": {
+      "drops": [
+        { "itemId": "dwarven-rune-fragment", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "spectral-warhammer-shard", "chance": 0.1, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ghost-iron-ingot", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "dwarven-ale-flask", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ancient-dwarven-coin", "chance": 0.4, "quantity": { "min": 2, "max": 5 } }
+      ]
+    },
+    "frost-archer-uncommon": {
+      "drops": [
+        { "itemId": "frost-tipped-arrows", "chance": 0.45, "quantity": { "min": 5, "max": 15 } },
+        { "itemId": "corrupted-ranger-bow", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ice-trap-schematic", "chance": 0.05, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "glacial-bear-uncommon": {
+      "drops": [
+        { "itemId": "glacial-bear-pelt", "chance": 0.4, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "bear-claw-necklace", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "permafrost-heart", "chance": 0.1, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "crystal-golem-boss": {
+      "guaranteed": [
+        { "itemId": "prismatic-crystal-core", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "crystal-shield", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "refraction-staff", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "frost-crystal", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 2, "max": 4 } }
+      ]
+    },
+    "frozen-king-boss": {
+      "guaranteed": [
+        { "itemId": "thordaks-runehammer", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "shattered-crown-fragment", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "frozen-kings-mantle", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "royal-ice-signet", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ghost-iron-ingot", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "obsidian-fragment-2", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } }
+      ]
+    },
+    "frostfang-boss": {
+      "guaranteed": [
+        { "itemId": "frostfang-scale", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "elder-dragon-heart", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "frostpeak-region-key", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "frostfang-fang-blade", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "dragon-ice-armor", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "blizzard-gem", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "dragons-hoard-gold", "chance": 1.0, "quantity": { "min": 500, "max": 1000 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } }
+      ]
+    }
+  }
+}

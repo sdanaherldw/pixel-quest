@@ -1,0 +1,406 @@
+{
+  "region": "elderwood",
+  "regionName": "Elderwood Forest",
+  "quests": [
+    {
+      "id": "the-corruption-spreads",
+      "name": "The Corruption Spreads",
+      "type": "main",
+      "region": "elderwood",
+      "level": { "recommended": 1, "minimum": 1 },
+      "giver": "elder-oakworth",
+      "description": "A dark corruption is spreading through the Elderwood Forest, twisting creatures and withering ancient trees. Elder Oakworth has asked you to investigate the source and put an end to it.",
+      "journal": "Elder Oakworth of Oakhollow has tasked us with investigating the corruption spreading through the Elderwood. We must clear the Hollow Oak Caves, fight through the Ruined Watchtower, and confront whatever lurks in the Ancient Elven Ruins.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Clear the Hollow Oak Caves of corruption",
+          "type": "dungeon_clear",
+          "target": "hollow-oak-caves",
+          "journal": "The corruption has spread to the Hollow Oak Caves east of Oakhollow. We must clear the creatures there and search for clues about the source."
+        },
+        {
+          "id": 1,
+          "description": "Return to Elder Oakworth with your findings",
+          "type": "talk_to",
+          "target": "elder-oakworth",
+          "triggerDialogue": "return-after-caves",
+          "journal": "We've cleared the caves and found a broken elven binding seal. We should report back to Elder Oakworth."
+        },
+        {
+          "id": 2,
+          "description": "Fight through the Ruined Watchtower",
+          "type": "dungeon_clear",
+          "target": "ruined-watchtower",
+          "journal": "The Ruined Watchtower stands between us and the Ancient Elven Ruins. We must fight through the corrupted forces within."
+        },
+        {
+          "id": 3,
+          "description": "Confront the source of corruption in the Ancient Elven Ruins",
+          "type": "boss_defeat",
+          "target": "forest-guardian",
+          "journal": "The corruption leads to the Ancient Elven Ruins where the Forest Guardian has been corrupted. We must face it and end this darkness."
+        },
+        {
+          "id": 4,
+          "description": "Return to Elder Oakworth",
+          "type": "talk_to",
+          "target": "elder-oakworth",
+          "triggerDialogue": "return-after-guardian",
+          "journal": "The Forest Guardian is free. We should return to Elder Oakworth with the good news."
+        }
+      ],
+      "rewards": {
+        "xp": 500,
+        "gold": 200,
+        "items": [],
+        "reputation": { "oakhollow": 50 },
+        "unlocks": ["frostpeak-mountains-travel"]
+      },
+      "flags": {
+        "onAccept": ["main-quest-active"],
+        "onComplete": ["elderwood-corruption-cleared", "mountains-unlocked"]
+      }
+    },
+    {
+      "id": "the-lost-woolbacks",
+      "name": "The Lost Woolbacks",
+      "type": "side",
+      "region": "elderwood",
+      "level": { "recommended": 1, "minimum": 1 },
+      "giver": "farmer-bramble",
+      "description": "Farmer Bramble's seven prized woolback sheep have vanished from their pasture, frightened into the Whispering Thicket by the spreading corruption.",
+      "journal": "Farmer Bramble in Oakhollow has lost seven woolback sheep. They fled into the Whispering Thicket east of town. We should follow the stream from the old stone bridge northeast to find them.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Search the Whispering Thicket for the missing sheep",
+          "type": "reach_location",
+          "target": "whispering-thicket-clearing",
+          "journal": "We need to cross the old stone bridge east of Oakhollow and follow the stream northeast into the Whispering Thicket."
+        },
+        {
+          "id": 1,
+          "description": "Find the woolback flock",
+          "type": "interact",
+          "target": "woolback-flock",
+          "journal": "We're searching the Thicket for the sheep. They should be near the stream."
+        },
+        {
+          "id": 2,
+          "description": "Decide the fate of the sheep",
+          "type": "choice",
+          "options": [
+            {
+              "id": "rescue",
+              "description": "Rescue the sheep and return them to Bramble",
+              "condition": { "sheepState": "alive" },
+              "setOutcome": "sheep-alive"
+            },
+            {
+              "id": "mercy-kill",
+              "description": "Put the corrupted sheep out of their misery",
+              "condition": { "sheepState": "corrupted" },
+              "setOutcome": "sheep-corrupted"
+            },
+            {
+              "id": "sell",
+              "description": "Sell the sheep to the traveling merchant",
+              "condition": { "sheepState": "alive", "merchantPresent": true },
+              "setOutcome": "sheep-sold"
+            }
+          ],
+          "journal": "We found the sheep. Now we must decide what to do with them."
+        },
+        {
+          "id": 3,
+          "description": "Return to Farmer Bramble",
+          "type": "talk_to",
+          "target": "farmer-bramble",
+          "journal": "Time to report back to Farmer Bramble with the news."
+        }
+      ],
+      "branchCondition": {
+        "note": "Whether sheep are alive or corrupted depends on corruption progress and player timing",
+        "corruptedIf": { "questProgress": "the-corruption-spreads", "objectiveComplete": 0, "inverted": true, "daysPassed": 5 },
+        "merchantAppearsIf": { "flag": "met-traveling-merchant" }
+      },
+      "rewards": {
+        "rescue": { "xp": 120, "gold": 75, "items": ["enchanted-wool-cloak"], "reputation": { "oakhollow": 25 } },
+        "corrupted": { "xp": 100, "gold": 50, "items": ["healing-salve"], "reputation": { "oakhollow": 15 } },
+        "sold": { "xp": 80, "gold": 120, "reputation": { "oakhollow": -30 } }
+      }
+    },
+    {
+      "id": "the-herb-gatherer",
+      "name": "The Herb Gatherer",
+      "type": "side",
+      "region": "elderwood",
+      "level": { "recommended": 2, "minimum": 1 },
+      "giver": "healer-willow",
+      "description": "Healer Willow needs rare Moonpetal flowers to brew antidotes for villagers sickened by the corruption. The flowers only grow deep in the forest at night.",
+      "journal": "Healer Willow in Oakhollow needs five Moonpetal flowers to create antidotes for the corruption sickness. They grow near the ancient standing stones in the deep forest.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Gather 5 Moonpetal flowers from the deep forest",
+          "type": "collect",
+          "target": "moonpetal-flower",
+          "count": 5,
+          "journal": "We need to find five Moonpetal flowers near the ancient standing stones in the deep forest. They only bloom at night."
+        },
+        {
+          "id": 1,
+          "description": "Return the Moonpetals to Healer Willow",
+          "type": "talk_to",
+          "target": "healer-willow",
+          "journal": "We have the Moonpetals. Time to bring them back to Healer Willow."
+        }
+      ],
+      "optionalObjectives": [
+        {
+          "id": "extra-petals",
+          "description": "Gather 3 additional Moonpetals for a stronger antidote",
+          "type": "collect",
+          "target": "moonpetal-flower",
+          "count": 8,
+          "bonusRewards": { "xp": 40, "items": ["greater-healing-potion"], "reputation": { "oakhollow": 10 } }
+        }
+      ],
+      "rewards": {
+        "xp": 80,
+        "gold": 30,
+        "items": ["health-potion", "health-potion", "antidote"],
+        "reputation": { "oakhollow": 15 },
+        "unlocks": ["healer-willow-shop-discount"]
+      }
+    },
+    {
+      "id": "bandit-troubles",
+      "name": "Bandit Troubles",
+      "type": "side",
+      "region": "elderwood",
+      "level": { "recommended": 3, "minimum": 2 },
+      "giver": "guard-captain-thorne",
+      "description": "Bandits have set up camp on the road between Oakhollow and Thornwick. Guard Captain Thorne needs capable fighters to deal with the problem.",
+      "journal": "Guard Captain Thorne wants us to clear the bandit camp on the Thornwick road. We can defeat the bandit leader, find evidence to negotiate their surrender, or strike a deal.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Investigate the bandit camp on the Thornwick road",
+          "type": "reach_location",
+          "target": "bandit-camp",
+          "journal": "The bandit camp is on the road halfway between Oakhollow and Thornwick, near the old mill."
+        },
+        {
+          "id": 1,
+          "description": "Deal with the bandits",
+          "type": "choice",
+          "options": [
+            {
+              "id": "fight",
+              "description": "Defeat the bandit leader, Scarlet Maren",
+              "type": "defeat_enemy",
+              "target": "scarlet-maren",
+              "setOutcome": "bandits-defeated"
+            },
+            {
+              "id": "investigate",
+              "description": "Find the supply ledger and negotiate surrender",
+              "type": "interact",
+              "target": "bandit-supply-ledger",
+              "condition": { "stat": "int", "min": 12 },
+              "setOutcome": "bandits-negotiated"
+            },
+            {
+              "id": "join",
+              "description": "Offer to split the profits for information",
+              "type": "dialogue",
+              "target": "scarlet-maren",
+              "condition": { "stat": "cha", "min": 13 },
+              "setOutcome": "bandits-allied"
+            }
+          ],
+          "journal": "We've found the bandit camp. Time to decide how to handle this."
+        },
+        {
+          "id": 2,
+          "description": "Report to Guard Captain Thorne",
+          "type": "talk_to",
+          "target": "guard-captain-thorne",
+          "journal": "We've dealt with the bandits. Time to report back."
+        }
+      ],
+      "rewards": {
+        "defeated": { "xp": 150, "gold": 80, "items": ["bandits-stash-key"], "reputation": { "oakhollow": 20, "thornwick": 15 } },
+        "negotiated": { "xp": 180, "gold": 60, "reputation": { "oakhollow": 25, "thornwick": 20 }, "unlocks": ["scarlet-maren-informant"] },
+        "allied": { "xp": 100, "gold": 150, "reputation": { "oakhollow": -15, "thornwick": -10 }, "unlocks": ["thieves-guild-contact"] }
+      }
+    },
+    {
+      "id": "arena-champion",
+      "name": "Arena Champion",
+      "type": "side",
+      "region": "elderwood",
+      "level": { "recommended": 4, "minimum": 3 },
+      "giver": "arena-master-korvik",
+      "description": "Thornwick's arena is hosting a tournament. Fight through three rounds to face the legendary Crag Hack and earn the title of Arena Champion.",
+      "journal": "Arena Master Korvik in Thornwick has invited us to compete in the arena tournament. Three rounds of combat, culminating in a duel with the undefeated champion — Crag Hack.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Win Round 1: Fight the Thornwick Brawlers",
+          "type": "arena_fight",
+          "target": "arena-round-1",
+          "enemies": ["bandit", "bandit", "goblin-raider"],
+          "journal": "Round 1 — three opponents at once."
+        },
+        {
+          "id": 1,
+          "description": "Win Round 2: Defeat the Forest Beasts",
+          "type": "arena_fight",
+          "target": "arena-round-2",
+          "enemies": ["wolf", "wolf", "wolf", "forest-spider"],
+          "journal": "Round 2 — captured forest beasts released into the arena."
+        },
+        {
+          "id": 2,
+          "description": "Win Round 3: Duel Crag Hack",
+          "type": "boss_defeat",
+          "target": "crag-hack-arena",
+          "journal": "The final round — a one-on-one duel with the legendary Crag Hack!",
+          "specialRules": { "partySize": 1, "noItems": false, "noMagic": false }
+        },
+        {
+          "id": 3,
+          "description": "Speak with Crag Hack after the duel",
+          "type": "talk_to",
+          "target": "crag-hack",
+          "triggerDialogue": "crag-hack-recruitment",
+          "journal": "We've defeated Crag Hack! He wants to talk."
+        }
+      ],
+      "rewards": {
+        "xp": 250,
+        "gold": 100,
+        "items": ["arena-champion-belt"],
+        "reputation": { "thornwick": 30 },
+        "unlocks": ["crag-hack-recruitable"]
+      }
+    },
+    {
+      "id": "forged-in-fury",
+      "name": "Forged in Fury",
+      "type": "companion",
+      "region": "multi-region",
+      "level": { "recommended": 6, "minimum": 5 },
+      "giver": "crag-hack",
+      "prerequisite": { "recruited": "crag-hack" },
+      "description": "Crag Hack seeks the legendary Obsidian Great Axe, forged by fire giants in the volcanic depths of Cinder Core. Help him find the three fragments and reforge the weapon of legend.",
+      "journal": "Crag Hack has told us of the Obsidian Great Axe — a legendary weapon forged in Cinder Core. We need to find three obsidian fragments scattered across the world and bring them to the Forge of Giants to reforge the axe.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Find the First Fragment in the Elderwood Ruins",
+          "type": "collect",
+          "target": "obsidian-fragment-1",
+          "location": "ancient-elven-ruins",
+          "journal": "The first obsidian fragment is hidden in the Ancient Elven Ruins of Elderwood."
+        },
+        {
+          "id": 1,
+          "description": "Find the Second Fragment in the Frostpeak Caverns",
+          "type": "collect",
+          "target": "obsidian-fragment-2",
+          "location": "frostpeak-deep-caverns",
+          "journal": "The second fragment lies in the deep caverns beneath the Frostpeak Mountains."
+        },
+        {
+          "id": 2,
+          "description": "Find the Third Fragment in the Scorched Wastes",
+          "type": "collect",
+          "target": "obsidian-fragment-3",
+          "location": "scorched-wastes-fire-temple",
+          "journal": "The final fragment rests in the Fire Temple of the Scorched Wastes."
+        },
+        {
+          "id": 3,
+          "description": "Travel to the Forge of Giants in Cinder Core",
+          "type": "reach_location",
+          "target": "forge-of-giants",
+          "journal": "With all three fragments, we must travel to the Forge of Giants in Cinder Core."
+        },
+        {
+          "id": 4,
+          "description": "Reforge the Obsidian Great Axe",
+          "type": "interact",
+          "target": "forge-of-giants-anvil",
+          "journal": "Place the three fragments on the ancient anvil and let the volcanic fires do the rest."
+        },
+        {
+          "id": 5,
+          "description": "Witness Crag Hack claim his destiny",
+          "type": "cutscene",
+          "target": "crag-hack-axe-cutscene",
+          "journal": "The Obsidian Great Axe has been reforged. Watch as Crag Hack claims the weapon of legend."
+        }
+      ],
+      "rewards": {
+        "xp": 1000,
+        "gold": 0,
+        "items": ["obsidian-great-axe"],
+        "companionBonus": { "characterId": "crag-hack", "loyalty": "maximum", "unlockSkill": "volcanic-fury-mastery" }
+      }
+    },
+    {
+      "id": "bounty-spider-queen",
+      "name": "Bounty: The Spider Queen",
+      "type": "bounty",
+      "region": "elderwood",
+      "level": { "recommended": 3, "minimum": 2 },
+      "giver": "bounty-board-oakhollow",
+      "description": "A bounty has been posted for the Spider Queen lurking in the depths of the Hollow Oak Caves.",
+      "journal": "A bounty at the Oakhollow notice board for the Spider Queen in the Hollow Oak Caves. Slay the beast and bring back a venom fang as proof.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Slay the Spider Queen in the Hollow Oak Caves",
+          "type": "boss_defeat",
+          "target": "giant-spider-queen",
+          "journal": "The Spider Queen lurks in the deepest chamber of the Hollow Oak Caves."
+        },
+        {
+          "id": 1,
+          "description": "Collect a Venom Fang as proof",
+          "type": "collect",
+          "target": "queen-venom-fang",
+          "journal": "Take a venom fang from the slain Spider Queen."
+        },
+        {
+          "id": 2,
+          "description": "Turn in the bounty at Oakhollow",
+          "type": "interact",
+          "target": "bounty-board-oakhollow",
+          "journal": "Return to the Oakhollow bounty board to claim the reward."
+        }
+      ],
+      "rewards": {
+        "xp": 100,
+        "gold": 75,
+        "reputation": { "oakhollow": 10, "thornwick": 5 }
+      }
+    }
+  ],
+  "questChains": {
+    "main-elderwood": {
+      "name": "Elderwood Forest — Main Story",
+      "quests": ["the-corruption-spreads"],
+      "leadsTo": "frostpeak-main"
+    },
+    "crag-hack-saga": {
+      "name": "The Saga of Crag Hack",
+      "quests": ["arena-champion", "forged-in-fury"],
+      "note": "Spans multiple regions. Forged in Fury requires Cinder Core access."
+    }
+  }
+}

@@ -1,0 +1,1003 @@
+{
+  "region": "cinder-core",
+  "regionName": "Cinder Core",
+  "enemies": [
+    {
+      "id": "magma-elemental",
+      "name": "Magma Elemental",
+      "region": "cinder-core",
+      "level": 14,
+      "stats": { "hp": 280, "atk": 40, "def": 20, "spd": 2.5 },
+      "xpReward": 120,
+      "goldDrop": { "min": 15, "max": 35 },
+      "lootTable": "magma-elemental-uncommon",
+      "behavior": "aggressive-area-denial",
+      "abilities": ["magma-slam", "lava-trail", "eruption", "molten-body"],
+      "abilityDetails": [
+        {
+          "id": "magma-slam",
+          "name": "Magma Slam",
+          "description": "Brings a fist of molten rock crashing down, dealing massive fire damage and creating a pool of lava at the impact point that persists for 8 seconds.",
+          "damage": 45,
+          "cooldown": 5.0,
+          "aoe": { "type": "circle", "radius": 60 },
+          "lavaPoolDuration": 8.0,
+          "lavaPoolDamage": 12,
+          "lavaPoolTickRate": 1.0
+        },
+        {
+          "id": "lava-trail",
+          "name": "Lava Trail",
+          "description": "Leaves a trail of molten rock wherever it walks that deals fire damage to anyone who steps on it. Trail persists for 10 seconds.",
+          "type": "passive",
+          "trailDamage": 8,
+          "trailTickRate": 0.5,
+          "trailDuration": 10.0
+        },
+        {
+          "id": "eruption",
+          "name": "Eruption",
+          "description": "The elemental's core overheats and releases a violent eruption of magma in all directions, dealing heavy fire damage to all nearby targets.",
+          "damage": 35,
+          "cooldown": 12.0,
+          "aoe": { "type": "circle", "radius": 150 },
+          "warningTime": 2.0
+        },
+        {
+          "id": "molten-body",
+          "name": "Molten Body",
+          "description": "Melee attackers take 10 fire damage per hit. Ice and water attacks deal 50% bonus damage but temporarily harden the elemental's shell, granting 30% damage reduction for 3 seconds.",
+          "type": "passive",
+          "contactDamage": 10,
+          "iceVulnerability": 1.5,
+          "hardenEffect": { "damageReduction": 0.3, "duration": 3.0 }
+        }
+      ],
+      "weaknesses": ["ice"],
+      "resistances": ["physical"],
+      "immunities": ["fire"],
+      "description": "A churning mass of living magma that drags itself across the obsidian floor on limbs of half-cooled rock, leaving glowing footprints in its wake. Its core burns white-hot, and the heat it radiates warps the air into shimmering curtains of distortion. It has no eyes, no mouth, no mind — only an elemental hunger to consume everything that is not already fire.",
+      "sprite": { "base": "elemental", "variant": "magma", "width": 40, "height": 44 }
+    },
+    {
+      "id": "fire-giant",
+      "name": "Fire Giant",
+      "region": "cinder-core",
+      "level": 16,
+      "stats": { "hp": 500, "atk": 55, "def": 35, "spd": 1.8 },
+      "xpReward": 180,
+      "goldDrop": { "min": 30, "max": 60 },
+      "lootTable": "fire-giant-rare",
+      "behavior": "melee-heavy-hitter",
+      "abilities": ["titan-strike", "flame-roar", "ground-pound", "forge-toss"],
+      "abilityDetails": [
+        {
+          "id": "titan-strike",
+          "name": "Titan Strike",
+          "description": "Brings a colossal forge hammer down on a single target with enough force to crack obsidian, dealing devastating physical and fire damage and staggering the victim.",
+          "damage": 70,
+          "cooldown": 5.0,
+          "effect": { "type": "stagger", "duration": 1.5 }
+        },
+        {
+          "id": "flame-roar",
+          "name": "Flame Roar",
+          "description": "Roars with such force that flames erupt from its mouth, creating a shockwave of fire that pushes back all nearby enemies.",
+          "damage": 30,
+          "cooldown": 10.0,
+          "aoe": { "type": "circle", "radius": 200 },
+          "effect": { "type": "knockback", "distance": 120 }
+        },
+        {
+          "id": "ground-pound",
+          "name": "Ground Pound",
+          "description": "Stomps the ground, causing fissures to open that spew magma at random locations across the arena.",
+          "damage": 40,
+          "cooldown": 14.0,
+          "fissureCount": 4,
+          "warningTime": 1.5,
+          "aoe": { "type": "circle", "radius": 50 }
+        },
+        {
+          "id": "forge-toss",
+          "name": "Forge Toss",
+          "description": "Picks up a piece of the environment — a chunk of obsidian, a cooling lava boulder — and hurls it at a distant target, crushing and knocking them prone.",
+          "damage": 55,
+          "cooldown": 8.0,
+          "range": 400,
+          "aoe": { "type": "circle", "radius": 70 },
+          "effect": { "type": "knockdown", "duration": 2.0 }
+        }
+      ],
+      "weaknesses": ["ice"],
+      "resistances": ["fire", "physical"],
+      "description": "The last remnants of the fire giant race that once served as wardens of Pyraxion's prison, these towering beings of obsidian-dark skin and ember-bright eyes stand three times the height of a man. Their bodies radiate heat like living furnaces, and the forge hammers they carry were once used to shape the chains that bind the fire god. Now, without purpose or guidance, they patrol the volcanic tunnels in a daze of instinct and half-remembered duty.",
+      "sprite": { "base": "giant", "variant": "fire", "width": 56, "height": 72 }
+    },
+    {
+      "id": "obsidian-golem",
+      "name": "Obsidian Golem",
+      "region": "cinder-core",
+      "level": 15,
+      "stats": { "hp": 400, "atk": 38, "def": 50, "spd": 1.0 },
+      "xpReward": 140,
+      "goldDrop": { "min": 10, "max": 25 },
+      "lootTable": "obsidian-golem-uncommon",
+      "behavior": "defensive-tank",
+      "abilities": ["obsidian-crush", "mirror-shell", "shard-explosion", "fortress-stance"],
+      "abilityDetails": [
+        {
+          "id": "obsidian-crush",
+          "name": "Obsidian Crush",
+          "description": "Slams both fists together on a target, dealing massive physical damage that ignores 40% of the target's armor.",
+          "damage": 50,
+          "cooldown": 6.0,
+          "armorPenetration": 0.4
+        },
+        {
+          "id": "mirror-shell",
+          "name": "Mirror Shell",
+          "description": "The golem's polished obsidian surface reflects 30% of all magical damage back at the caster.",
+          "type": "passive",
+          "reflectPercent": 0.3,
+          "reflectType": "magical"
+        },
+        {
+          "id": "shard-explosion",
+          "name": "Shard Explosion",
+          "description": "Detonates its outer shell, sending razor-sharp obsidian shards flying in all directions. The golem takes 10% of its max HP as damage but deals heavy physical damage to all nearby enemies.",
+          "damage": 40,
+          "cooldown": 18.0,
+          "aoe": { "type": "circle", "radius": 180 },
+          "selfDamagePercent": 0.1
+        },
+        {
+          "id": "fortress-stance",
+          "name": "Fortress Stance",
+          "description": "Plants itself and becomes immovable, gaining 50% damage reduction but becoming unable to move for 8 seconds. All attacks during this time deal 25% bonus damage.",
+          "cooldown": 15.0,
+          "duration": 8.0,
+          "damageReduction": 0.5,
+          "damageBonus": 0.25,
+          "immobile": true
+        }
+      ],
+      "weaknesses": ["physical-blunt", "lightning"],
+      "resistances": ["fire", "shadow", "physical-slash"],
+      "description": "A hulking automaton carved from volcanic glass by the fire giants in ages past, its body a masterwork of interlocking obsidian plates that gleam like black mirrors in the magma-light. Each joint is fitted with mechanical precision, and the runes etched into its chest still glow faintly with the enchantments that give it purpose. It moves with glacial patience but strikes with shattering force.",
+      "sprite": { "base": "golem", "variant": "obsidian", "width": 48, "height": 56 }
+    },
+    {
+      "id": "lava-serpent",
+      "name": "Lava Serpent",
+      "region": "cinder-core",
+      "level": 14,
+      "stats": { "hp": 200, "atk": 42, "def": 15, "spd": 5.0 },
+      "xpReward": 115,
+      "goldDrop": { "min": 12, "max": 30 },
+      "lootTable": "lava-serpent-uncommon",
+      "behavior": "fast-flanker",
+      "abilities": ["flame-strike", "coil-crush", "lava-dive", "heat-shimmer"],
+      "abilityDetails": [
+        {
+          "id": "flame-strike",
+          "name": "Flame Strike",
+          "description": "Lunges at a target with blinding speed, fangs wreathed in fire, dealing physical and fire damage with a chance to ignite.",
+          "damage": 40,
+          "cooldown": 3.0,
+          "effect": { "type": "burn", "damage": 8, "duration": 4.0, "chance": 0.4 }
+        },
+        {
+          "id": "coil-crush",
+          "name": "Coil Crush",
+          "description": "Wraps its burning body around a target and constricts, dealing sustained fire damage and preventing movement for 3 seconds.",
+          "damage": 15,
+          "tickRate": 0.5,
+          "duration": 3.0,
+          "cooldown": 10.0,
+          "effect": { "type": "root-crush", "duration": 3.0 }
+        },
+        {
+          "id": "lava-dive",
+          "name": "Lava Dive",
+          "description": "Dives into a nearby lava flow and emerges at a different location, becoming untargetable during the dive. Erupts from the lava dealing fire damage to anything nearby.",
+          "cooldown": 8.0,
+          "diveDuration": 2.0,
+          "emergeDamage": 30,
+          "emergeRadius": 80
+        },
+        {
+          "id": "heat-shimmer",
+          "name": "Heat Shimmer",
+          "description": "The serpent's superheated body causes the air around it to distort, reducing the accuracy of ranged attacks against it by 30%.",
+          "type": "passive",
+          "rangedEvasion": 0.3
+        }
+      ],
+      "weaknesses": ["ice"],
+      "resistances": [],
+      "immunities": ["fire"],
+      "description": "A sinuous predator of living flame and molten scale that glides through the lava rivers like a fish through water, its body a ribbon of white-hot magma encased in a thin shell of cooling rock that cracks and reforms with every undulation. Its eyes are pits of blue-white fire, and when it opens its jaws, the heat is intense enough to melt steel.",
+      "sprite": { "base": "serpent", "variant": "lava", "width": 44, "height": 28 }
+    },
+    {
+      "id": "ember-wraith",
+      "name": "Ember Wraith",
+      "region": "cinder-core",
+      "level": 15,
+      "stats": { "hp": 160, "atk": 45, "def": 5, "spd": 4.5, "int": 20 },
+      "xpReward": 135,
+      "goldDrop": { "min": 20, "max": 45 },
+      "lootTable": "ember-wraith-rare",
+      "behavior": "phase-ambush",
+      "abilities": ["ember-touch", "phase-through", "fire-curse", "immolation-nova"],
+      "abilityDetails": [
+        {
+          "id": "ember-touch",
+          "name": "Ember Touch",
+          "description": "Reaches through armor with intangible hands, dealing fire damage that bypasses physical defense entirely.",
+          "damage": 35,
+          "cooldown": 3.0,
+          "ignoresArmor": true,
+          "damageType": "fire"
+        },
+        {
+          "id": "phase-through",
+          "name": "Phase Through",
+          "description": "Becomes intangible for 3 seconds, passing through walls and obstacles and becoming immune to physical damage. Magical damage still applies.",
+          "cooldown": 8.0,
+          "duration": 3.0,
+          "physicalImmunity": true,
+          "canPassWalls": true
+        },
+        {
+          "id": "fire-curse",
+          "name": "Fire Curse",
+          "description": "Places a curse on a target that causes them to take increasing fire damage over 10 seconds. Each tick increases the damage by 20%.",
+          "cooldown": 14.0,
+          "baseDamage": 8,
+          "tickRate": 1.0,
+          "duration": 10.0,
+          "rampPercent": 0.2
+        },
+        {
+          "id": "immolation-nova",
+          "name": "Immolation Nova",
+          "description": "Upon death, the wraith detonates in a final burst of spectral flame, dealing fire and shadow damage to all nearby enemies.",
+          "type": "death-trigger",
+          "damage": 40,
+          "aoe": { "type": "circle", "radius": 100 },
+          "damageTypes": ["fire", "shadow"]
+        }
+      ],
+      "weaknesses": ["ice", "holy"],
+      "resistances": ["fire", "physical"],
+      "description": "The tormented spirits of fire giant smiths who perished in the volcanic depths, their souls bound to the Cinder Core by the intensity of their dying agonies. They appear as flickering humanoid silhouettes of orange-white fire, their forms constantly shifting and guttering like candle flames in a draft. They can phase through solid matter at will, and their touch bypasses all physical armor.",
+      "sprite": { "base": "wraith", "variant": "ember", "width": 30, "height": 38 }
+    },
+    {
+      "id": "forge-automaton",
+      "name": "Forge Automaton",
+      "region": "cinder-core",
+      "level": 16,
+      "stats": { "hp": 450, "atk": 48, "def": 40, "spd": 2.0 },
+      "xpReward": 170,
+      "goldDrop": { "min": 25, "max": 55 },
+      "lootTable": "forge-automaton-rare",
+      "behavior": "melee-heavy-mechanical",
+      "abilities": ["forge-hammer-strike", "steam-vent", "repair-protocol", "overload"],
+      "abilityDetails": [
+        {
+          "id": "forge-hammer-strike",
+          "name": "Forge Hammer Strike",
+          "description": "Swings its built-in forge hammer with mechanical precision, dealing devastating physical and fire damage. Each successive hit on the same target increases damage by 10%, up to 50%.",
+          "damage": 50,
+          "cooldown": 4.0,
+          "rampingDamage": { "perHitBonus": 0.1, "maxBonus": 0.5, "resetOnTargetChange": true }
+        },
+        {
+          "id": "steam-vent",
+          "name": "Steam Vent",
+          "description": "Releases a high-pressure blast of superheated steam from vents in its body, dealing fire damage in a cone and obscuring vision.",
+          "damage": 30,
+          "cooldown": 8.0,
+          "aoe": { "type": "cone", "angle": 60, "range": 150 },
+          "effect": { "type": "blind-zone", "duration": 3.0 }
+        },
+        {
+          "id": "repair-protocol",
+          "name": "Repair Protocol",
+          "description": "When below 30% HP, activates a self-repair protocol that heals 3% max HP per second for 8 seconds. Can be interrupted by lightning damage.",
+          "type": "passive-trigger",
+          "hpThreshold": 0.3,
+          "healPercent": 0.03,
+          "healTickRate": 1.0,
+          "duration": 8.0,
+          "interruptedBy": "lightning",
+          "maxTriggers": 2
+        },
+        {
+          "id": "overload",
+          "name": "Overload",
+          "description": "Pushes its forge-fire core past safe limits, gaining +40% attack speed and damage for 10 seconds, then entering a cooldown state where it moves at half speed for 5 seconds.",
+          "cooldown": 25.0,
+          "buffDuration": 10.0,
+          "atkSpdBonus": 0.4,
+          "damageBonus": 0.4,
+          "debuffDuration": 5.0,
+          "debuffSpdReduction": 0.5
+        }
+      ],
+      "weaknesses": ["lightning", "ice"],
+      "resistances": ["fire", "poison", "shadow"],
+      "description": "A massive mechanical construct built by the fire giants to tend the Great Forge in their absence — a bipedal engine of bronze and adamantine, powered by a core of captured volcanic fire. Its body is covered in soot and the patina of ages, but its movements are still precise, still purposeful, still following the last instructions it was given ten thousand years ago: maintain the forge, repel intruders, keep the fire burning.",
+      "sprite": { "base": "automaton", "variant": "forge", "width": 44, "height": 52 }
+    },
+    {
+      "id": "cinder-dragon-whelp",
+      "name": "Cinder Dragon Whelp",
+      "region": "cinder-core",
+      "level": 15,
+      "stats": { "hp": 240, "atk": 44, "def": 18, "spd": 4.5 },
+      "xpReward": 150,
+      "goldDrop": { "min": 20, "max": 50 },
+      "lootTable": "cinder-whelp-uncommon",
+      "behavior": "fly-strafe",
+      "abilities": ["fire-breath", "dive-bomb", "wing-gust", "volcanic-screech"],
+      "abilityDetails": [
+        {
+          "id": "fire-breath",
+          "name": "Fire Breath",
+          "description": "Breathes a focused stream of volcanic fire that deals continuous fire damage in a cone for 2 seconds.",
+          "damage": 18,
+          "tickRate": 0.3,
+          "duration": 2.0,
+          "cooldown": 6.0,
+          "aoe": { "type": "cone", "angle": 40, "range": 200 }
+        },
+        {
+          "id": "dive-bomb",
+          "name": "Dive Bomb",
+          "description": "Folds its wings and dives from altitude, crashing into a target with explosive force and leaving a small fire crater.",
+          "damage": 50,
+          "cooldown": 10.0,
+          "aoe": { "type": "circle", "radius": 50 },
+          "effect": { "type": "knockback", "distance": 60 },
+          "warningTime": 1.5
+        },
+        {
+          "id": "wing-gust",
+          "name": "Wing Gust",
+          "description": "Beats its wings while airborne, sending a wave of superheated air at grounded targets that deals fire damage and pushes them back.",
+          "damage": 20,
+          "cooldown": 8.0,
+          "aoe": { "type": "cone", "angle": 90, "range": 150 },
+          "effect": { "type": "knockback", "distance": 80 }
+        },
+        {
+          "id": "volcanic-screech",
+          "name": "Volcanic Screech",
+          "description": "Emits a piercing shriek that has a 25% chance to stun each nearby target for 1.5 seconds and calls any other whelps in the area to attack.",
+          "cooldown": 16.0,
+          "aoe": { "type": "circle", "radius": 200 },
+          "effect": { "type": "stun", "chance": 0.25, "duration": 1.5 },
+          "callReinforcements": true
+        }
+      ],
+      "weaknesses": ["ice", "lightning"],
+      "resistances": ["fire"],
+      "packSize": { "min": 2, "max": 4 },
+      "description": "Juvenile dragons hatched in the volcanic heat of the Cinder Core, their scales a mottled pattern of black obsidian and glowing orange ember. Though barely the size of a horse, they are vicious, fast, and cunning, hunting in small packs that coordinate attacks with unsettling intelligence. Their fire breath lacks the world-ending potency of an elder dragon, but in close quarters it is more than sufficient to reduce an armored knight to a charred husk.",
+      "sprite": { "base": "dragon", "variant": "cinder-whelp", "width": 48, "height": 36 }
+    },
+    {
+      "id": "ash-revenant",
+      "name": "Ash Revenant",
+      "region": "cinder-core",
+      "level": 16,
+      "stats": { "hp": 300, "atk": 42, "def": 22, "spd": 3.0, "int": 18 },
+      "xpReward": 160,
+      "goldDrop": { "min": 18, "max": 42 },
+      "lootTable": "ash-revenant-rare",
+      "behavior": "melee-persistent",
+      "abilities": ["ashen-blade", "scatter-reform", "ember-resurrection", "ash-storm"],
+      "abilityDetails": [
+        {
+          "id": "ashen-blade",
+          "name": "Ashen Blade",
+          "description": "Swings a sword forged from compressed volcanic ash that deals physical and fire damage. Each hit leaves a mark of ash that detonates after 3 stacks, dealing bonus fire damage.",
+          "damage": 38,
+          "cooldown": 3.0,
+          "markEffect": { "type": "stacking-mark", "detonateAt": 3, "detonationDamage": 40 }
+        },
+        {
+          "id": "scatter-reform",
+          "name": "Scatter and Reform",
+          "description": "When struck by a critical hit, the Ash Revenant has a 25% chance to scatter into a cloud of ash and reform nearby, avoiding the damage entirely.",
+          "type": "passive",
+          "triggerCondition": "critical-hit-received",
+          "scatterChance": 0.25,
+          "reformDistance": 100
+        },
+        {
+          "id": "ember-resurrection",
+          "name": "Ember Resurrection",
+          "description": "Upon death, the Ash Revenant collapses into a pile of glowing embers. After 8 seconds, it reforms with 40% HP unless the ember pile is destroyed (150 HP) or doused with ice magic.",
+          "type": "death-trigger",
+          "reformDelay": 8.0,
+          "reformHPPercent": 0.4,
+          "emberPileHP": 150,
+          "preventedBy": ["ice-magic"],
+          "maxTriggers": 1
+        },
+        {
+          "id": "ash-storm",
+          "name": "Ash Storm",
+          "description": "Whirls into a vortex of burning ash that moves across the arena, dealing fire damage to anyone caught within and reducing visibility.",
+          "cooldown": 16.0,
+          "damage": 15,
+          "tickRate": 0.5,
+          "duration": 5.0,
+          "moveSpeed": 80,
+          "aoe": { "type": "circle", "radius": 100 }
+        }
+      ],
+      "weaknesses": ["ice", "holy"],
+      "resistances": ["fire", "physical"],
+      "description": "The ashen remnants of warriors who died in the Cinder Core's killing heat, their bodies reduced to char and ember but their fighting spirits too fierce to die. They manifest as humanoid figures of compressed ash and glowing coal, held together by sheer will and volcanic fire. Cut them down and they scatter — then reform moments later from the endless ash that blankets the volcanic floor.",
+      "sprite": { "base": "revenant", "variant": "ash", "width": 30, "height": 36 }
+    }
+  ],
+  "bosses": [
+    {
+      "id": "core-devourer",
+      "name": "Core Devourer",
+      "region": "cinder-core",
+      "dungeon": "molten-caverns",
+      "level": 16,
+      "isBoss": true,
+      "stats": { "hp": 3000, "atk": 52, "def": 30, "spd": 2.0 },
+      "xpReward": 1200,
+      "goldDrop": { "min": 200, "max": 350 },
+      "lootTable": "core-devourer-boss",
+      "description": "A titanic lava worm the length of a city block, its segmented body armored with plates of cooled obsidian that crack and reform as it moves. It has burrowed through the Molten Caverns for centuries, growing ever larger as it consumes the rock itself, processing it through a gullet of supernatural fire and excreting molten waste that forms new tunnels in its wake. Its maw is a circular nightmare of obsidian teeth the size of tower shields, and the heat from its core is visible as a pulsing orange glow through the gaps in its plating.",
+      "phases": [
+        {
+          "name": "Tunneler",
+          "hpThreshold": 1.0,
+          "abilities": ["burrow-strike", "obsidian-teeth", "tunnel-collapse", "magma-trail"],
+          "behavior": "burrow-ambush-pattern",
+          "abilityDetails": {
+            "burrow-strike": {
+              "description": "Dives beneath the cavern floor and erupts directly under a target, dealing massive physical and fire damage and knocking them airborne.",
+              "damage": 65,
+              "cooldown": 10.0,
+              "warningTime": 2.0,
+              "warningSign": "floor-cracks-glow",
+              "aoe": { "type": "circle", "radius": 80 },
+              "effect": { "type": "launch", "height": 100 }
+            },
+            "obsidian-teeth": {
+              "description": "Rises from the ground and snaps its massive jaws shut on a target, dealing devastating damage and shredding armor as the obsidian teeth grind through metal.",
+              "damage": 70,
+              "cooldown": 6.0,
+              "effect": { "type": "armor-shred", "value": 20, "duration": 10.0 }
+            },
+            "tunnel-collapse": {
+              "description": "Thrashes underground, causing large sections of the cavern ceiling to collapse at random, creating hazard zones and dealing massive damage to anyone caught beneath.",
+              "damage": 50,
+              "cooldown": 16.0,
+              "collapseZones": 5,
+              "warningTime": 2.5,
+              "hazardDuration": 15.0
+            },
+            "magma-trail": {
+              "description": "Every time the worm surfaces and submerges, it leaves a river of fresh lava where it passed. The arena gradually fills with lava over the course of the fight.",
+              "type": "passive",
+              "trailDamage": 15,
+              "trailTickRate": 1.0,
+              "trailPersistent": true
+            }
+          }
+        },
+        {
+          "name": "Erupted",
+          "hpThreshold": 0.55,
+          "abilities": ["full-body-slam", "magma-spray", "devour", "segment-barrage"],
+          "behavior": "aggressive-surface-combat",
+          "visualChange": "worm-fully-surfaces-obsidian-plates-crack-revealing-magma-core",
+          "statBoost": { "atk": 1.3, "spd": 1.2 },
+          "abilityDetails": {
+            "full-body-slam": {
+              "description": "The entire worm lifts from the ground and crashes down across the arena, dealing massive damage in a wide line.",
+              "damage": 60,
+              "cooldown": 12.0,
+              "aoe": { "type": "line", "width": 80, "range": 400 },
+              "warningTime": 3.0
+            },
+            "magma-spray": {
+              "description": "Sprays a fountain of molten rock from its cracked segments, showering the arena with burning projectiles.",
+              "damage": 25,
+              "cooldown": 8.0,
+              "projectileCount": 12,
+              "aoe": { "type": "circle", "radius": 300 }
+            },
+            "devour": {
+              "description": "Attempts to swallow a single target whole. The swallowed character takes continuous fire damage and must be freed by allies attacking the worm's exposed belly.",
+              "cooldown": 20.0,
+              "internalDamage": 20,
+              "internalTickRate": 1.0,
+              "weakSpotDamageMultiplier": 2.0,
+              "weakSpotHP": 300,
+              "effect": { "type": "devour", "freeCondition": "destroy-weak-spot" }
+            },
+            "segment-barrage": {
+              "description": "Detaches damaged segments of its body and launches them at the party. Each segment explodes on impact, dealing fire damage.",
+              "damage": 35,
+              "cooldown": 10.0,
+              "segmentCount": 4,
+              "aoe": { "type": "circle", "radius": 60 }
+            }
+          }
+        },
+        {
+          "name": "Meltdown",
+          "hpThreshold": 0.2,
+          "abilities": ["core-exposure", "death-throes-tunnel", "final-eruption", "magma-flood"],
+          "behavior": "desperate-area-destruction",
+          "visualChange": "obsidian-armor-shatters-pure-magma-worm-exposed",
+          "statBoost": { "atk": 1.6, "spd": 1.5, "def": 0.4 },
+          "enrageTimer": 90,
+          "abilityDetails": {
+            "core-exposure": {
+              "description": "With its armor shattered, the worm's core is exposed — it takes 50% increased damage but deals 50% increased damage and the arena temperature skyrockets, dealing ambient fire damage.",
+              "type": "passive",
+              "damageReceived": 1.5,
+              "damageDealt": 1.5,
+              "ambientDamage": 8,
+              "ambientTickRate": 1.0
+            },
+            "death-throes-tunnel": {
+              "description": "Burrows in a crazed, erratic pattern, creating explosions wherever it surfaces and filling the arena with lava at an accelerated rate.",
+              "cooldown": 12.0,
+              "duration": 6.0,
+              "surfaceCount": 4,
+              "surfaceDamage": 45,
+              "surfaceRadius": 80
+            },
+            "final-eruption": {
+              "description": "At 5% HP, the Core Devourer's body goes critical. Its magma core builds to detonation over 8 seconds. The party must finish it or reach the elevated platforms before it erupts.",
+              "type": "death-trigger",
+              "hpThreshold": 0.05,
+              "countdownDuration": 8.0,
+              "detonationDamage": 150,
+              "detonationRadius": 400,
+              "safeZones": "elevated-platforms"
+            },
+            "magma-flood": {
+              "description": "The lava level in the arena rises dramatically, reducing safe ground to a few elevated platforms. Standing in lava deals 25 damage per second.",
+              "cooldown": 20.0,
+              "lavaDamage": 25,
+              "lavaTickRate": 1.0,
+              "safeZoneCount": 3
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*the ground shakes with rhythmic, growing intensity. Cracks split the obsidian floor, and from the deepest fissure erupts a monstrous shape — a segmented body of black armor and molten fire, stretching impossibly far into the darkness. Its circular maw opens, revealing rings of obsidian teeth that spin like a mill, and the heat from its gullet turns the air to shimmer.*",
+        "phase2": "*the worm fully surfaces with a thunderous crash, its body coiling in the cavern like an impossible serpent. Its obsidian plates crack and fall away, revealing the pulsing magma core beneath — a living river of fire in the shape of something ancient and hungry.*",
+        "phase3": "*the worm screams — a sound like tearing metal and rushing lava — as its body begins to come apart. Magma leaks from every crack and joint, and its movements become erratic, desperate, the death throes of something that has lived for millennia and does not know how to stop.*",
+        "defeat": "*the Core Devourer collapses in on itself, its body cooling rapidly to a twisting sculpture of black obsidian. The magma drains away through the tunnels it carved, and in the wreckage of its core, something glints — treasures swallowed and preserved in its gullet over centuries of mindless consumption.*"
+      },
+      "sprite": { "base": "worm", "variant": "magma-titan", "width": 96, "height": 64 }
+    },
+    {
+      "id": "forge-keeper-ignar",
+      "name": "Forge Keeper Ignar",
+      "region": "cinder-core",
+      "dungeon": "forge-of-giants",
+      "level": 18,
+      "isBoss": true,
+      "stats": { "hp": 5000, "atk": 65, "def": 45, "spd": 2.0, "int": 22 },
+      "xpReward": 2000,
+      "goldDrop": { "min": 400, "max": 650 },
+      "lootTable": "forge-keeper-boss",
+      "description": "The last fire giant in existence — a mountain of obsidian muscle and smoldering bronze, standing twelve meters tall at the shoulder, his body scarred by ten thousand years of toil at the Great Forge. His eyes burn with the steady, unwavering flame of absolute dedication, and the forge hammer he carries is the same one that shaped the chains binding Pyraxion. He does not seek conflict — he seeks only to fulfill his purpose. But his purpose is to guard the forge, and anyone who enters unbidden is a threat to be eliminated. He is the last. When he falls, an entire race dies with him.",
+      "phases": [
+        {
+          "name": "Guardian",
+          "hpThreshold": 1.0,
+          "abilities": ["giant-forge-strike", "chain-sweep", "summon-automatons", "quench"],
+          "behavior": "defensive-melee-commander",
+          "abilityDetails": {
+            "giant-forge-strike": {
+              "description": "Swings his enormous forge hammer in a devastating overhead arc that creates a shockwave on impact, dealing massive physical and fire damage.",
+              "damage": 80,
+              "cooldown": 5.0,
+              "aoe": { "type": "cone", "angle": 60, "range": 120 },
+              "shockwave": { "type": "line", "width": 60, "range": 300, "damage": 40 }
+            },
+            "chain-sweep": {
+              "description": "Swings a massive adamantine chain in a 360-degree arc around him, dealing physical damage and pulling all hit targets to melee range.",
+              "damage": 45,
+              "cooldown": 10.0,
+              "aoe": { "type": "circle", "radius": 250 },
+              "effect": { "type": "pull", "toMelee": true }
+            },
+            "summon-automatons": {
+              "description": "Activates dormant Forge Automatons from alcoves around the forge chamber. Summons 2 automatons to defend the forge.",
+              "cooldown": 30.0,
+              "summonCount": 2,
+              "summonId": "forge-automaton"
+            },
+            "quench": {
+              "description": "Plunges his hammer into the lava channel running through the forge, then slams it down in a massive steam explosion that deals fire damage and reduces visibility.",
+              "damage": 55,
+              "cooldown": 14.0,
+              "aoe": { "type": "circle", "radius": 200 },
+              "effect": { "type": "blind", "duration": 3.0 }
+            }
+          }
+        },
+        {
+          "name": "Enraged Smith",
+          "hpThreshold": 0.4,
+          "abilities": ["berserker-forge", "anvil-slam", "molten-chains", "last-giant-fury"],
+          "behavior": "berserk-melee",
+          "visualChange": "body-cracks-with-internal-fire-eyes-blaze-white-hot",
+          "statBoost": { "atk": 1.5, "spd": 1.6, "def": 0.7 },
+          "enrageTimer": 150,
+          "abilityDetails": {
+            "berserker-forge": {
+              "description": "Ignar plunges both hands into the forge-fire and channels it through his body, wreathing himself in flames. All melee attacks deal additional fire damage and leave burning ground.",
+              "type": "passive",
+              "bonusFireDamage": 30,
+              "burningGroundDamage": 10,
+              "burningGroundDuration": 6.0
+            },
+            "anvil-slam": {
+              "description": "Leaps to the Great Anvil and slams his hammer down with the force of an earthquake, sending shockwaves radiating outward that deal escalating damage the closer you are.",
+              "damage": 100,
+              "cooldown": 12.0,
+              "aoe": { "type": "circle", "radius": 350 },
+              "damageFalloff": "inverse",
+              "warningTime": 2.5,
+              "effect": { "type": "knockdown", "duration": 2.0 }
+            },
+            "molten-chains": {
+              "description": "Forges chains of molten adamantine in real-time and hurls them at all party members, tethering them in place for 4 seconds. Chains can be broken by sustained ice damage.",
+              "cooldown": 18.0,
+              "chainHP": 200,
+              "duration": 4.0,
+              "tickDamage": 12,
+              "tickRate": 1.0,
+              "breakCondition": "ice-damage-100"
+            },
+            "last-giant-fury": {
+              "description": "At 10% HP, Ignar enters a final rage — gaining immunity to crowd control, 30% lifesteal, and doubling his attack speed. His attacks become increasingly erratic and desperate.",
+              "type": "passive-trigger",
+              "hpThreshold": 0.1,
+              "ccImmune": true,
+              "lifesteal": 0.3,
+              "atkSpdMultiplier": 2.0
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*a rhythmic CLANG-CLANG-CLANG echoes through the forge as a figure of impossible size works at an anvil, sparks cascading from every blow. He stops. Turns. His eyes — furnaces of ancient, tired fire — regard the party with something between curiosity and resignation* Ten thousand years I have worked this forge. Ten thousand years since my brothers fell. Ten thousand years of hammering, shaping, maintaining the chains that hold the World-Ender. *sets down his hammer with a boom that shakes the cavern* And now you come. Tiny creatures. With your tiny weapons and your tiny courage. *picks up the hammer again* Why are you here?",
+        "phase2": "*Ignar staggers, something cracking in his ancient frame. The fire in his eyes blazes from orange to white* You... HURT me? *a rumbling laugh, half admiration, half fury* The last mortal to wound me was the one who forged that axe you carry! *recognition flares in his eyes at the obsidian fragments* The AXE! You bring the FRAGMENTS! You want me to REFORGE it? *the hammer trembles in his hands* Then PROVE you are WORTHY to wield it! A weapon of the fire giants demands a FIRE GIANT'S CHALLENGE! SHOW ME YOUR FURY, MORTALS! SHOW ME YOU BURN AS HOT AS WE DID!",
+        "defeat": "*Ignar drops to one knee, his hammer cracking the floor. The fire in his eyes dims to a warm glow — the first gentle light they have known in millennia* You fought... like giants. *a slow, weary smile crosses his craggy face* I am the last of my kind. When I fall, the fire giants are no more. But the forge... the forge will endure. *places his hand on the Great Anvil* Bring me the fragments. I will reforge the Obsidian Great Axe — one final masterwork, from the last smith of a dead race. *looks at the party with something like gratitude* And when you face the World-Ender... strike true. Strike for every fire giant who ever lived. Strike for Ignar."
+      },
+      "specialNote": "If the party has all 3 obsidian fragments and Crag Hack is present, defeating Ignar triggers the Obsidian Great Axe reforging cutscene. Ignar does not die — he yields and becomes an ally.",
+      "sprite": { "base": "giant", "variant": "forge-keeper", "width": 96, "height": 112 }
+    },
+    {
+      "id": "pyraxion-world-ender",
+      "name": "Pyraxion the World-Ender",
+      "region": "cinder-core",
+      "dungeon": "pyraxion-prison",
+      "level": 20,
+      "isBoss": true,
+      "isRegionBoss": true,
+      "isFinalBoss": true,
+      "stats": { "hp": 10000, "atk": 80, "def": 50, "spd": 3.0, "int": 50 },
+      "xpReward": 5000,
+      "goldDrop": { "min": 1000, "max": 2000 },
+      "lootTable": "pyraxion-boss",
+      "description": "The ancient fire god sealed at the heart of the world since the dawn of civilization — Pyraxion the World-Ender, whose flames once warmed the first peoples and lit the first sunrise. It was a god of creation before it became a god of destruction, and the madness that drives it is not evil but a cosmic hunger that transcends morality. It wants to draw all matter back into the primordial flame, to unmake creation and begin again. The chains that bind it — forged from divine prayers and mortal sacrifice — have held for ten thousand years. They will not hold much longer.",
+      "phases": [
+        {
+          "name": "Mortal Shell",
+          "hpThreshold": 1.0,
+          "abilities": ["flame-lance", "fire-ward", "inferno-bolt", "summon-flame-pillars"],
+          "behavior": "ranged-caster",
+          "visualDescription": "A tall, gaunt humanoid figure wreathed in fire, wearing robes of solidified flame. Its face is a featureless mask of white-hot metal, and its hands trail sparks with every gesture.",
+          "abilityDetails": {
+            "flame-lance": {
+              "description": "Conjures a lance of compressed fire and hurls it at a target, piercing through all enemies in its path and leaving a trail of burning ground.",
+              "damage": 60,
+              "cooldown": 4.0,
+              "aoe": { "type": "line", "width": 30, "range": 500 },
+              "piercing": true,
+              "trailDuration": 8.0,
+              "trailDamage": 10
+            },
+            "fire-ward": {
+              "description": "Creates a rotating shield of fire runes that absorbs the next 3 incoming attacks and retaliates with a fire bolt for each absorbed attack.",
+              "cooldown": 16.0,
+              "charges": 3,
+              "retaliationDamage": 30,
+              "retaliationRange": 300
+            },
+            "inferno-bolt": {
+              "description": "Channels for 2 seconds, then fires a massive bolt of concentrated fire at a single target. Deals devastating fire damage. Can be interrupted.",
+              "damage": 90,
+              "cooldown": 8.0,
+              "channelTime": 2.0,
+              "interruptible": true,
+              "range": 500
+            },
+            "summon-flame-pillars": {
+              "description": "Raises 4 pillars of fire from the ground at the arena's edges. Each pillar fires a beam at the nearest target every 3 seconds. Pillars can be destroyed.",
+              "cooldown": 25.0,
+              "pillarCount": 4,
+              "pillarHP": 200,
+              "beamDamage": 20,
+              "beamRate": 3.0
+            }
+          }
+        },
+        {
+          "name": "True Form",
+          "hpThreshold": 0.7,
+          "abilities": ["titan-slam", "world-fire-breath", "gravity-of-flame", "arena-ignition"],
+          "behavior": "aggressive-titan",
+          "visualChange": "mortal-shell-shatters-reveals-massive-fire-titan-arena-edges-ignite",
+          "statBoost": { "atk": 1.4, "def": 1.2, "spd": 0.8 },
+          "arenaChange": "arena-edges-ignite-shrinking-safe-zone",
+          "abilityDetails": {
+            "titan-slam": {
+              "description": "Brings a fist the size of a house crashing down on the arena, creating a shockwave that covers half the fighting space.",
+              "damage": 80,
+              "cooldown": 6.0,
+              "aoe": { "type": "semicircle", "radius": 250 },
+              "warningTime": 2.5,
+              "effect": { "type": "knockback", "distance": 150 }
+            },
+            "world-fire-breath": {
+              "description": "Breathes a sweeping cone of primordial fire that burns hotter than any natural flame. Everything in its path takes massive fire damage and is ignited for 8 seconds.",
+              "damage": 70,
+              "cooldown": 10.0,
+              "aoe": { "type": "cone", "angle": 60, "range": 400 },
+              "effect": { "type": "burn", "damage": 15, "duration": 8.0 }
+            },
+            "gravity-of-flame": {
+              "description": "Creates a point of gravitational collapse at the center of the arena that pulls all enemies inward while dealing escalating fire damage the closer they are to the center.",
+              "cooldown": 18.0,
+              "duration": 5.0,
+              "pullForce": 50,
+              "centerDamage": 80,
+              "edgeDamage": 20,
+              "aoe": { "type": "circle", "radius": 300 }
+            },
+            "arena-ignition": {
+              "description": "The arena's edges catch fire, permanently shrinking the safe fighting area. This happens at set HP thresholds, making the arena progressively smaller.",
+              "type": "passive-trigger",
+              "triggers": [0.65, 0.55, 0.45],
+              "shrinkPercent": 0.15
+            }
+          }
+        },
+        {
+          "name": "Apocalypse",
+          "hpThreshold": 0.4,
+          "abilities": ["rain-of-fire", "summon-fire-heralds", "apocalypse-nova", "chains-of-binding"],
+          "behavior": "devastating-aoe-caster",
+          "visualChange": "entire-arena-on-fire-sky-visible-through-cracked-ceiling-burning",
+          "statBoost": { "atk": 1.7, "int": 1.8, "spd": 1.3, "def": 0.6 },
+          "arenaChange": "arena-floor-becomes-lava-with-floating-platforms",
+          "abilityDetails": {
+            "rain-of-fire": {
+              "description": "The sky rains fire. Meteors of compressed flame fall across the entire arena for 8 seconds, each impact creating a small lava pool.",
+              "damage": 35,
+              "cooldown": 15.0,
+              "duration": 8.0,
+              "meteorRate": 0.5,
+              "meteorCount": 16,
+              "aoe": { "type": "circle", "radius": 50 }
+            },
+            "summon-fire-heralds": {
+              "description": "Calls forth 4 Fire Heralds — elite fire elementals that serve as extensions of Pyraxion's will. Each living Herald reduces damage Pyraxion takes by 25%.",
+              "cooldown": 30.0,
+              "summonCount": 4,
+              "heraldStats": { "hp": 400, "atk": 35, "def": 15, "spd": 3.5 },
+              "shieldEffect": "pyraxion-takes-25-percent-reduced-damage-per-living-herald"
+            },
+            "apocalypse-nova": {
+              "description": "Channels the full force of a dying sun into a single devastating explosion. The entire arena is consumed by fire. Players must find and stand on the one safe zone — a Binding Chain fragment — or die instantly.",
+              "damage": 999,
+              "cooldown": 25.0,
+              "channelTime": 5.0,
+              "safeZones": 1,
+              "safeZoneType": "binding-chain-fragment",
+              "warningTime": 5.0
+            },
+            "chains-of-binding": {
+              "description": "The remnants of Pyraxion's divine chains still linger in the arena. Players can interact with chain fragments to create temporary safe zones and deal 25% bonus damage to Pyraxion for 10 seconds.",
+              "type": "arena-mechanic",
+              "chainCount": 3,
+              "bonusDamage": 0.25,
+              "duration": 10.0,
+              "cooldown": 30.0
+            }
+          }
+        },
+        {
+          "name": "Dying Star",
+          "hpThreshold": 0.15,
+          "abilities": ["supernova-countdown", "desperate-immolation", "final-flame", "world-end-channel"],
+          "behavior": "desperate-countdown",
+          "visualChange": "pyraxion-body-becomes-unstable-flickering-between-forms",
+          "statBoost": { "atk": 2.0, "spd": 1.8, "def": 0.3 },
+          "specialMechanic": "wipe-countdown",
+          "wipeTimer": 120,
+          "abilityDetails": {
+            "supernova-countdown": {
+              "description": "A 120-second countdown begins. If Pyraxion is not defeated before the timer reaches zero, it detonates with the force of a dying sun, destroying everything. A visible countdown timer appears on screen.",
+              "type": "enrage-mechanic",
+              "timer": 120,
+              "wipeOnExpire": true,
+              "wipeDamage": 99999
+            },
+            "desperate-immolation": {
+              "description": "Pyraxion lashes out with wild, desperate attacks — each strike deals massive fire damage but also damages Pyraxion for 1% of its max HP. The god is destroying itself to destroy you.",
+              "damage": 70,
+              "cooldown": 2.0,
+              "selfDamagePercent": 0.01,
+              "aoe": { "type": "cone", "angle": 90, "range": 200 }
+            },
+            "final-flame": {
+              "description": "Concentrates all remaining power into a single target — the party member who has dealt the most damage. Fires an unavoidable beam that deals 80% of the target's max HP as fire damage.",
+              "cooldown": 15.0,
+              "damageType": "percent-max-hp",
+              "damagePercent": 0.8,
+              "unavoidable": true,
+              "targetSelection": "highest-damage-dealt"
+            },
+            "world-end-channel": {
+              "description": "At 3% HP, Pyraxion stops attacking and begins a final 10-second channel to detonate. The party must deal the remaining damage before the channel completes. Pyraxion takes double damage during this channel.",
+              "type": "death-trigger",
+              "hpThreshold": 0.03,
+              "channelTime": 10.0,
+              "damageReceived": 2.0,
+              "defenseDropped": true,
+              "failureDamage": 99999
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*the adamantine prison groans, chains glowing white-hot as something stirs within. A voice speaks — not from any mouth, but from the fire itself, from every torch, every ember, every spark in the world* You've come at last. I felt your footsteps the moment you entered the mountain. I felt your heartbeats — so small, so warm, so brief. *the chains shatter one by one, and a figure steps from the wreckage — humanoid, beautiful, wreathed in fire that does not burn but illuminates* I was the first light. Before your sun, before your stars, before the concept of warmth existed — there was ME. I warmed the first hands. I lit the first dawn. I taught your ancestors to cook, to forge, to build. *the fire flickers, and for one moment the figure looks almost sad* And then they feared me. They chained me. They locked me in the heart of the world I BUILT FOR THEM. Ten thousand years in the dark. Do you know what that does to a god?",
+        "phase2": "*the humanoid form shatters, and something titanic unfolds from within — a being of pure fire the size of a cathedral, its body a fusion of every flame that has ever burned* ENOUGH PRETENDING! *the voice is thunder and wildfire* I was KIND! I was GENTLE! I gave them EVERYTHING and they BURIED me for it! *magma erupts from every surface* The world I built is BROKEN! Corrupt! Rotting! The corruption in your forests, the madness in your mountains, the plague in your swamps — all of it flows from ME! From my RAGE! From ten thousand years of BETRAYAL! If the world I made has become THIS... then perhaps it is time to UNMAKE it!",
+        "phase3": "*Pyraxion's form expands until it fills the sky, visible through the shattered ceiling — a god of fire raining destruction on a world it once loved* I REMEMBER EVERY FACE! Every human child who sat by their hearth and felt MY warmth! Every smith who shaped steel in MY fire! Every lover who gazed into MY flames and saw their beloved's face! I LOVED THEM! *the fire becomes tears — literal tears of flame cascading from something that might be eyes* AND THEY LOCKED ME IN A HOLE! For TEN THOUSAND YEARS I have burned ALONE! No more! If I cannot warm them, I will BURN them! If I cannot love them, I will CONSUME them! THIS! IS! THE! END!",
+        "phase4": "*Pyraxion's massive form begins to flicker and destabilize — the fire guttering like a candle in a storm. Its voice is smaller now, almost human, almost afraid* I'm... dying. After all this time. After everything. *the titan shrinks, its fire dimming* I can feel it ending. The first light... going dark. *pauses* You know what the worst part is? I still love them. Every mortal who ever lived. Every hand I ever warmed. Even you. Especially you. *the fire blazes one final time* If this is the end... then let it be GLORIOUS! Let the last flame of the first god burn SO BRIGHT that it lights the sky FOREVER! COME, MORTALS! SHOW ME THAT THE WORLD I BUILT WAS WORTH SAVING!",
+        "defeat": "*Pyraxion collapses inward, its titan form crumbling to ash and ember. Where the fire god stood, a single, small flame hovers — barely the size of a candle flame, warm and golden and impossibly old* I remember now. Before the chains. Before the rage. Before all of it. I was just... a spark. A little light in the darkness, trying to make the world warm. *the flame flickers* Tell them... tell them the first fire remembers. Tell them it was never meant to burn. It was meant to... to comfort. To guide. To... *the flame dims, then steadies — and does not go out. It hovers there, warm and gentle, waiting to be carried* ...to hope."
+      },
+      "sprite": { "base": "god", "variant": "pyraxion", "width": 128, "height": 128 }
+    }
+  ],
+  "lootTables": {
+    "magma-elemental-uncommon": {
+      "drops": [
+        { "itemId": "magma-core", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "elemental-essence-fire", "chance": 0.25, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "cooled-magma-plate", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "fire-giant-rare": {
+      "drops": [
+        { "itemId": "fire-giant-tooth", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "giant-forge-fragment", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "smoldering-gauntlets", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "mana-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "obsidian-golem-uncommon": {
+      "drops": [
+        { "itemId": "obsidian-shard", "chance": 0.4, "quantity": { "min": 1, "max": 3 } },
+        { "itemId": "golem-core-fragment", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "mirror-obsidian-plate", "chance": 0.1, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "lava-serpent-uncommon": {
+      "drops": [
+        { "itemId": "lava-serpent-scale", "chance": 0.35, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "serpent-fang", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "molten-venom-vial", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "ember-wraith-rare": {
+      "drops": [
+        { "itemId": "ember-essence", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "wraith-fire-ring", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "spectral-ember", "chance": 0.2, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "mana-potion", "chance": 0.25, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "forge-automaton-rare": {
+      "drops": [
+        { "itemId": "automaton-gear", "chance": 0.35, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "forge-core-battery", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "adamantine-bolt", "chance": 0.2, "quantity": { "min": 2, "max": 5 } },
+        { "itemId": "mechanical-arm-blueprint", "chance": 0.05, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "cinder-whelp-uncommon": {
+      "drops": [
+        { "itemId": "cinder-dragon-scale", "chance": 0.3, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "whelp-fire-gland", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "dragon-bone-fragment", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "ash-revenant-rare": {
+      "drops": [
+        { "itemId": "ashen-blade-shard", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ember-heart", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "revenant-ash", "chance": 0.4, "quantity": { "min": 1, "max": 3 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "core-devourer-boss": {
+      "guaranteed": [
+        { "itemId": "devourer-obsidian-plate", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "magma-heart", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "wurm-king-fang", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "core-devourer-helm", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "lava-flow-staff", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "magma-core", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } }
+      ]
+    },
+    "forge-keeper-boss": {
+      "guaranteed": [
+        { "itemId": "ignars-forge-hammer", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "fire-giant-crown", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "adamantine-ingot", "quantity": { "min": 3, "max": 5 } }
+      ],
+      "drops": [
+        { "itemId": "forge-keepers-apron", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "giant-chain-whip", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "eternal-forge-ember", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "fire-giant-plate-armor", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 6, "max": 10 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } }
+      ]
+    },
+    "pyraxion-boss": {
+      "guaranteed": [
+        { "itemId": "spark-of-the-first-flame", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "pyraxions-binding-chain", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "world-ender-crown", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "primordial-flame-staff", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "armor-of-the-first-dawn", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "world-ender-blade", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "gods-tear-gem", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "divine-fire-essence", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "legendary-health-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } },
+        { "itemId": "legendary-mana-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } },
+        { "itemId": "dragons-hoard-gold", "chance": 1.0, "quantity": { "min": 2000, "max": 5000 } }
+      ]
+    }
+  }
+}

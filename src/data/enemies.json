@@ -1,0 +1,286 @@
+{
+  "enemies": [
+    {
+      "id": "forest-slime",
+      "name": "Forest Slime",
+      "region": "elderwood",
+      "level": 1,
+      "stats": { "hp": 20, "atk": 5, "def": 2, "spd": 1.5 },
+      "xpReward": 10,
+      "goldDrop": { "min": 1, "max": 3 },
+      "lootTable": "slime-common",
+      "behavior": "patrol-slow",
+      "abilities": [],
+      "weaknesses": ["fire"],
+      "resistances": ["physical"],
+      "sprite": { "base": "slime", "variant": "green", "width": 24, "height": 20 }
+    },
+    {
+      "id": "giant-bat",
+      "name": "Giant Bat",
+      "region": "elderwood",
+      "level": 1,
+      "stats": { "hp": 15, "atk": 7, "def": 1, "spd": 4.0 },
+      "xpReward": 12,
+      "goldDrop": { "min": 1, "max": 4 },
+      "lootTable": "bat-common",
+      "behavior": "fly-swoop",
+      "abilities": ["sonic-screech"],
+      "weaknesses": ["lightning"],
+      "resistances": [],
+      "sprite": { "base": "bat", "variant": "brown", "width": 28, "height": 20 }
+    },
+    {
+      "id": "wolf",
+      "name": "Wolf",
+      "region": "elderwood",
+      "level": 2,
+      "stats": { "hp": 30, "atk": 10, "def": 3, "spd": 4.5 },
+      "xpReward": 18,
+      "goldDrop": { "min": 0, "max": 2 },
+      "lootTable": "wolf-common",
+      "behavior": "chase-aggressive",
+      "abilities": ["lunge", "howl"],
+      "weaknesses": ["fire"],
+      "resistances": [],
+      "packSize": { "min": 2, "max": 4 },
+      "sprite": { "base": "wolf", "variant": "grey", "width": 32, "height": 24 }
+    },
+    {
+      "id": "goblin-raider",
+      "name": "Goblin Raider",
+      "region": "elderwood",
+      "level": 3,
+      "stats": { "hp": 45, "atk": 12, "def": 5, "spd": 3.0 },
+      "xpReward": 25,
+      "goldDrop": { "min": 3, "max": 8 },
+      "lootTable": "goblin-common",
+      "behavior": "melee-aggressive",
+      "abilities": ["charge", "thrown-dagger"],
+      "weaknesses": ["fire"],
+      "resistances": [],
+      "sprite": { "base": "goblin", "variant": "raider", "width": 24, "height": 28 }
+    },
+    {
+      "id": "goblin-shaman",
+      "name": "Goblin Shaman",
+      "region": "elderwood",
+      "level": 4,
+      "stats": { "hp": 35, "atk": 6, "def": 3, "spd": 2.5, "int": 12 },
+      "xpReward": 30,
+      "goldDrop": { "min": 5, "max": 12 },
+      "lootTable": "goblin-magic",
+      "behavior": "ranged-support",
+      "abilities": ["fire-bolt", "heal-ally", "war-drum"],
+      "weaknesses": ["ice"],
+      "resistances": ["fire"],
+      "sprite": { "base": "goblin", "variant": "shaman", "width": 24, "height": 30 }
+    },
+    {
+      "id": "forest-spider",
+      "name": "Forest Spider",
+      "region": "elderwood",
+      "level": 2,
+      "stats": { "hp": 25, "atk": 9, "def": 4, "spd": 3.5 },
+      "xpReward": 15,
+      "goldDrop": { "min": 0, "max": 3 },
+      "lootTable": "spider-common",
+      "behavior": "ambush-ceiling",
+      "abilities": ["web-shot", "poison-bite"],
+      "weaknesses": ["fire"],
+      "resistances": ["shadow"],
+      "sprite": { "base": "spider", "variant": "forest", "width": 28, "height": 24 }
+    },
+    {
+      "id": "treant",
+      "name": "Treant",
+      "region": "elderwood",
+      "level": 5,
+      "stats": { "hp": 100, "atk": 18, "def": 15, "spd": 1.0 },
+      "xpReward": 50,
+      "goldDrop": { "min": 0, "max": 5 },
+      "lootTable": "treant-uncommon",
+      "behavior": "stationary-guard",
+      "abilities": ["root-slam", "throw-boulder", "regenerate"],
+      "weaknesses": ["fire"],
+      "resistances": ["nature", "physical"],
+      "sprite": { "base": "treant", "variant": "oak", "width": 48, "height": 56 }
+    },
+    {
+      "id": "corrupted-elf",
+      "name": "Corrupted Elf",
+      "region": "elderwood",
+      "level": 6,
+      "stats": { "hp": 55, "atk": 16, "def": 8, "spd": 4.0, "int": 14 },
+      "xpReward": 45,
+      "goldDrop": { "min": 8, "max": 20 },
+      "lootTable": "corrupted-elf-rare",
+      "behavior": "ranged-dodge",
+      "abilities": ["shadow-arrow", "blink", "dark-enchant"],
+      "weaknesses": ["holy"],
+      "resistances": ["shadow", "nature"],
+      "sprite": { "base": "elf", "variant": "corrupted", "width": 24, "height": 32 }
+    },
+    {
+      "id": "bandit",
+      "name": "Bandit",
+      "region": "elderwood",
+      "level": 3,
+      "stats": { "hp": 40, "atk": 11, "def": 6, "spd": 3.5 },
+      "xpReward": 22,
+      "goldDrop": { "min": 5, "max": 15 },
+      "lootTable": "bandit-common",
+      "behavior": "melee-tactical",
+      "abilities": ["backstab", "throw-net", "flee-low-hp"],
+      "weaknesses": [],
+      "resistances": [],
+      "sprite": { "base": "human", "variant": "bandit", "width": 24, "height": 32 }
+    }
+  ],
+  "bosses": [
+    {
+      "id": "giant-spider-queen",
+      "name": "Spider Queen",
+      "region": "elderwood",
+      "dungeon": "hollow-oak-caves",
+      "level": 3,
+      "isBoss": true,
+      "stats": { "hp": 300, "atk": 15, "def": 8, "spd": 3.0 },
+      "xpReward": 150,
+      "goldDrop": { "min": 30, "max": 50 },
+      "lootTable": "spider-queen-boss",
+      "phases": [
+        {
+          "name": "Phase 1",
+          "hpThreshold": 1.0,
+          "abilities": ["web-spray", "poison-bite", "summon-spiderlings"],
+          "behavior": "aggressive-melee"
+        },
+        {
+          "name": "Phase 2",
+          "hpThreshold": 0.5,
+          "abilities": ["web-cocoon", "acid-spit", "burrow", "summon-spiderlings"],
+          "behavior": "ranged-retreat",
+          "enrageTimer": 120
+        }
+      ],
+      "sprite": { "base": "spider", "variant": "queen", "width": 64, "height": 48 }
+    },
+    {
+      "id": "corrupted-sentinel",
+      "name": "Corrupted Sentinel",
+      "region": "elderwood",
+      "dungeon": "ruined-watchtower",
+      "level": 5,
+      "isBoss": true,
+      "stats": { "hp": 500, "atk": 22, "def": 18, "spd": 2.0 },
+      "xpReward": 300,
+      "goldDrop": { "min": 50, "max": 80 },
+      "lootTable": "sentinel-boss",
+      "phases": [
+        {
+          "name": "Stone Guardian",
+          "hpThreshold": 1.0,
+          "abilities": ["ground-slam", "shield-charge", "stone-throw"],
+          "behavior": "tank-aggressive"
+        },
+        {
+          "name": "Awakened Fury",
+          "hpThreshold": 0.6,
+          "abilities": ["whirlwind", "leap-slam", "summon-gargoyles"],
+          "behavior": "berserk",
+          "statBoost": { "atk": 1.3, "spd": 1.5 }
+        },
+        {
+          "name": "Desperate Stand",
+          "hpThreshold": 0.25,
+          "abilities": ["earthquake", "self-repair", "death-grip"],
+          "behavior": "desperate",
+          "statBoost": { "atk": 1.5, "def": 0.5, "spd": 2.0 }
+        }
+      ],
+      "sprite": { "base": "sentinel", "variant": "corrupted", "width": 56, "height": 64 }
+    },
+    {
+      "id": "forest-guardian",
+      "name": "Forest Guardian",
+      "region": "elderwood",
+      "dungeon": "ancient-elven-ruins",
+      "level": 8,
+      "isBoss": true,
+      "isRegionBoss": true,
+      "stats": { "hp": 800, "atk": 28, "def": 20, "spd": 2.5, "int": 18 },
+      "xpReward": 600,
+      "goldDrop": { "min": 100, "max": 150 },
+      "lootTable": "forest-guardian-boss",
+      "phases": [
+        {
+          "name": "Nature's Wrath",
+          "hpThreshold": 1.0,
+          "abilities": ["vine-whip", "thorn-barrage", "root-prison", "nature-heal"],
+          "behavior": "balanced-caster"
+        },
+        {
+          "name": "Corrupted Form",
+          "hpThreshold": 0.65,
+          "abilities": ["shadow-vines", "corruption-blast", "summon-treants", "absorb-life"],
+          "behavior": "aggressive-caster",
+          "visualChange": "dark-corruption-overlay",
+          "statBoost": { "atk": 1.4, "int": 1.3 }
+        },
+        {
+          "name": "Final Bloom",
+          "hpThreshold": 0.3,
+          "abilities": ["mega-bloom", "forest-rage", "death-spores", "last-stand-heal"],
+          "behavior": "desperate-caster",
+          "visualChange": "glowing-nature-rage",
+          "statBoost": { "atk": 1.8, "spd": 1.5, "def": 0.7 },
+          "enrageTimer": 90
+        }
+      ],
+      "dialogue": {
+        "intro": "You dare trespass in my ancient grove? The corruption has taken root... and so shall you!",
+        "phase2": "The darkness... it consumes me! I cannot... control...",
+        "phase3": "ENOUGH! If I fall, this entire forest falls with me!",
+        "defeat": "You... have freed me. The corruption... it came from the depths. Seek the source... in the mountains..."
+      },
+      "sprite": { "base": "guardian", "variant": "forest", "width": 72, "height": 80 }
+    }
+  ],
+  "lootTables": {
+    "slime-common": {
+      "drops": [
+        { "itemId": "slime-gel", "chance": 0.4, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "health-potion", "chance": 0.1, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "goblin-common": {
+      "drops": [
+        { "itemId": "rusty-dagger", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "goblin-ear", "chance": 0.5, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "spider-queen-boss": {
+      "guaranteed": [
+        { "itemId": "spider-silk-armor", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "venom-fang-dagger", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 2, "max": 3 } }
+      ]
+    },
+    "forest-guardian-boss": {
+      "guaranteed": [
+        { "itemId": "guardian-bark-shield", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "corruption-shard", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "elder-staff", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "cracked-obsidian-axe", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 2, "max": 4 } }
+      ]
+    }
+  }
+}

@@ -1,0 +1,438 @@
+{
+  "id": "crag-hack-recruitment",
+  "speaker": "Crag Hack",
+  "context": "Thornwick Arena - After defeating Crag Hack in the arena duel",
+  "portrait": "crag-hack",
+  "nodes": {
+    "start": {
+      "text": "*spits blood onto the sand and slowly rises, a wide grin splitting his battered face* Ha! You hit like a collapsing mineshaft! I haven't kissed the dirt like that since the Grand Melee of Stonefang. Seventeen straight victories in this pit, and you just made them all look like warm-ups. You've got iron in your veins, stranger.",
+      "choices": [
+        {
+          "text": "You're a formidable fighter yourself. I could use someone like you.",
+          "next": "recruit_pitch"
+        },
+        {
+          "text": "[CHA >= 14] That was the best fight I've had in years. A warrior like you deserves better than pit fighting for copper coins.",
+          "next": "charisma_persuade",
+          "condition": {
+            "type": "stat_check",
+            "stat": "CHA",
+            "minimum": 14
+          }
+        },
+        {
+          "text": "Tell me about yourself. How did a fighter like you end up in this arena?",
+          "next": "ask_past"
+        },
+        {
+          "text": "Stay down. I don't need beaten fighters slowing me down.",
+          "next": "decline_harsh"
+        }
+      ]
+    },
+
+    "charisma_persuade": {
+      "text": "*pauses mid-stretch, studying you with unexpected sharpness* Huh. 'Deserves better,' you say? You've got a silver tongue to match that strong sword arm. Most people who beat me just crow about it. You're... different. Truth is, I've been rotting in this arena for three seasons. The crowds cheer, the coin flows, but none of it means a damn thing anymore. I came to Thornwick chasing a legend, not to become one.",
+      "effects": {
+        "charisma_check_passed": true
+      },
+      "choices": [
+        {
+          "text": "What legend are you chasing?",
+          "next": "obsidian_axe_lore"
+        },
+        {
+          "text": "Then stop wasting yourself here. Join me and we'll find something worth fighting for.",
+          "next": "accept_charisma"
+        },
+        {
+          "text": "Sounds like you've lost your edge. Maybe the arena IS where you belong.",
+          "next": "challenge_worth"
+        }
+      ]
+    },
+
+    "recruit_pitch": {
+      "text": "*crosses massive arms and looks you over* Use me? Bold words for someone still wiping my blood off their knuckles. But I respect a straight talker -- most fools around here speak in circles until my head spins worse than their bodies after I hit them. What exactly are you proposing? I should warn you: I don't carry shields, I don't guard supply wagons, and I don't take orders well.",
+      "choices": [
+        {
+          "text": "I'm building a company of equals, not a chain of command. I need allies, not servants.",
+          "next": "accept_direct"
+        },
+        {
+          "text": "I need the strongest fighters I can find. A corruption is spreading through the realms, and it won't stop itself.",
+          "next": "mention_corruption"
+        },
+        {
+          "text": "Before I ask -- tell me your story. How did you end up here?",
+          "next": "ask_past"
+        },
+        {
+          "text": "Forget it. You're too unpredictable for what I need.",
+          "next": "decline_mild"
+        }
+      ]
+    },
+
+    "ask_past": {
+      "text": "*settles onto a stone bench, the wood having long since been smashed* My story? Ha! Buy me an ale and I'd talk your ear clean off. Short version -- I was the Grand Champion of the Stonefang Pits for six years running. Six! Undefeated. They called me 'The Avalanche.' Every fight I won, the crowd went wilder. But I didn't fight for glory or gold. I fought because every champion earns a boon, and I kept asking the pit masters for the same thing: the location of the Obsidian Great Axe.",
+      "choices": [
+        {
+          "text": "The Obsidian Great Axe? Tell me more about it.",
+          "next": "obsidian_axe_lore"
+        },
+        {
+          "text": "Six years as champion? Why did you leave?",
+          "next": "why_left_stonefang"
+        },
+        {
+          "text": "Interesting story. So -- will you join me or not?",
+          "next": "recruit_pitch"
+        }
+      ]
+    },
+
+    "obsidian_axe_lore": {
+      "text": "*leans forward, voice dropping to a reverent rumble* The Obsidian Great Axe. Forged from volcanic glass by the Deepforge dwarves before the Sundering. The legends say it can shear through dragon scale like parchment. Every swing sends tremors through the earth, and the blade never dulls -- it feeds on the heat of battle itself. My grandfather saw it once, mounted in the war-hall of a mountain king. That image burned into our bloodline like a brand. Three generations of Hacks have bled and broken searching for it. I won't be the one who gives up.",
+      "choices": [
+        {
+          "text": "If you join me, I swear we'll find that axe together.",
+          "next": "promise_axe"
+        },
+        {
+          "text": "Do you have any leads on where it might be?",
+          "next": "axe_location_hint"
+        },
+        {
+          "text": "A family obsession spanning generations. I understand the weight of carrying something like that.",
+          "next": "empathy_response"
+        }
+      ]
+    },
+
+    "axe_location_hint": {
+      "text": "The pit masters in Stonefang finally gave me a scrap after my sixth championship -- said the axe was last seen in the Shattered Peaks, deep in a vault guarded by something old and very, very angry. That's why I came west, fighting my way through every arena from the Wastes to Thornwick, funding the expedition one broken jaw at a time. But the Peaks... *shakes head* ...you don't walk into the Shattered Peaks alone. Not if you want to walk back out with all your limbs attached.",
+      "choices": [
+        {
+          "text": "Then you definitely need allies. Come with me -- we'll reach those peaks eventually.",
+          "next": "promise_axe"
+        },
+        {
+          "text": "The Shattered Peaks sound lethal. Are you sure you're up for that?",
+          "next": "challenge_worth"
+        },
+        {
+          "text": "I've got my own battles to fight first. Good luck with the search.",
+          "next": "decline_mild"
+        }
+      ]
+    },
+
+    "why_left_stonefang": {
+      "text": "Because a champion who stays too long becomes a fixture -- like a torch sconce or a bloodstain on the wall. The crowds stopped seeing me as a warrior and started seeing me as entertainment. I cracked my last opponent's shield clean in two and split his helm with the backswing, and the audience... yawned. YAWNED! That's when I knew: the answers I needed weren't in that pit. So I packed my gear, walked through the champion's gate, and kept walking. First time the gate guards ever saw a champion leave on his own two feet instead of a stretcher.",
+      "choices": [
+        {
+          "text": "You chose freedom over comfort. I respect that deeply.",
+          "next": "empathy_response"
+        },
+        {
+          "text": "The open road has more to offer than any arena. Join me and see for yourself.",
+          "next": "accept_direct"
+        },
+        {
+          "text": "And now you're in a different arena. Doesn't seem like much progress.",
+          "next": "challenge_worth"
+        }
+      ]
+    },
+
+    "empathy_response": {
+      "text": "*goes quiet for a long moment, an unusual thing for Crag Hack* ...You're alright, you know that? Most people hear 'legendary axe' and look at me like I've taken one too many maces to the skull. But you've got that look in your eyes. The look of someone who knows what it's like to carry something bigger than yourself. *stands, extending a scarred hand* So what do you say? Are we doing this, or are we just going to keep bleeding on each other for the crowd's amusement?",
+      "choices": [
+        {
+          "text": "We're doing this. Welcome aboard, Crag Hack.",
+          "next": "accept_warm"
+        },
+        {
+          "text": "One condition: in the field, I lead and you follow. No arguments when lives are on the line.",
+          "next": "accept_conditional"
+        },
+        {
+          "text": "I need some time to think it over.",
+          "next": "decline_mild"
+        }
+      ]
+    },
+
+    "mention_corruption": {
+      "text": "*expression darkens* Corruption? Aye, I've felt it. The beasts in the arena pens have been going mad these past weeks -- frothing at the mouth, eyes black as coal. Two handlers got torn apart last tenday by a boar that should've been docile as a kitten. And the forest to the west? I passed through on my way here. The trees had this... black veining running through the bark. Smelled like rot and hot iron. Something foul is seeping into the bones of this land. If there's a fight worth having against whatever's causing that... well, that's a damn sight better than bashing skulls for copper coins.",
+      "choices": [
+        {
+          "text": "Then you understand what's at stake. Will you join me?",
+          "next": "accept_corruption"
+        },
+        {
+          "text": "It's worse than you think. Elder Oakworth in Oakhollow says the corruption is spreading from ancient ruins in the Elderwood.",
+          "next": "corruption_detail"
+        },
+        {
+          "text": "A warrior who sees the bigger picture. I'm impressed.",
+          "next": "accept_warm"
+        }
+      ]
+    },
+
+    "corruption_detail": {
+      "text": "Elderwood, eh? I passed through that country. Beautiful land -- or it was. If an Elder says it's that serious, I believe it. Those old codgers don't scare easy. They've seen droughts, plagues, beast swarms -- if this has him rattled enough to send strangers into ancient ruins, it's worse than anything he's faced before. *cracks knuckles* Sounds like exactly the kind of problem that needs Crag Hack's particular brand of problem-solving.",
+      "choices": [
+        {
+          "text": "Then you're in?",
+          "next": "accept_corruption"
+        },
+        {
+          "text": "I need your strength, Crag Hack. The corruption won't fight itself.",
+          "next": "accept_warm"
+        }
+      ]
+    },
+
+    "challenge_worth": {
+      "text": "*veins bulge in his neck as he surges to his feet* HA! You've got STONES, I'll give you that! Questioning Crag Hack's worth?! CRAG HACK, who broke the Stonefang championship record?! Who fought a cave troll bare-handed on a bet and WON?! You want proof? FINE! Take me with you and I'll carve through every enemy between here and the horizon. I'll fight twice as hard, twice as mean, and I won't stop until there's nothing left standing but us! You'll be BEGGING me to slow down!",
+      "effects": {
+        "morale_bonus": 15,
+        "temporary_buff": {
+          "type": "attack_bonus",
+          "value": 5,
+          "duration_battles": 3,
+          "description": "Crag Hack fights with something to prove"
+        }
+      },
+      "choices": [
+        {
+          "text": "THAT'S the fire I wanted to see. You're in.",
+          "next": "accept_fired_up"
+        },
+        {
+          "text": "Impressive speech. But talk is cheap -- prove it on the road.",
+          "next": "accept_fired_up"
+        },
+        {
+          "text": "Calm down, big man. I was testing you, and you passed. Welcome to the company.",
+          "next": "accept_fired_up"
+        }
+      ]
+    },
+
+    "promise_axe": {
+      "text": "*freezes mid-motion* You... you'd help me find the Obsidian Great Axe? *voice uncharacteristically quiet* That's not a small promise, friend. I've heard those words before -- usually right before someone tried to pick my pockets or lead me into an ambush for the bounty on my head. Long story. But something tells me you actually mean it. I can see it in your stance -- you don't make promises lightly. *extends both hands and clasps yours* Then you've got my axe arm. Both of them, as a matter of fact. Let's carve a path through whatever stands between us and that weapon.",
+      "effects": {
+        "quest_flag": "crag_hack_personal_quest_active",
+        "relationship_bonus": 10
+      },
+      "choices": [
+        {
+          "text": "You have my word. We'll find it together.",
+          "next": "joined_with_quest"
+        },
+        {
+          "text": "We'll search for it, but first I need your help with a more immediate threat.",
+          "next": "joined_with_quest_pragmatic"
+        }
+      ]
+    },
+
+    "accept_charisma": {
+      "text": "*stares at you for a long beat, then barks a laugh* You know what? You're right. Sitting in this arena waiting for a worthy opponent is just... sitting. And Crag Hack does NOT sit. I've been telling myself I was preparing, building funds, staying sharp -- but really I was just hiding behind the next fight. *slams fist into palm* No more. Lead the way, silver-tongue. But know this: when the fighting starts, I'm at the front. Always at the front.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 80,
+          "loyalty": "willing"
+        },
+        "relationship_bonus": 5
+      },
+      "next": "joined_outro"
+    },
+
+    "accept_direct": {
+      "text": "*uncrosses arms slowly* Allies, not servants. Equals, not ranks. I like the sound of that. Most leaders I've served tried to put a leash on me inside of a day. Didn't work. Doesn't ever work. You seem smart enough to know that a good blade doesn't need a short grip -- you just point it at the enemy and let it do its work. *nods decisively* Alright. I'm in. Point me at something that needs breaking.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 75,
+          "loyalty": "willing"
+        }
+      },
+      "next": "joined_outro"
+    },
+
+    "accept_warm": {
+      "text": "*breaks into a massive grin* Ha! Then it's settled! Crag Hack rides with you! I'll warn you now -- I snore like a rockslide, I eat enough for three grown men, and I will absolutely challenge anyone who looks at me sideways to an arm-wrestling match. I once arm-wrestled a minotaur. Won the match, lost the table. But when the swords come out and the blood starts flying? There is nobody you'd rather have at your back. Nobody alive, anyway.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 80,
+          "loyalty": "eager"
+        }
+      },
+      "next": "joined_outro"
+    },
+
+    "accept_corruption": {
+      "text": "Fighting corruption that's poisoning the land? Now THAT'S a battle worth waging. Arena fights are good for the blood, but saving the damn world? That's the kind of story they sing about for centuries. Crag Hack, Corruption-Breaker! I like the ring of that. *slams fist against chest* You've got yourself a warrior. Let's go smash whatever's behind this.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 80,
+          "loyalty": "committed"
+        }
+      },
+      "next": "joined_outro"
+    },
+
+    "accept_conditional": {
+      "text": "*jaw tightens* Lead and I follow? Hmph. I don't do 'follow.' I've never followed anyone in my life and I'm not about to start now. But... *holds up a finger* ...I will LISTEN. If what you're saying makes tactical sense, I'll do it. The moment you give an order that'll get us killed for nothing, I'll tell you to your face. And if you're wrong and I'm right, you buy the drinks. Fair?",
+      "choices": [
+        {
+          "text": "Fair. I wouldn't want a yes-man watching my back anyway.",
+          "next": "accept_conditional_agreed"
+        },
+        {
+          "text": "I need discipline, not debate. Maybe this won't work after all.",
+          "next": "decline_mild"
+        }
+      ]
+    },
+
+    "accept_conditional_agreed": {
+      "text": "*breaks into a genuine smile -- a rarer sight than most legendary weapons* Good answer. You just earned yourself the meanest, ugliest, most devastatingly handsome axe-wielder in all five realms. Let's go make some legends, boss. And I use that term VERY loosely.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 70,
+          "loyalty": "cautious"
+        }
+      },
+      "next": "joined_outro"
+    },
+
+    "accept_fired_up": {
+      "text": "*eyes blazing with renewed purpose* You will NOT regret this! By the blood-soaked sands of Stonefang, I SWEAR IT! Every enemy we face, I'll be the first one charging and the last one standing! They'll write songs about what we do out there -- terrible songs, because bards never get the details right, but SONGS nonetheless! Now point me at the nearest threat and get out of the way!",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 90,
+          "loyalty": "fired_up"
+        }
+      },
+      "next": "joined_outro"
+    },
+
+    "joined_with_quest": {
+      "text": "*grips your forearm in a warrior's clasp* For the first time in a long while, I feel like I'm heading somewhere that truly matters. The Obsidian Great Axe is out there somewhere in the Shattered Peaks, and my bones ache to hold it. But first -- your fight is my fight. A deal's a deal, and Crag Hack always pays his debts. Lead on, and when the time comes, we'll find that axe together.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 85,
+          "loyalty": "bonded"
+        },
+        "quest_started": "the-obsidian-search",
+        "journal_entry": "Crag Hack has joined the party. He seeks the legendary Obsidian Great Axe, rumored to be hidden in the Shattered Peaks."
+      },
+      "next": "joined_outro"
+    },
+
+    "joined_with_quest_pragmatic": {
+      "text": "*nods firmly* Aye, I figured as much. Nobody recruits a pit fighter because things are going well. Whatever you're facing, we'll handle it first. The axe has waited three generations -- it can wait a little longer. But once the dust settles... *gives you a meaningful look* ...you and I have a date with the Shattered Peaks.",
+      "effects": {
+        "recruitment": {
+          "characterId": "crag-hack",
+          "morale": 80,
+          "loyalty": "bonded"
+        },
+        "quest_started": "the-obsidian-search",
+        "journal_entry": "Crag Hack has joined the party. He seeks the legendary Obsidian Great Axe, rumored to be hidden in the Shattered Peaks."
+      },
+      "next": "joined_outro"
+    },
+
+    "joined_outro": {
+      "text": "*gathers his gear from the arena floor -- a battered but lovingly maintained war axe, a bedroll that's seen better decades, and a leather satchel clinking with arena winnings* Right then. Here's 25 gold from my winnings -- call it an investment in our future. *cracks his neck, rolls his massive shoulders, and flashes that wild grin one more time* Lead on, boss. And if we pass a tavern along the way... first round's on Crag Hack. The Avalanche rides again!",
+      "effects": {
+        "party_add": "crag-hack",
+        "gold_bonus": 25,
+        "achievement": "the_avalanche_rides_again",
+        "arena_flag": "crag_hack_recruited",
+        "remove_flag": "crag-hack-available-in-arena"
+      },
+      "next": null
+    },
+
+    "decline_harsh": {
+      "text": "*the grin vanishes, replaced by something cold and hard* ...Beaten fighters. *slowly rises to his full height, towering over you* I'll swallow that, because you won fair and the arena has rules about what I can do to people outside the ring. But remember this face, stranger. Because next time we meet -- in the ring or out of it -- I won't hold back the way I did today. Yeah. That's right. I was HOLDING BACK. *turns away, fists clenched* Get out of my arena.",
+      "effects": {
+        "relationship_penalty": -15,
+        "arena_flag": "crag_hack_hostile_rematch_available",
+        "set_flag": "crag_hack_insulted"
+      },
+      "choices": [
+        {
+          "text": "[Leave the arena]",
+          "next": null
+        },
+        {
+          "text": "Wait. That was uncalled for. Tell me about yourself -- I misjudged you.",
+          "next": "apologize_after_harsh"
+        }
+      ]
+    },
+
+    "apologize_after_harsh": {
+      "text": "*stops but doesn't turn around for several long seconds. When he finally faces you, his expression is guarded but curious* ...Most people who talk to me like that don't take it back. Takes a different kind of strength to admit you were wrong. *sits back down heavily* Fine. I'll give you one more chance. But choose your next words carefully, because my patience is thinner than a goblin's sword.",
+      "effects": {
+        "clear_flag": "crag_hack_insulted",
+        "relationship_penalty": -5
+      },
+      "choices": [
+        {
+          "text": "I was testing your temper. You kept your discipline -- that's what I needed to see.",
+          "next": "challenge_worth"
+        },
+        {
+          "text": "Who are you, really? Start from the beginning.",
+          "next": "ask_past"
+        }
+      ]
+    },
+
+    "decline_mild": {
+      "text": "*shrugs with a surprising lack of bitterness* Your call, friend. Can't say I'm not disappointed -- you're the first decent fight I've had in months, and that means you're heading somewhere interesting. But I won't beg. I'll be here in the arena, keeping sharp. If you change your mind, just step into the ring and call my name. Crag Hack never forgets a worthy opponent.",
+      "effects": {
+        "arena_flag": "crag_hack_available_for_recruitment",
+        "set_flag": "crag_hack_met_peacefully"
+      },
+      "choices": [
+        {
+          "text": "I might take you up on that someday. Until then, warrior.",
+          "next": "decline_farewell"
+        },
+        {
+          "text": "Actually... wait. Tell me more about what you're looking for. Maybe we can help each other.",
+          "next": "obsidian_axe_lore"
+        },
+        {
+          "text": "You know what -- I changed my mind. I could use a fighter like you.",
+          "next": "recruit_pitch"
+        }
+      ]
+    },
+
+    "decline_farewell": {
+      "text": "*raises a fist in salute* Until next time, warrior. May your blade stay sharp and your enemies stay slow. And if you hear any rumors about a great axe made of black glass... you know where to find me. HA! *turns back toward the arena pit, already calling for his next challenger*",
+      "effects": {
+        "arena_flag": "crag_hack_available_for_recruitment"
+      },
+      "next": null
+    }
+  }
+}

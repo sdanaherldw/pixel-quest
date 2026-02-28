@@ -1,0 +1,450 @@
+{
+  "region": "scorched-wastes",
+  "regionName": "Scorched Wastes",
+  "quests": [
+    {
+      "id": "sands-of-time",
+      "name": "Sands of Time",
+      "type": "main",
+      "region": "scorched-wastes",
+      "level": { "recommended": 10, "minimum": 8 },
+      "giver": "sun-priestess-nahla",
+      "description": "The Scorched Wastes are stirring. Sandstorms have intensified, buried temples are rising from the dunes, and the Fire Temple of Solaris has begun emitting pulses of heat that can be felt for leagues. Sun Priestess Nahla of the Sunspire Oasis believes the ancient construct Solaris is awakening fully — and if it completes its activation, it will scorch the land for a hundred leagues in every direction, turning the Elderwood to ash and the Frostpeak snow to steam.",
+      "journal": "Sun Priestess Nahla has warned us that Solaris, the ancient sun construct, is reawakening. We must uncover the buried Pharaoh's Tomb, confront the Inferno Drake in the Wurmway, and ultimately face Solaris in the Fire Temple before it completes its activation.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Learn the old hymns from the Sun Priestesses to unseal the Pharaoh's Tomb",
+          "type": "interact",
+          "target": "sun-priestess-hymn-ritual",
+          "journal": "The Pharaoh's Tomb is sealed with ancient sun-magic. The priestesses know the hymns that can open it."
+        },
+        {
+          "id": 1,
+          "description": "Enter the Tomb of the Burning Pharaoh and defeat the Pharaoh",
+          "type": "boss_defeat",
+          "target": "the-pharaoh",
+          "journal": "The Pharaoh guards knowledge of Solaris. We must defeat him to learn how to reach the construct."
+        },
+        {
+          "id": 2,
+          "description": "Recover the Sun Key from the Pharaoh's sarcophagus",
+          "type": "collect",
+          "target": "sun-key",
+          "journal": "The Pharaoh carried a Sun Key that unlocks the inner sanctum of the Fire Temple."
+        },
+        {
+          "id": 3,
+          "description": "Navigate the Wurmway to reach the Fire Temple from below",
+          "type": "dungeon_clear",
+          "target": "sand-wurm-den",
+          "journal": "The overland approach to the Fire Temple is blocked by a wall of fused glass. The Wurmway provides an underground route."
+        },
+        {
+          "id": 4,
+          "description": "Confront Solaris the Eternal in the Fire Temple",
+          "type": "boss_defeat",
+          "target": "solaris-the-eternal",
+          "journal": "The Eternal Flame burns at the heart of the Fire Temple. Solaris guards it with perfect, merciless logic."
+        },
+        {
+          "id": 5,
+          "description": "Decide the fate of the Eternal Flame",
+          "type": "choice",
+          "options": [
+            {
+              "id": "extinguish",
+              "description": "Extinguish the Eternal Flame, ending its threat permanently but destroying a source of limitless energy",
+              "setOutcome": "flame-extinguished"
+            },
+            {
+              "id": "contain",
+              "description": "Use the Sun Key to contain and stabilize the Flame, preserving it for future use",
+              "setOutcome": "flame-contained"
+            }
+          ],
+          "journal": "With Solaris defeated, we must decide what to do with the Eternal Flame."
+        },
+        {
+          "id": 6,
+          "description": "Return to Sun Priestess Nahla",
+          "type": "talk_to",
+          "target": "sun-priestess-nahla",
+          "triggerDialogue": "nahla-solaris-aftermath",
+          "journal": "The deed is done. We should inform Nahla."
+        }
+      ],
+      "rewards": {
+        "flame-extinguished": { "xp": 1200, "gold": 500, "items": ["sunfire-medallion"], "reputation": { "dustwall": 40, "sunspire-oasis": 30 } },
+        "flame-contained": { "xp": 1200, "gold": 400, "items": ["eternal-flame-lantern"], "reputation": { "dustwall": 30, "sunspire-oasis": 50 }, "unlocks": ["sunspire-forge-access"] }
+      },
+      "flags": {
+        "onAccept": ["scorched-wastes-main-quest-active"],
+        "onComplete": ["scorched-wastes-cleared", "solaris-defeated"]
+      }
+    },
+    {
+      "id": "the-obsidian-fragment",
+      "name": "The Obsidian Fragment",
+      "type": "side",
+      "region": "scorched-wastes",
+      "level": { "recommended": 11, "minimum": 10 },
+      "giver": "treasure-hunter-razik",
+      "prerequisite": { "recruited": "crag-hack" },
+      "description": "A grizzled treasure hunter named Razik stumbles into Dustwall raving about a piece of volcanic glass lodged in the belly of a dead sand wurm deep in the Wurmway. Crag Hack immediately recognizes the description — it matches an obsidian fragment of the legendary Obsidian Great Axe. But Razik wants payment for the location, and the Wurmway is crawling with wurms and worse.",
+      "journal": "Razik knows the location of an obsidian fragment in the Wurmway. Crag Hack believes it is part of the Obsidian Great Axe.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Pay Razik 200 gold for the fragment's location, or intimidate him",
+          "type": "choice",
+          "options": [
+            {
+              "id": "pay",
+              "description": "Pay Razik 200 gold for the precise location",
+              "cost": 200,
+              "setOutcome": "paid"
+            },
+            {
+              "id": "intimidate",
+              "description": "[STR >= 16 or Crag Hack in party] Crag Hack 'persuades' Razik to share for free",
+              "condition": { "or": [{ "stat": "str", "min": 16 }, { "partyMember": "crag-hack" }] },
+              "setOutcome": "intimidated"
+            },
+            {
+              "id": "trade",
+              "description": "Offer to split any other treasure found in the Wurmway with Razik",
+              "setOutcome": "partnership"
+            }
+          ],
+          "journal": "Deal with Razik to learn where the obsidian fragment is."
+        },
+        {
+          "id": 1,
+          "description": "Navigate to the dead wurm's resting place in the Wurmway",
+          "type": "reach_location",
+          "target": "wurmway-dead-matriarch",
+          "journal": "The fragment is lodged in the remains of a massive dead wurm in the deepest section of the Wurmway."
+        },
+        {
+          "id": 2,
+          "description": "Defeat the Inferno Drake guarding the fragment",
+          "type": "boss_defeat",
+          "target": "inferno-drake",
+          "journal": "An Inferno Drake has made its nest near the dead wurm. We must get past it to reach the fragment."
+        },
+        {
+          "id": 3,
+          "description": "Retrieve the Obsidian Fragment",
+          "type": "collect",
+          "target": "obsidian-fragment-3",
+          "journal": "The fragment pulses with volcanic energy. Crag Hack's eyes widen when he sees it — this is the real thing."
+        },
+        {
+          "id": 4,
+          "description": "Give the fragment to Crag Hack",
+          "type": "talk_to",
+          "target": "crag-hack",
+          "triggerDialogue": "crag-hack-fragment-found",
+          "journal": "Crag Hack deserves to hold this fragment. It is part of his legacy."
+        }
+      ],
+      "rewards": {
+        "xp": 400,
+        "gold": 100,
+        "items": ["obsidian-fragment-3"],
+        "companionBonus": { "characterId": "crag-hack", "loyalty": 20, "note": "Progresses Forged in Fury quest" },
+        "reputation": { "dustwall": 15 }
+      },
+      "cragHackDialogue": {
+        "onAccept": "*eyes blazing* That's it! That's an obsidian fragment! I can FEEL it in my blood — the Volcanic Fury calls to it! We're getting that fragment if I have to dig through every wurm in the desert with my bare hands!",
+        "onComplete": "*holds the fragment reverently, and it glows faintly in his massive hand* Three generations of Hacks have searched for these. And now I hold one. *voice thick with emotion* Two more fragments. The Forge of Giants. And then... then the Obsidian Great Axe lives again."
+      }
+    },
+    {
+      "id": "water-for-the-dying",
+      "name": "Water for the Dying",
+      "type": "side",
+      "region": "scorched-wastes",
+      "level": { "recommended": 9, "minimum": 8 },
+      "giver": "caravan-leader-fatima",
+      "description": "A caravan has been stranded in the deep desert after a sandstorm destroyed their water supplies. Caravan Leader Fatima made it to Dustwall on foot, barely alive, and begs for someone to bring water to her people before they die of thirst. The caravan is three days into the wastes, and another sandstorm is approaching.",
+      "journal": "A stranded caravan needs water urgently. We must deliver supplies before the sandstorm hits.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Purchase or acquire 10 Water Skins from Dustwall",
+          "type": "collect",
+          "target": "water-skin",
+          "count": 10,
+          "journal": "We need at least 10 water skins. Buy them from Dustwall merchants or fill empty ones at the oasis."
+        },
+        {
+          "id": 1,
+          "description": "Cross the desert to the stranded caravan before the sandstorm",
+          "type": "reach_location",
+          "target": "stranded-caravan",
+          "timedObjective": true,
+          "timeLimit": { "days": 2 },
+          "journal": "The caravan is three days east into the wastes. We must hurry — the sandstorm will hit within two days."
+        },
+        {
+          "id": 2,
+          "description": "Deliver the water and help the caravan",
+          "type": "interact",
+          "target": "caravan-survivors",
+          "journal": "The survivors are in desperate shape. Every water skin could save a life."
+        },
+        {
+          "id": 3,
+          "description": "Guide the caravan back to Dustwall or Sunspire Oasis",
+          "type": "escort",
+          "target": "fatima-caravan",
+          "journal": "Help the weakened caravan survive the return journey."
+        }
+      ],
+      "timedOutcome": {
+        "success": { "survivorsCount": 12, "note": "All 12 caravan members survive" },
+        "late": { "survivorsCount": 7, "note": "Only 7 of 12 survive the wait. The rest died of thirst." },
+        "failure": { "survivorsCount": 0, "note": "The sandstorm buries the caravan. No survivors." }
+      },
+      "rewards": {
+        "xp": 280,
+        "gold": 150,
+        "items": ["desert-wayfinder-compass"],
+        "reputation": { "dustwall": 30 }
+      }
+    },
+    {
+      "id": "tomb-robbers-dilemma",
+      "name": "The Tomb Robber's Dilemma",
+      "type": "side",
+      "region": "scorched-wastes",
+      "level": { "recommended": 10, "minimum": 9 },
+      "giver": "tomb-robber-qadir",
+      "description": "A tomb robber named Qadir has discovered an untouched burial chamber in the dunes but has run into a problem — the chamber contains both incredible treasure AND a family of desert nomads who have been using it as shelter from the sandstorms. Qadir wants to clean the place out, but even he has reservations about evicting families into the desert to die. He asks for your help in finding a solution.",
+      "journal": "Qadir found a treasure-filled tomb occupied by nomad refugees. We must decide how to resolve this.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Travel to the tomb with Qadir",
+          "type": "reach_location",
+          "target": "hidden-burial-chamber",
+          "journal": "The tomb is half a day's ride east of Dustwall, in the shadow of a sandstone mesa."
+        },
+        {
+          "id": 1,
+          "description": "Assess the situation inside",
+          "type": "interact",
+          "target": "nomad-elder-hashem",
+          "journal": "Elder Hashem leads the nomad family. They have nowhere else to go."
+        },
+        {
+          "id": 2,
+          "description": "Decide how to resolve the conflict",
+          "type": "choice",
+          "options": [
+            {
+              "id": "evict",
+              "description": "Force the nomads out and help Qadir loot the tomb",
+              "setOutcome": "nomads-evicted"
+            },
+            {
+              "id": "share",
+              "description": "Negotiate a deal: the nomads keep the shelter, Qadir takes the treasure, and the nomads get a cut",
+              "condition": { "stat": "cha", "min": 13 },
+              "setOutcome": "treasure-shared"
+            },
+            {
+              "id": "relocate",
+              "description": "Help the nomads relocate to Sunspire Oasis and then return to help Qadir",
+              "setOutcome": "nomads-relocated"
+            },
+            {
+              "id": "betray-qadir",
+              "description": "Side with the nomads entirely. Tell Qadir to leave and protect the tomb for the family.",
+              "setOutcome": "qadir-betrayed"
+            }
+          ],
+          "journal": "Several options present themselves. None are perfect."
+        },
+        {
+          "id": 3,
+          "description": "Live with the consequences",
+          "type": "talk_to",
+          "target": "resolution-npc",
+          "journal": "Our choice will have lasting effects on these people's lives."
+        }
+      ],
+      "rewards": {
+        "nomads-evicted": { "xp": 200, "gold": 400, "items": ["ancient-pharaoh-ring"], "reputation": { "dustwall": -20, "sunspire-oasis": -30 } },
+        "treasure-shared": { "xp": 350, "gold": 200, "items": ["nomad-blessing-charm"], "reputation": { "dustwall": 15, "sunspire-oasis": 20 } },
+        "nomads-relocated": { "xp": 300, "gold": 300, "items": ["ancient-pharaoh-ring"], "reputation": { "dustwall": 10, "sunspire-oasis": 30 }, "unlocks": ["nomad-merchant-at-oasis"] },
+        "qadir-betrayed": { "xp": 250, "gold": 50, "items": ["elder-hashems-gratitude-amulet"], "reputation": { "dustwall": -10, "sunspire-oasis": 35 }, "unlocks": ["nomad-allies"] }
+      }
+    },
+    {
+      "id": "the-mirage-merchant",
+      "name": "The Mirage Merchant",
+      "type": "side",
+      "region": "scorched-wastes",
+      "level": { "recommended": 10, "minimum": 9 },
+      "giver": "mysterious-merchant-miraji",
+      "description": "A merchant appears in the desert heat haze, selling impossible wares — weapons from the future, potions that grant eternal youth, armor forged from starlight. The prices are suspiciously reasonable. Is Miraji a fraud, a madman, a djinn, or something else entirely? Investigate the Mirage Merchant and discover the truth behind his impossible shop.",
+      "journal": "A mysterious merchant is selling impossible goods in the desert. Something is not what it seems.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Find the Mirage Merchant in the deep desert",
+          "type": "reach_location",
+          "target": "mirage-merchant-location",
+          "journal": "The merchant appears at different locations. Follow the shimmer of heat haze that seems to sparkle with gold."
+        },
+        {
+          "id": 1,
+          "description": "Purchase an item from the merchant and test it",
+          "type": "interact",
+          "target": "miraji-purchase",
+          "journal": "Buy something and see if it is genuine."
+        },
+        {
+          "id": 2,
+          "description": "Investigate the merchant's true nature",
+          "type": "interact",
+          "target": "miraji-investigation",
+          "journal": "The item seems real... but fades after sunset. What is this merchant?"
+        },
+        {
+          "id": 3,
+          "description": "Confront Miraji with the truth",
+          "type": "talk_to",
+          "target": "mysterious-merchant-miraji",
+          "journal": "Miraji is a trapped djinn, forced to maintain a shop of illusions by an ancient binding. We can free him, exploit him, or leave him to his fate."
+        }
+      ],
+      "rewards": {
+        "xp": 300,
+        "gold": 150,
+        "items": ["djinn-lamp-fragment"],
+        "reputation": { "sunspire-oasis": 15 }
+      }
+    },
+    {
+      "id": "sunfire-sisterhood",
+      "name": "The Sunfire Sisterhood",
+      "type": "companion",
+      "region": "scorched-wastes",
+      "level": { "recommended": 11, "minimum": 10 },
+      "giver": "sun-priestess-nahla",
+      "prerequisite": { "quest_complete": "sands-of-time" },
+      "description": "After the defeat of Solaris, Sun Priestess Nahla confesses that she has been having visions of the Cinder Core — flames that speak, chains that break, and a darkness that consumes the sun itself. She asks to join the party to confront whatever lurks below the world, believing the Sunfire Sisterhood was always meant to face this challenge. But first, she must complete the Trial of the Three Suns — an ancient rite that will awaken her full power.",
+      "journal": "Sun Priestess Nahla wishes to join us. She must first complete the Trial of the Three Suns to unlock her full potential.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Accompany Nahla to the First Sunstone at dawn",
+          "type": "reach_location",
+          "target": "first-sunstone",
+          "condition": { "timeOfDay": "dawn" },
+          "journal": "The First Sunstone lies atop a sandstone pillar east of the oasis. We must be there at sunrise."
+        },
+        {
+          "id": 1,
+          "description": "Defend Nahla during the Trial of Dawn",
+          "type": "defense",
+          "target": "nahla-dawn-trial",
+          "waves": 3,
+          "journal": "Fire spirits attack during the ritual. We must protect Nahla while she channels."
+        },
+        {
+          "id": 2,
+          "description": "Accompany Nahla to the Second Sunstone at noon",
+          "type": "reach_location",
+          "target": "second-sunstone",
+          "condition": { "timeOfDay": "noon" },
+          "journal": "The Second Sunstone is in the crater near the Fire Temple."
+        },
+        {
+          "id": 3,
+          "description": "Accompany Nahla to the Third Sunstone at sunset",
+          "type": "reach_location",
+          "target": "third-sunstone",
+          "condition": { "timeOfDay": "sunset" },
+          "journal": "The Third Sunstone rests on the western dunes, facing the setting sun."
+        },
+        {
+          "id": 4,
+          "description": "Witness Nahla's Ascension",
+          "type": "cutscene",
+          "target": "nahla-ascension",
+          "journal": "The three trials are complete. Nahla ascends to the rank of High Sun Priestess."
+        }
+      ],
+      "rewards": {
+        "xp": 500,
+        "gold": 150,
+        "companionBonus": { "characterId": "sun-priestess-nahla", "loyalty": "maximum", "unlockSkill": "solar-ascendance" },
+        "unlocks": ["nahla-companion-recruitable"]
+      }
+    },
+    {
+      "id": "bounty-sandwurm-matriarch",
+      "name": "Bounty: The Dune Terror",
+      "type": "bounty",
+      "region": "scorched-wastes",
+      "level": { "recommended": 11, "minimum": 9 },
+      "giver": "bounty-board-dustwall",
+      "description": "A massive sand wurm — far larger than any previously recorded — has been destroying trade caravans between Dustwall and the eastern trade routes. The merchants' guild has posted a substantial bounty for its elimination.",
+      "journal": "Hunt and slay the Dune Terror, a colossal sand wurm terrorizing the trade routes.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Set bait at the wurm's feeding ground",
+          "type": "interact",
+          "target": "wurm-bait-location",
+          "journal": "Place the provided bait at the marked feeding ground to lure the Dune Terror."
+        },
+        {
+          "id": 1,
+          "description": "Defeat the Dune Terror",
+          "type": "boss_defeat",
+          "target": "sandwurm-matriarch",
+          "journal": "The ground trembles. The Dune Terror approaches."
+        },
+        {
+          "id": 2,
+          "description": "Collect a segment of the Dune Terror's chitin as proof",
+          "type": "collect",
+          "target": "dune-terror-chitin",
+          "journal": "Take a section of the beast's armored hide as proof of the kill."
+        },
+        {
+          "id": 3,
+          "description": "Turn in the bounty at Dustwall",
+          "type": "interact",
+          "target": "bounty-board-dustwall",
+          "journal": "Return to Dustwall with proof."
+        }
+      ],
+      "rewards": {
+        "xp": 350,
+        "gold": 300,
+        "items": ["wurm-chitin-armor-piece"],
+        "reputation": { "dustwall": 25 }
+      }
+    }
+  ],
+  "questChains": {
+    "main-scorched": {
+      "name": "Scorched Wastes — Main Story",
+      "quests": ["sands-of-time"],
+      "leadsTo": "cinder-core-main"
+    },
+    "crag-hack-fragment": {
+      "name": "Crag Hack — The Obsidian Fragment",
+      "quests": ["the-obsidian-fragment"],
+      "partOf": "crag-hack-saga",
+      "note": "This quest provides obsidian-fragment-3 for the Forged in Fury questline."
+    }
+  }
+}

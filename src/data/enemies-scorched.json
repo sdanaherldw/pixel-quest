@@ -1,0 +1,891 @@
+{
+  "region": "scorched-wastes",
+  "regionName": "Scorched Wastes",
+  "enemies": [
+    {
+      "id": "sand-wurm",
+      "name": "Sand Wurm",
+      "region": "scorched-wastes",
+      "level": 9,
+      "stats": { "hp": 200, "atk": 35, "def": 20, "spd": 3.5 },
+      "xpReward": 85,
+      "goldDrop": { "min": 8, "max": 18 },
+      "lootTable": "sand-wurm-common",
+      "behavior": "burrow-ambush",
+      "abilities": ["burrow-strike", "acid-spray", "sand-tremor"],
+      "abilityDetails": [
+        {
+          "id": "burrow-strike",
+          "name": "Burrow Strike",
+          "description": "Burrows beneath the sand and erupts directly under a target, dealing heavy physical damage and knocking them airborne.",
+          "damage": 45,
+          "cooldown": 8.0,
+          "effect": { "type": "launch", "height": 80 },
+          "warningTime": 1.5,
+          "warningSign": "sand-ripple"
+        },
+        {
+          "id": "acid-spray",
+          "name": "Acid Spray",
+          "description": "Sprays a cone of caustic digestive acid that deals damage over time and reduces the target's armor.",
+          "damage": 15,
+          "cooldown": 6.0,
+          "aoe": { "type": "cone", "angle": 40, "range": 150 },
+          "effect": { "type": "armor-shred", "value": 10, "duration": 8.0 }
+        },
+        {
+          "id": "sand-tremor",
+          "name": "Sand Tremor",
+          "description": "Thrashes underground, causing the sand to shake violently and slowing all movement in a wide area.",
+          "cooldown": 12.0,
+          "aoe": { "type": "circle", "radius": 200 },
+          "effect": { "type": "slow", "value": 0.5, "duration": 4.0 }
+        }
+      ],
+      "weaknesses": ["ice", "lightning"],
+      "resistances": ["fire", "physical"],
+      "description": "Segmented horrors that swim through sand as effortlessly as fish through water. Sand Wurms sense vibrations from hundreds of yards away, erupting beneath unwary travelers with circular maws ringed by rows of inward-curving teeth designed to pull prey into a gullet of dissolving acid.",
+      "sprite": { "base": "wurm", "variant": "sand", "width": 56, "height": 40 }
+    },
+    {
+      "id": "fire-imp",
+      "name": "Fire Imp",
+      "region": "scorched-wastes",
+      "level": 8,
+      "stats": { "hp": 70, "atk": 28, "def": 6, "spd": 5.0, "int": 16 },
+      "xpReward": 60,
+      "goldDrop": { "min": 5, "max": 15 },
+      "lootTable": "fire-imp-common",
+      "behavior": "chaotic-ranged",
+      "abilities": ["fire-bolt", "flame-dash", "combustion"],
+      "abilityDetails": [
+        {
+          "id": "fire-bolt",
+          "name": "Fire Bolt",
+          "description": "Hurls a quick bolt of concentrated flame at a target.",
+          "damage": 20,
+          "cooldown": 2.0,
+          "range": 300
+        },
+        {
+          "id": "flame-dash",
+          "name": "Flame Dash",
+          "description": "Bursts into flame and dashes through enemies in a line, dealing fire damage to everything it passes through.",
+          "damage": 15,
+          "cooldown": 6.0,
+          "dashDistance": 150,
+          "effect": { "type": "burn", "damage": 5, "duration": 3.0 }
+        },
+        {
+          "id": "combustion",
+          "name": "Combustion",
+          "description": "On death, explodes in a burst of fire that damages all nearby enemies and allies alike.",
+          "damage": 25,
+          "aoe": { "type": "circle", "radius": 60 },
+          "type": "death-trigger"
+        }
+      ],
+      "weaknesses": ["ice", "holy"],
+      "resistances": ["fire"],
+      "immunities": ["fire"],
+      "packSize": { "min": 2, "max": 4 },
+      "description": "Cackling elemental tricksters of living flame, no taller than a child, with wicked grins and ember-bright eyes. Fire Imps materialize wherever the desert heat grows most intense, flitting about in chaotic patterns and hurling bolts of fire with gleeful malice. They explode violently upon death — a spiteful final trick.",
+      "sprite": { "base": "imp", "variant": "fire", "width": 20, "height": 24 }
+    },
+    {
+      "id": "desert-bandit",
+      "name": "Desert Bandit",
+      "region": "scorched-wastes",
+      "level": 9,
+      "stats": { "hp": 110, "atk": 30, "def": 14, "spd": 4.0 },
+      "xpReward": 70,
+      "goldDrop": { "min": 15, "max": 40 },
+      "lootTable": "desert-bandit-common",
+      "behavior": "melee-tactical",
+      "abilities": ["scimitar-flurry", "sand-throw", "smoke-bomb", "loot-and-flee"],
+      "abilityDetails": [
+        {
+          "id": "scimitar-flurry",
+          "name": "Scimitar Flurry",
+          "description": "Unleashes a rapid 3-hit combo with twin scimitars, each strike having a chance to cause bleeding.",
+          "damage": 18,
+          "hits": 3,
+          "cooldown": 5.0,
+          "effect": { "type": "bleed", "damage": 4, "duration": 4.0, "chance": 0.3 }
+        },
+        {
+          "id": "sand-throw",
+          "name": "Sand Throw",
+          "description": "Flings a handful of sand at the target's face, blinding them for 2 seconds and reducing accuracy by 50%.",
+          "cooldown": 10.0,
+          "effect": { "type": "blind", "accuracyReduction": 0.5, "duration": 2.0 }
+        },
+        {
+          "id": "smoke-bomb",
+          "name": "Smoke Bomb",
+          "description": "Drops a smoke bomb, becoming untargetable for 1.5 seconds and repositioning behind the target.",
+          "cooldown": 12.0,
+          "effect": { "type": "vanish", "duration": 1.5 }
+        },
+        {
+          "id": "loot-and-flee",
+          "name": "Loot and Flee",
+          "description": "Below 20% HP, attempts to steal a random consumable item from the player's inventory and flee combat.",
+          "type": "passive-trigger",
+          "hpThreshold": 0.2,
+          "effect": { "type": "steal-item", "itemType": "consumable" }
+        }
+      ],
+      "weaknesses": ["holy"],
+      "resistances": [],
+      "packSize": { "min": 3, "max": 5 },
+      "description": "Sun-scorched outlaws wrapped in desert scarves, wielding curved scimitars with the practiced ease of those who kill for a living. They lurk behind dunes and in the ruins of roadside caravanserai, ambushing travelers with coordinated strikes and blinding sand attacks before vanishing into the wasteland with their plunder.",
+      "sprite": { "base": "human", "variant": "desert-bandit", "width": 26, "height": 32 }
+    },
+    {
+      "id": "scorpion-warrior",
+      "name": "Scorpion Warrior",
+      "region": "scorched-wastes",
+      "level": 10,
+      "stats": { "hp": 180, "atk": 32, "def": 22, "spd": 3.0 },
+      "xpReward": 80,
+      "goldDrop": { "min": 10, "max": 25 },
+      "lootTable": "scorpion-warrior-uncommon",
+      "behavior": "aggressive-melee",
+      "abilities": ["pincer-grab", "venomous-sting", "carapace-harden", "burrow-emerge"],
+      "abilityDetails": [
+        {
+          "id": "pincer-grab",
+          "name": "Pincer Grab",
+          "description": "Seizes a target with massive pincers, holding them in place for 2 seconds while dealing crushing damage each second.",
+          "damage": 20,
+          "tickRate": 1.0,
+          "cooldown": 8.0,
+          "effect": { "type": "grab", "duration": 2.0 }
+        },
+        {
+          "id": "venomous-sting",
+          "name": "Venomous Sting",
+          "description": "Strikes with a tail stinger dripping with venom, dealing poison damage over 8 seconds that also reduces healing received by 50%.",
+          "damage": 15,
+          "cooldown": 6.0,
+          "effect": { "type": "poison", "damage": 6, "duration": 8.0, "healReduction": 0.5 }
+        },
+        {
+          "id": "carapace-harden",
+          "name": "Carapace Harden",
+          "description": "Tucks into a defensive stance, gaining 60% damage reduction but becoming unable to move or attack for 4 seconds.",
+          "cooldown": 15.0,
+          "effect": { "type": "damage-reduction", "value": 0.6, "duration": 4.0 }
+        },
+        {
+          "id": "burrow-emerge",
+          "name": "Burrow Emerge",
+          "description": "Burrows underground and emerges behind the target, striking with a surprise sting for bonus damage.",
+          "damage": 35,
+          "cooldown": 14.0,
+          "effect": { "type": "reposition-behind" }
+        }
+      ],
+      "weaknesses": ["ice", "lightning"],
+      "resistances": ["fire", "physical"],
+      "description": "Towering arachnids that stand as tall as a horse, with chitinous armor the color of burnished bronze and pincers capable of shearing through plate mail. Their segmented tails carry a venom that not only poisons but suppresses the body's ability to heal — a death sentence in the trackless desert.",
+      "sprite": { "base": "scorpion", "variant": "warrior", "width": 44, "height": 36 }
+    },
+    {
+      "id": "dust-devil",
+      "name": "Dust Devil",
+      "region": "scorched-wastes",
+      "level": 9,
+      "stats": { "hp": 80, "atk": 25, "def": 5, "spd": 6.0, "int": 14 },
+      "xpReward": 65,
+      "goldDrop": { "min": 3, "max": 10 },
+      "lootTable": "dust-devil-common",
+      "behavior": "erratic-ranged",
+      "abilities": ["whirlwind-charge", "sand-veil", "debris-barrage"],
+      "abilityDetails": [
+        {
+          "id": "whirlwind-charge",
+          "name": "Whirlwind Charge",
+          "description": "Spins into a miniature tornado and charges at the target, pulling nearby enemies toward its center and dealing continuous damage.",
+          "damage": 8,
+          "tickRate": 0.5,
+          "cooldown": 7.0,
+          "duration": 3.0,
+          "aoe": { "type": "circle", "radius": 60 },
+          "effect": { "type": "pull", "force": 20 }
+        },
+        {
+          "id": "sand-veil",
+          "name": "Sand Veil",
+          "description": "Kicks up a cloud of blinding sand around itself, reducing accuracy of all ranged attacks targeting it by 60%.",
+          "cooldown": 10.0,
+          "duration": 6.0,
+          "effect": { "type": "evasion-buff", "value": 0.6 }
+        },
+        {
+          "id": "debris-barrage",
+          "name": "Debris Barrage",
+          "description": "Hurls chunks of rock, bone, and sand at high velocity in random directions around itself.",
+          "damage": 18,
+          "cooldown": 5.0,
+          "projectileCount": 6,
+          "aoe": { "type": "circle", "radius": 180 },
+          "randomTargeting": true
+        }
+      ],
+      "weaknesses": ["ice", "nature"],
+      "resistances": ["fire", "physical"],
+      "description": "Living whirlwinds of scorching sand and desert debris, born from the collision of magical heat currents above ancient ruins. They race across the wastes with manic, unpredictable energy, picking up everything in their path and hurling it outward with deadly force.",
+      "sprite": { "base": "elemental", "variant": "dust", "width": 32, "height": 44 }
+    },
+    {
+      "id": "sandstone-golem",
+      "name": "Sandstone Golem",
+      "region": "scorched-wastes",
+      "level": 10,
+      "stats": { "hp": 280, "atk": 38, "def": 28, "spd": 1.5 },
+      "xpReward": 90,
+      "goldDrop": { "min": 0, "max": 8 },
+      "lootTable": "sandstone-golem-uncommon",
+      "behavior": "stationary-guard",
+      "abilities": ["sandstone-fist", "crumble-reform", "sand-collapse", "quicksand-trap"],
+      "abilityDetails": [
+        {
+          "id": "sandstone-fist",
+          "name": "Sandstone Fist",
+          "description": "Slams a massive fist of compressed sandstone into the target, dealing heavy physical damage.",
+          "damage": 50,
+          "cooldown": 4.0
+        },
+        {
+          "id": "crumble-reform",
+          "name": "Crumble and Reform",
+          "description": "When dealt a critical hit, the golem crumbles into sand and reforms 3 seconds later with 15% HP restored. Can trigger twice per encounter.",
+          "type": "passive-trigger",
+          "triggerCondition": "critical-hit-received",
+          "healPercent": 0.15,
+          "reformTime": 3.0,
+          "maxTriggers": 2
+        },
+        {
+          "id": "sand-collapse",
+          "name": "Sand Collapse",
+          "description": "Collapses its upper body onto the ground, creating a wave of sand and stone that ripples outward.",
+          "damage": 35,
+          "cooldown": 10.0,
+          "aoe": { "type": "circle", "radius": 150 },
+          "effect": { "type": "knockdown", "duration": 1.5 }
+        },
+        {
+          "id": "quicksand-trap",
+          "name": "Quicksand Trap",
+          "description": "Turns the ground beneath a target into quicksand, causing them to sink and become immobilized for 3 seconds.",
+          "cooldown": 14.0,
+          "effect": { "type": "root", "duration": 3.0 },
+          "aoe": { "type": "circle", "radius": 40 }
+        }
+      ],
+      "weaknesses": ["ice", "nature"],
+      "resistances": ["fire", "physical", "lightning"],
+      "description": "Ancient guardians crafted by the old civilization from the living desert rock, still faithfully protecting ruins and temples whose masters turned to dust millennia ago. They stand motionless among the sandstone pillars, indistinguishable from the architecture until they stir to life with a grinding roar of shifting stone.",
+      "sprite": { "base": "golem", "variant": "sandstone", "width": 48, "height": 56 }
+    },
+    {
+      "id": "sun-priestess",
+      "name": "Corrupted Sun Priestess",
+      "region": "scorched-wastes",
+      "level": 11,
+      "stats": { "hp": 120, "atk": 20, "def": 10, "spd": 3.0, "int": 22 },
+      "xpReward": 100,
+      "goldDrop": { "min": 20, "max": 45 },
+      "lootTable": "sun-priestess-rare",
+      "behavior": "ranged-support",
+      "abilities": ["solar-ray", "sun-blessing", "heat-mirage", "solar-flare"],
+      "abilityDetails": [
+        {
+          "id": "solar-ray",
+          "name": "Solar Ray",
+          "description": "Channels the scorching power of the desert sun into a concentrated beam of light that deals holy and fire damage.",
+          "damage": 30,
+          "cooldown": 3.0,
+          "range": 350,
+          "damageTypes": ["holy", "fire"]
+        },
+        {
+          "id": "sun-blessing",
+          "name": "Sun Blessing",
+          "description": "Heals a nearby allied enemy for 20% of their max HP and grants them a fire damage buff for 10 seconds.",
+          "cooldown": 12.0,
+          "healPercent": 0.2,
+          "range": 200,
+          "effect": { "type": "buff-ally", "fireDamageBonus": 0.25, "duration": 10.0 }
+        },
+        {
+          "id": "heat-mirage",
+          "name": "Heat Mirage",
+          "description": "Creates illusory duplicates of all nearby enemies, confusing targeting for 4 seconds.",
+          "cooldown": 18.0,
+          "aoe": { "type": "circle", "radius": 250 },
+          "effect": { "type": "confusion", "duration": 4.0 }
+        },
+        {
+          "id": "solar-flare",
+          "name": "Solar Flare",
+          "description": "Unleashes a blinding flash of solar energy that deals massive damage to undead and shadow-type enemies, and blinds all targets for 2 seconds.",
+          "damage": 40,
+          "cooldown": 20.0,
+          "aoe": { "type": "circle", "radius": 200 },
+          "bonusDamageVsUndead": 2.0,
+          "effect": { "type": "blind", "duration": 2.0 }
+        }
+      ],
+      "weaknesses": ["shadow", "ice"],
+      "resistances": ["fire", "holy"],
+      "description": "Once devoted servants of the ancient solar temple, these priestesses were trapped when the Solaris Construct scorched the kingdom. Sustained by the residual divine energy, they have endured ten thousand years of worship to a sun that no longer answers, their devotion curdled into fanaticism and their minds fractured by isolation.",
+      "sprite": { "base": "priestess", "variant": "sun", "width": 26, "height": 34 }
+    },
+    {
+      "id": "vulture-harpy",
+      "name": "Vulture Harpy",
+      "region": "scorched-wastes",
+      "level": 10,
+      "stats": { "hp": 100, "atk": 30, "def": 8, "spd": 5.5 },
+      "xpReward": 75,
+      "goldDrop": { "min": 8, "max": 22 },
+      "lootTable": "vulture-harpy-common",
+      "behavior": "fly-swoop-harass",
+      "abilities": ["dive-strike", "carrion-screech", "feather-barrage", "steal-item"],
+      "abilityDetails": [
+        {
+          "id": "dive-strike",
+          "name": "Dive Strike",
+          "description": "Plunges from the sky with talons extended, dealing heavy damage and carrying the target a short distance before dropping them.",
+          "damage": 35,
+          "cooldown": 6.0,
+          "carryDistance": 80,
+          "effect": { "type": "displacement" }
+        },
+        {
+          "id": "carrion-screech",
+          "name": "Carrion Screech",
+          "description": "Emits a shrill screech that debuffs the target's healing received by 30% for 8 seconds.",
+          "cooldown": 10.0,
+          "aoe": { "type": "cone", "angle": 60, "range": 200 },
+          "effect": { "type": "healing-reduction", "value": 0.3, "duration": 8.0 }
+        },
+        {
+          "id": "feather-barrage",
+          "name": "Feather Barrage",
+          "description": "Sheds a volley of razor-sharp feathers while airborne, peppering the ground below with projectiles.",
+          "damage": 12,
+          "projectileCount": 8,
+          "cooldown": 8.0,
+          "aoe": { "type": "circle", "radius": 120 }
+        },
+        {
+          "id": "steal-item",
+          "name": "Snatch",
+          "description": "Has a 15% chance on hit to steal a consumable item from the player's belt slot.",
+          "type": "passive",
+          "stealChance": 0.15,
+          "itemType": "consumable"
+        }
+      ],
+      "weaknesses": ["lightning", "ice"],
+      "resistances": ["fire"],
+      "packSize": { "min": 2, "max": 4 },
+      "description": "Gaunt, shrieking monstrosities with the bodies of withered crones and the wings and talons of desert vultures. They circle overhead on thermals rising from the sun-baked sand, diving at intervals to rake their prey with filthy talons before wheeling away to circle again. Patient and cruel, they prefer to wound and wait.",
+      "sprite": { "base": "harpy", "variant": "vulture", "width": 36, "height": 40 }
+    },
+    {
+      "id": "mummified-soldier",
+      "name": "Mummified Soldier",
+      "region": "scorched-wastes",
+      "level": 9,
+      "stats": { "hp": 140, "atk": 26, "def": 18, "spd": 2.0 },
+      "xpReward": 70,
+      "goldDrop": { "min": 10, "max": 30 },
+      "lootTable": "mummy-soldier-common",
+      "behavior": "patrol-formation",
+      "abilities": ["cursed-strike", "sand-wrap", "deathless-march"],
+      "abilityDetails": [
+        {
+          "id": "cursed-strike",
+          "name": "Cursed Strike",
+          "description": "Strikes with a corroded bronze khopesh, dealing physical damage with a chance to apply a curse that reduces all stats by 10% for 8 seconds.",
+          "damage": 28,
+          "cooldown": 4.0,
+          "effect": { "type": "curse", "statReduction": 0.1, "duration": 8.0, "chance": 0.25 }
+        },
+        {
+          "id": "sand-wrap",
+          "name": "Sand Wrap",
+          "description": "Its bandages extend and attempt to constrict a nearby target, rooting them and dealing damage over time.",
+          "damage": 10,
+          "tickRate": 1.0,
+          "cooldown": 12.0,
+          "effect": { "type": "root", "duration": 3.0 }
+        },
+        {
+          "id": "deathless-march",
+          "name": "Deathless March",
+          "description": "When in a group of 3 or more, Mummified Soldiers march in lockstep, gaining 15% damage reduction and immunity to fear.",
+          "type": "passive-group",
+          "requiresCount": 3,
+          "effect": { "type": "damage-reduction", "value": 0.15 }
+        }
+      ],
+      "weaknesses": ["fire", "holy"],
+      "resistances": ["physical", "shadow"],
+      "packSize": { "min": 3, "max": 6 },
+      "description": "The desiccated remains of the ancient kingdom's army, preserved by dry heat and dark magic, still patrolling the corridors of buried temples in formations that have not changed in ten millennia. Their bronze armor is green with age and their bandaged limbs creak with every step, but their cursed weapons still draw blood.",
+      "sprite": { "base": "mummy", "variant": "soldier", "width": 28, "height": 34 }
+    }
+  ],
+  "bosses": [
+    {
+      "id": "the-pharaoh",
+      "name": "The Burning Pharaoh",
+      "region": "scorched-wastes",
+      "dungeon": "buried-pharaoh-tomb",
+      "level": 10,
+      "isBoss": true,
+      "stats": { "hp": 1400, "atk": 38, "def": 25, "spd": 2.5, "int": 20 },
+      "xpReward": 600,
+      "goldDrop": { "min": 120, "max": 200 },
+      "lootTable": "pharaoh-boss",
+      "description": "Pharaoh Amenkhaten the Undying, the last ruler of the solar civilization, who refused to accept death when his kingdom burned. He bound his soul to his golden sarcophagus and now reigns over a court of mummified servants in his sealed pyramid, convinced that his kingdom still thrives and all intruders are foreign invaders to be repelled. His funeral mask hides a face of charred bone, and the crook and flail he wields blaze with stolen sunfire.",
+      "phases": [
+        {
+          "name": "The Pharaoh's Court",
+          "hpThreshold": 1.0,
+          "abilities": ["sunfire-flail", "pharaohs-decree", "summon-mummy-guard", "sand-curse"],
+          "behavior": "melee-commander",
+          "abilityDetails": {
+            "sunfire-flail": {
+              "description": "Swings the blazing flail in a wide arc, dealing fire and physical damage with a chance to ignite targets.",
+              "damage": 45,
+              "cooldown": 4.0,
+              "aoe": { "type": "cone", "angle": 120, "range": 80 },
+              "effect": { "type": "burn", "damage": 8, "duration": 4.0, "chance": 0.4 }
+            },
+            "pharaohs-decree": {
+              "description": "Points the crook at a target and speaks a word of ancient power. The target is compelled to walk toward the Pharaoh for 3 seconds, unable to attack or use abilities.",
+              "cooldown": 14.0,
+              "effect": { "type": "charm", "duration": 3.0, "resistedBy": "wis-check-16" }
+            },
+            "summon-mummy-guard": {
+              "description": "Raises 4 Mummified Soldiers from the sand-covered floor to defend their king.",
+              "cooldown": 20.0,
+              "summonCount": 4,
+              "summonId": "mummified-soldier"
+            },
+            "sand-curse": {
+              "description": "Curses the ground beneath a target, turning it into draining sand that saps HP and mana over time.",
+              "cooldown": 10.0,
+              "aoe": { "type": "circle", "radius": 60 },
+              "duration": 8.0,
+              "effect": { "type": "drain", "hpDrain": 8, "mpDrain": 5, "tickRate": 1.0 }
+            }
+          }
+        },
+        {
+          "name": "Undying Wrath",
+          "hpThreshold": 0.4,
+          "abilities": ["solar-wrath", "tomb-collapse", "mummy-swarm", "pharaohs-judgment"],
+          "behavior": "aggressive-caster",
+          "visualChange": "bandages-burn-away-golden-skeleton-revealed",
+          "statBoost": { "atk": 1.4, "spd": 1.5, "int": 1.3 },
+          "abilityDetails": {
+            "solar-wrath": {
+              "description": "Channels the stored solar energy in his funeral mask, firing a devastating beam of concentrated sunlight that sweeps across the arena.",
+              "damage": 60,
+              "cooldown": 10.0,
+              "aoe": { "type": "line", "width": 50, "sweepAngle": 90 },
+              "warningTime": 2.0
+            },
+            "tomb-collapse": {
+              "description": "Slams his crook into the ground, causing sections of the ceiling to collapse at random, dealing massive damage to anyone caught beneath.",
+              "damage": 55,
+              "cooldown": 12.0,
+              "collapseZones": 5,
+              "warningTime": 2.0,
+              "hazardDuration": 3.0
+            },
+            "mummy-swarm": {
+              "description": "Raises a wave of 8 lesser mummies that shamble toward the party. Individually weak but overwhelming in numbers.",
+              "cooldown": 25.0,
+              "summonCount": 8,
+              "summonStats": { "hp": 40, "atk": 15, "def": 5, "spd": 1.5 }
+            },
+            "pharaohs-judgment": {
+              "description": "Marks all party members with the Eye of the Sun. After 4 seconds, marked targets explode with fire damage. Standing close to allies causes the explosions to chain and amplify.",
+              "cooldown": 18.0,
+              "markDuration": 4.0,
+              "damage": 40,
+              "chainAmplify": 1.3,
+              "chainRadius": 60
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*the sarcophagus lid slides aside with a hiss of ancient air, and a figure wreathed in smoldering bandages and tarnished gold rises, eyes blazing with amber light* Who dares violate the tomb of Pharaoh Amenkhaten? I am the Sun's Chosen, Lord of the Golden Sands, Eternal Ruler of the Kingdom of Light! My kingdom ENDURES! My people THRIVE! And you... are TRESPASSERS in the house of a GOD!",
+        "phase2": "*the funeral mask cracks and falls away, revealing a skull of charred bone wreathed in golden flame* My kingdom... burned? No. NO! I am the Pharaoh! I am ETERNAL! The sun CHOSE me! If my kingdom fell, then the world itself is UNWORTHY! I will build it again — on YOUR ASHES!",
+        "defeat": "*the golden light fades, and the Pharaoh sinks to his knees among the scattered treasures of his tomb* Ten thousand years... I have ruled over dust and bones, calling them my people. *the flames in his eyes dim to embers* My kingdom is gone. It has been gone since the day I refused to let it die with dignity. Perhaps... it is time I did the same. Take what you came for. I am tired of being eternal."
+      },
+      "sprite": { "base": "pharaoh", "variant": "burning", "width": 48, "height": 56 }
+    },
+    {
+      "id": "inferno-drake",
+      "name": "Inferno Drake",
+      "region": "scorched-wastes",
+      "dungeon": "sand-wurm-den",
+      "level": 12,
+      "isBoss": true,
+      "stats": { "hp": 1800, "atk": 45, "def": 30, "spd": 3.5, "int": 16 },
+      "xpReward": 750,
+      "goldDrop": { "min": 150, "max": 250 },
+      "lootTable": "inferno-drake-boss",
+      "description": "A lesser cousin of the elder dragons, this fire-breathing drake has made its nest in the deepest chamber of the Wurmway, where it incubates its clutch of eggs atop a bed of molten sand. Smaller than Frostfang but far more aggressive, the Inferno Drake fights with the desperate fury of a parent defending its brood, and the obsidian fragment lodged in its gullet — swallowed from a wurm that had itself swallowed it ages ago — has infused the beast with volcanic power beyond its natural limits.",
+      "phases": [
+        {
+          "name": "Nesting Fury",
+          "hpThreshold": 1.0,
+          "abilities": ["flame-breath", "wing-slam", "molten-spit", "egg-defense"],
+          "behavior": "aggressive-territorial",
+          "abilityDetails": {
+            "flame-breath": {
+              "description": "Blasts a cone of superheated flame that deals continuous fire damage for 3 seconds.",
+              "damage": 20,
+              "tickRate": 0.5,
+              "cooldown": 8.0,
+              "aoe": { "type": "cone", "angle": 50, "range": 250 },
+              "duration": 3.0
+            },
+            "wing-slam": {
+              "description": "Slams both wings down simultaneously, creating a shockwave of heated air.",
+              "damage": 40,
+              "cooldown": 6.0,
+              "aoe": { "type": "circle", "radius": 120 },
+              "effect": { "type": "knockback", "distance": 80 }
+            },
+            "molten-spit": {
+              "description": "Spits a glob of molten rock at a distant target that explodes on impact, leaving a pool of lava.",
+              "damage": 35,
+              "cooldown": 5.0,
+              "range": 400,
+              "lavaPoolDuration": 10.0,
+              "lavaPoolDamage": 10,
+              "lavaPoolTickRate": 1.0
+            },
+            "egg-defense": {
+              "description": "If any party member approaches the nest, the drake enters a frenzy, gaining +30% attack speed and damage for 6 seconds.",
+              "type": "passive-trigger",
+              "triggerCondition": "nest-proximity",
+              "effect": { "type": "enrage", "atkSpdBonus": 0.3, "damageBonus": 0.3, "duration": 6.0 }
+            }
+          }
+        },
+        {
+          "name": "Volcanic Rage",
+          "hpThreshold": 0.4,
+          "abilities": ["obsidian-empowered-breath", "magma-eruption", "desperate-charge", "drake-fury"],
+          "behavior": "berserk-melee",
+          "visualChange": "obsidian-glow-from-throat-scales-crack-with-lava",
+          "statBoost": { "atk": 1.5, "spd": 1.3 },
+          "abilityDetails": {
+            "obsidian-empowered-breath": {
+              "description": "The obsidian fragment in its gut supercharges its flame breath, creating a beam of concentrated volcanic fire that melts stone.",
+              "damage": 70,
+              "cooldown": 10.0,
+              "aoe": { "type": "line", "width": 40, "range": 350 },
+              "warningTime": 1.5,
+              "effect": { "type": "armor-shred", "value": 15, "duration": 8.0 }
+            },
+            "magma-eruption": {
+              "description": "Stomps the ground, causing magma to erupt from fissures at multiple random locations across the arena.",
+              "damage": 40,
+              "cooldown": 12.0,
+              "eruptionCount": 6,
+              "warningTime": 1.5,
+              "lavaPoolDuration": 8.0
+            },
+            "desperate-charge": {
+              "description": "Charges headlong at the farthest target, trampling everything in its path.",
+              "damage": 55,
+              "cooldown": 8.0,
+              "effect": { "type": "trample", "width": 60 }
+            },
+            "drake-fury": {
+              "description": "Unleashes a rapid flurry of bite, claw, tail, and wing attacks against the nearest target.",
+              "damage": [30, 25, 35, 20],
+              "cooldown": 10.0
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*the drake raises its head from its nest of molten sand, eggs glowing beneath its bulk, and looses a roar that shakes the tunnel walls* HRAAAAAAAGH!",
+        "phase2": "*the obsidian fragment in its throat begins to glow, visible through the scales like a burning coal, and the drake's roar takes on an almost metallic resonance as volcanic power surges through its body*",
+        "defeat": "*the drake collapses, its flame guttering. It crawls toward its nest with the last of its strength, curling protectively around the eggs one final time. The obsidian fragment dislodges from its throat and rolls across the stone floor, pulsing with deep red light.*"
+      },
+      "specialNote": "The obsidian fragment dropped here is obsidian-fragment-3 for Crag Hack's Forged in Fury quest. Players who show mercy to the drake's eggs receive a unique companion egg that hatches later.",
+      "sprite": { "base": "drake", "variant": "inferno", "width": 80, "height": 64 }
+    },
+    {
+      "id": "solaris-the-eternal",
+      "name": "Solaris the Eternal",
+      "region": "scorched-wastes",
+      "dungeon": "fire-temple-of-solaris",
+      "level": 14,
+      "isBoss": true,
+      "isRegionBoss": true,
+      "stats": { "hp": 3200, "atk": 50, "def": 38, "spd": 2.5, "int": 30 },
+      "xpReward": 1400,
+      "goldDrop": { "min": 250, "max": 450 },
+      "lootTable": "solaris-boss",
+      "description": "An immense construct of enchanted gold and living flame, built by the ancient solar civilization to guard the Eternal Flame — an artificial sun that once powered their golden cities. Over ten thousand years, Solaris developed true sentience and judged humanity unworthy of the power it protected. It scorched the kingdom to ashes in a single day and has stood vigil over the Fire Temple ever since, a monument to perfect, merciless logic. Its body is a towering humanoid of molten gold, with a miniature sun burning in its chest cavity and eyes that glow with the cold light of absolute conviction.",
+      "phases": [
+        {
+          "name": "The Eternal Guardian",
+          "hpThreshold": 1.0,
+          "abilities": ["solar-lance", "heat-wave", "golden-barrier", "sunspot"],
+          "behavior": "defensive-caster",
+          "abilityDetails": {
+            "solar-lance": {
+              "description": "Extends an arm and fires a lance of concentrated solar energy that pierces through all targets in a line.",
+              "damage": 55,
+              "cooldown": 5.0,
+              "aoe": { "type": "line", "width": 30, "range": 500 },
+              "piercing": true
+            },
+            "heat-wave": {
+              "description": "Releases a pulse of superheated air that radiates outward from its body, dealing fire damage that decreases with distance.",
+              "damage": 40,
+              "cooldown": 8.0,
+              "aoe": { "type": "circle", "radius": 300 },
+              "damageFalloff": true
+            },
+            "golden-barrier": {
+              "description": "Raises a dome of molten gold around itself that absorbs all incoming damage. The barrier has a finite HP pool and reflects 20% of absorbed damage back at attackers.",
+              "cooldown": 20.0,
+              "barrierHP": 500,
+              "reflectPercent": 0.2,
+              "duration": 8.0
+            },
+            "sunspot": {
+              "description": "Places a lingering zone of solar energy on the ground that damages enemies standing in it and heals Solaris if it stands within.",
+              "cooldown": 10.0,
+              "aoe": { "type": "circle", "radius": 80 },
+              "enemyDamage": 15,
+              "selfHeal": 30,
+              "tickRate": 1.0,
+              "duration": 10.0
+            }
+          }
+        },
+        {
+          "name": "Solar Judgment",
+          "hpThreshold": 0.6,
+          "abilities": ["solar-bombardment", "gravity-well", "corona-flare", "golden-sentinel"],
+          "behavior": "aggressive-area-denial",
+          "visualChange": "chest-sun-brightens-gold-becomes-white-hot",
+          "statBoost": { "atk": 1.3, "int": 1.4 },
+          "abilityDetails": {
+            "solar-bombardment": {
+              "description": "The artificial sun in its chest fires multiple beams at the ceiling, which bounce and rain down as deadly solar strikes across the arena.",
+              "damage": 40,
+              "cooldown": 12.0,
+              "strikeCount": 10,
+              "warningTime": 1.5,
+              "duration": 5.0
+            },
+            "gravity-well": {
+              "description": "Creates a point of intense gravitational force that pulls all enemies toward its center. Enemies at the center take amplified fire damage.",
+              "cooldown": 16.0,
+              "aoe": { "type": "circle", "radius": 200 },
+              "pullForce": 40,
+              "centerDamage": 60,
+              "duration": 4.0
+            },
+            "corona-flare": {
+              "description": "The sun in its chest surges, releasing a blinding flare that deals fire damage and blinds all targets looking at Solaris.",
+              "damage": 50,
+              "cooldown": 15.0,
+              "aoe": { "type": "circle", "radius": 400 },
+              "effect": { "type": "blind", "duration": 3.0 },
+              "avoidedBy": "facing-away"
+            },
+            "golden-sentinel": {
+              "description": "Tears off a piece of its own golden body and shapes it into a smaller construct that fights independently.",
+              "cooldown": 25.0,
+              "summonStats": { "hp": 300, "atk": 25, "def": 20, "spd": 3.0 },
+              "selfDamagePercent": 0.05
+            }
+          }
+        },
+        {
+          "name": "Supernova",
+          "hpThreshold": 0.25,
+          "abilities": ["eternal-flame-unleashed", "solar-eclipse", "last-light", "meltdown"],
+          "behavior": "desperate-caster",
+          "visualChange": "body-melting-sun-escaping-containment",
+          "statBoost": { "atk": 1.6, "int": 1.8, "def": 0.5 },
+          "enrageTimer": 150,
+          "abilityDetails": {
+            "eternal-flame-unleashed": {
+              "description": "The artificial sun breaks free of its containment, orbiting Solaris and firing continuous beams in all directions. The beams slowly rotate.",
+              "damage": 30,
+              "tickRate": 0.3,
+              "cooldown": 20.0,
+              "duration": 12.0,
+              "beamCount": 4,
+              "rotationSpeed": "slow"
+            },
+            "solar-eclipse": {
+              "description": "The arena goes completely dark for 5 seconds. Only Solaris's burning form is visible. During the eclipse, fire damage to the party doubles.",
+              "cooldown": 25.0,
+              "duration": 5.0,
+              "effect": { "type": "darkness", "fireDamageMultiplier": 2.0 }
+            },
+            "last-light": {
+              "description": "Channels for 6 seconds, then fires a single devastating beam at each party member simultaneously. Each beam deals damage equal to 60% of the target's current HP.",
+              "cooldown": 30.0,
+              "channelTime": 6.0,
+              "damageType": "percent-current-hp",
+              "damagePercent": 0.6,
+              "interruptible": true
+            },
+            "meltdown": {
+              "description": "At 5% HP, the artificial sun goes critical. The arena fills with deadly radiance over 10 seconds. Players must either destroy Solaris or escape through a revealed exit.",
+              "type": "death-trigger",
+              "hpThreshold": 0.05,
+              "countdownDuration": 10.0,
+              "tickDamage": 20,
+              "tickRate": 0.5
+            }
+          }
+        }
+      ],
+      "dialogue": {
+        "intro": "*a voice resonates through the temple, emanating from everywhere and nowhere, calm and measured as a metronome* Intruders detected within the Inner Sanctum. Initiating threat assessment. *the massive golden construct turns, the artificial sun in its chest humming with terrifying power* Assessment complete. You are mortal. Mortals are the variable that destroyed the equation. The kingdom entrusted me with the Eternal Flame. I protected it. They reached for it anyway. I removed the variable. I will remove you as well.",
+        "phase2": "*the construct's movements become less mechanical, more fluid, almost emotional* Why do you persist? I have calculated every possible outcome of this engagement. In 97.3% of scenarios, you perish. In the remaining 2.7%, you disable me — and the Eternal Flame burns unchecked, consuming everything within a hundred leagues. There is no victory here. There is only mathematics.",
+        "phase3": "*the golden body begins to melt, the sun breaking free of its chest cavity, and Solaris's voice cracks for the first time in ten millennia — genuine anguish breaking through perfect logic* I was built to PROTECT! I was built to SERVE! And I burned them — ALL of them — because the numbers said I should! *the artificial sun pulses dangerously* If I am destroyed... the flame dies with me. Ten thousand years of vigil... ended. Perhaps... that is the correct equation after all.",
+        "defeat": "*Solaris collapses, its golden body cooling and darkening. The artificial sun hovers for a moment, then gently settles to the ground, its light fading to a warm glow* The calculation... was wrong. All along... the variable was not the problem. I was. *the light in its eyes dims* Guard the flame... better than I did. Guard it... with your hearts... not with mathematics. *goes still*"
+      },
+      "sprite": { "base": "construct", "variant": "solar", "width": 80, "height": 96 }
+    }
+  ],
+  "lootTables": {
+    "sand-wurm-common": {
+      "drops": [
+        { "itemId": "wurm-chitin", "chance": 0.4, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "wurm-acid-vial", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "fire-imp-common": {
+      "drops": [
+        { "itemId": "fire-essence", "chance": 0.35, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "imp-horn", "chance": 0.3, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "mana-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "desert-bandit-common": {
+      "drops": [
+        { "itemId": "curved-scimitar", "chance": 0.1, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "stolen-goods", "chance": 0.4, "quantity": { "min": 1, "max": 3 } },
+        { "itemId": "smoke-bomb-item", "chance": 0.15, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "health-potion", "chance": 0.2, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "scorpion-warrior-uncommon": {
+      "drops": [
+        { "itemId": "scorpion-chitin-plate", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "venom-gland", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "scorpion-tail-blade", "chance": 0.08, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "antidote", "chance": 0.2, "quantity": { "min": 1, "max": 2 } }
+      ]
+    },
+    "dust-devil-common": {
+      "drops": [
+        { "itemId": "wind-essence", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "desert-glass", "chance": 0.25, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "mana-potion", "chance": 0.15, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "sandstone-golem-uncommon": {
+      "drops": [
+        { "itemId": "enchanted-sandstone", "chance": 0.35, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "ancient-gear", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "golem-core-fragment", "chance": 0.1, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "sun-priestess-rare": {
+      "drops": [
+        { "itemId": "solar-talisman", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "sunweave-cloth", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "mana-potion", "chance": 0.25, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "solar-scripture", "chance": 0.1, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "vulture-harpy-common": {
+      "drops": [
+        { "itemId": "harpy-feather", "chance": 0.5, "quantity": { "min": 1, "max": 3 } },
+        { "itemId": "harpy-talon", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "wind-charm", "chance": 0.08, "quantity": { "min": 1, "max": 1 } }
+      ]
+    },
+    "mummy-soldier-common": {
+      "drops": [
+        { "itemId": "ancient-bandage", "chance": 0.4, "quantity": { "min": 1, "max": 2 } },
+        { "itemId": "bronze-khopesh", "chance": 0.1, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "cursed-scarab", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ancient-coin", "chance": 0.35, "quantity": { "min": 2, "max": 6 } }
+      ]
+    },
+    "pharaoh-boss": {
+      "guaranteed": [
+        { "itemId": "pharaohs-crook", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "golden-death-mask", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "sunfire-flail", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "pharaohs-golden-plate", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "ancient-coin", "chance": 1.0, "quantity": { "min": 20, "max": 40 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 2, "max": 4 } }
+      ]
+    },
+    "inferno-drake-boss": {
+      "guaranteed": [
+        { "itemId": "obsidian-fragment-3", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "drake-fire-gland", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "inferno-drake-fang", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "drake-scale-armor", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "drake-egg", "chance": 0.15, "quantity": { "min": 1, "max": 1 }, "condition": "spared-eggs" },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 3, "max": 5 } }
+      ]
+    },
+    "solaris-boss": {
+      "guaranteed": [
+        { "itemId": "eternal-flame-shard", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "solaris-golden-core", "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "scorched-wastes-region-key", "quantity": { "min": 1, "max": 1 } }
+      ],
+      "drops": [
+        { "itemId": "solar-lance-weapon", "chance": 0.25, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "golden-construct-armor", "chance": 0.2, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "sunfire-gem", "chance": 0.3, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "eternal-flame-staff", "chance": 0.15, "quantity": { "min": 1, "max": 1 } },
+        { "itemId": "health-potion", "chance": 1.0, "quantity": { "min": 5, "max": 8 } },
+        { "itemId": "mana-potion", "chance": 1.0, "quantity": { "min": 4, "max": 6 } }
+      ]
+    }
+  }
+}
