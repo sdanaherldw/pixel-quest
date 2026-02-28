@@ -5,3 +5,8 @@ export * from './DungeonScene';
 export * from './CharacterCreateScene';
 export * from './TownScene';
 export * from './InventoryScene';
+export * from './SpellBookScene';
+export * from './QuestLogScene';
+export * from './GameOverScene';
+export * from './MapScene';
+export * from './TitleScene';

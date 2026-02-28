@@ -5,3 +5,5 @@ export * from './InputManager';
 export * from './Camera';
 export * from './Debug';
 export * from './ecs';
+export * from './SaveManager';
+export * from './AudioManager';

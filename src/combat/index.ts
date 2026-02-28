@@ -81,3 +81,29 @@ export {
   type EnemyCombatantState,
   type CompanionAction,
 } from './CompanionAI';
+
+// ComboSystem
+export {
+  ComboSystem,
+  type ComboInput,
+  type ComboEffect,
+  type ComboDefinition,
+  type ActiveCombo,
+  type ComboResult,
+} from './ComboSystem';
+
+// LimitBreakSystem
+export {
+  LimitBreakSystem,
+  type LimitBreakMeter,
+  type PartyMeter,
+  type LimitBreak,
+} from './LimitBreakSystem';
+
+// ElementalSystem
+export {
+  Element,
+  ElementalSystem,
+  type ElementalReaction,
+  type ElementalProfile,
+} from './ElementalSystem';

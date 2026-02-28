@@ -195,3 +195,25 @@ export type {
   SkillTreeBranchDef,
   SkillTreeState,
 } from '@/rpg/SkillTree';
+
+// Codex System
+export {
+  CodexCategory,
+  CodexSystem,
+} from '@/rpg/CodexSystem';
+export type {
+  CodexEntry,
+  CodexSubEntry,
+  BestiaryEntry,
+  CodexProgress,
+} from '@/rpg/CodexSystem';
+
+// New Game Plus System
+export {
+  NewGamePlusSystem,
+} from '@/rpg/NewGamePlusSystem';
+export type {
+  NGPlusState,
+  AscendedItemBonus,
+  AwakenedForm,
+} from '@/rpg/NewGamePlusSystem';

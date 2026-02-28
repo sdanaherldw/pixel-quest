@@ -31,3 +31,14 @@ export type {
   BuildingType,
   ServiceType,
 } from './TownSystem';
+
+export { DungeonGenerator, DungeonTileType, RoomType, DungeonTheme, PRESET_DUNGEONS } from './DungeonGenerator';
+export type {
+  DungeonTile,
+  DungeonRoom,
+  SpawnPoint,
+  ChestPoint,
+  PlatformDef,
+  DungeonConfig,
+  DungeonLayout,
+} from './DungeonGenerator';

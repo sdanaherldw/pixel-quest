@@ -317,6 +317,33 @@ export class OverworldScene extends Scene {
   public update(dt: number): void {
     this._elapsed += dt;
 
+    // --- Overlay scene shortcuts ---
+    if (this.engine.input.isActionJustPressed('inventory')) {
+      void import('@/scenes/InventoryScene').then(({ InventoryScene }) => {
+        void this.engine.scenes.push(new InventoryScene());
+      });
+      return;
+    }
+    if (this.engine.input.isActionJustPressed('spellbook')) {
+      void import('@/scenes/SpellBookScene').then(({ SpellBookScene }) => {
+        void this.engine.scenes.push(new SpellBookScene());
+      });
+      return;
+    }
+    if (this.engine.input.isActionJustPressed('questlog')) {
+      void import('@/scenes/QuestLogScene').then(({ QuestLogScene }) => {
+        void this.engine.scenes.push(new QuestLogScene());
+      });
+      return;
+    }
+    if (this.engine.input.isActionJustPressed('map')) {
+      void import('@/scenes/MapScene').then(({ MapScene }) => {
+        void this.engine.scenes.push(new MapScene());
+      });
+      return;
+    }
+    // Menu is handled via the UI MenuSystem overlay — not a scene push.
+
     const transform = this._playerEntity.getComponent(ComponentType.Transform) as TransformComponent;
 
     // --- NPC interaction checks ---

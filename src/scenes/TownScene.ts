@@ -77,10 +77,13 @@ export class TownScene extends Scene {
   public get activeService(): string | null { return this._activeService_; }
   private _activeService_: string | null = null;
   private _elapsed: number = 0;
-  private _townName: string = 'Oakworth Village';
+  private _townId: string;
+  private _townName: string;
 
-  constructor() {
+  constructor(townId?: string) {
     super('TownScene');
+    this._townId = townId ?? 'oakworth';
+    this._townName = this._resolveTownName(this._townId);
   }
 
   // ------------------------------------------------------------------
@@ -716,5 +719,25 @@ export class TownScene extends Scene {
     void import('./OverworldScene').then(({ OverworldScene }) => {
       void this.engine.scenes.replace(new OverworldScene());
     });
+  }
+
+  // ------------------------------------------------------------------
+  // Helpers
+  // ------------------------------------------------------------------
+
+  /** The town identifier used to load this scene. */
+  public get townId(): string {
+    return this._townId;
+  }
+
+  private _resolveTownName(id: string): string {
+    const names: Record<string, string> = {
+      oakworth: 'Oakworth Village',
+      haven: 'Haven Town',
+      frostpeak: 'Frostpeak Settlement',
+      scorchgate: 'Scorchgate Outpost',
+      shadowmire: 'Shadowmire Hamlet',
+    };
+    return names[id] ?? `Town of ${id.charAt(0).toUpperCase() + id.slice(1)}`;
   }
 }

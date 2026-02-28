@@ -1,0 +1,431 @@
+{
+  "region": "shadowmire",
+  "regionName": "Shadowmire Swamp",
+  "quests": [
+    {
+      "id": "the-undying-plague",
+      "name": "The Undying Plague",
+      "type": "main",
+      "region": "shadowmire",
+      "level": { "recommended": 10, "minimum": 8 },
+      "giver": "old-merta",
+      "description": "The Shadowmire Swamp is dying — or rather, undying. A necromantic plague is spreading from the swamp's center, raising the dead and poisoning the living. Old Merta, the hedge witch of Grimfen, is the only one keeping the plague at bay with her potions, but her supplies are running low and the undead press closer each night. She knows the plague's architect is her former apprentice, Morgantha, who serves the lich Lord Vexmort. To end the plague, both must fall.",
+      "journal": "Old Merta has asked us to trace the undead plague to its source and destroy it. We must confront Morgantha in her tower and then face Lord Vexmort in his citadel of bone.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Speak with the survivors in Bogwatch about the plague's progression",
+          "type": "talk_to",
+          "target": "bogwatch-elder-theron",
+          "journal": "The people of Bogwatch have been fighting the undead nightly. Elder Theron can tell us where the plague is strongest."
+        },
+        {
+          "id": 1,
+          "description": "Clear the Sunken Crypt of Thalweg and defeat the Bone Colossus",
+          "type": "boss_defeat",
+          "target": "bone-colossus",
+          "journal": "The Sunken Crypt is a nexus of necromantic energy feeding the plague. Clear it to weaken Vexmort's hold on the region."
+        },
+        {
+          "id": 2,
+          "description": "Find the hidden causeway to Morgantha's Tower",
+          "type": "talk_to",
+          "target": "old-merta",
+          "triggerDialogue": "merta-reveals-causeway",
+          "journal": "Old Merta knows the secret path to her former apprentice's tower. The causeway only appears at low tide."
+        },
+        {
+          "id": 3,
+          "description": "Confront Morgantha the Swamp Witch",
+          "type": "boss_defeat",
+          "target": "morgantha-swamp-witch",
+          "journal": "Morgantha must be stopped. She brews the plague that feeds Vexmort's army of the dead."
+        },
+        {
+          "id": 4,
+          "description": "Decide Morgantha's fate",
+          "type": "choice",
+          "options": [
+            {
+              "id": "kill",
+              "description": "Destroy Morgantha — she is too dangerous to leave alive",
+              "setOutcome": "morgantha-killed"
+            },
+            {
+              "id": "spare",
+              "description": "Accept Morgantha's surrender and her information about Vexmort's phylactery",
+              "condition": { "morgantha-hp-below-15-percent": true },
+              "setOutcome": "morgantha-spared"
+            }
+          ],
+          "journal": "Morgantha offers to betray Vexmort in exchange for her life. Do we trust her?"
+        },
+        {
+          "id": 5,
+          "description": "Enter Lord Vexmort's Citadel and face the lich",
+          "type": "boss_defeat",
+          "target": "lord-vexmort",
+          "journal": "The citadel awaits. Lord Vexmort, the Undying, must be destroyed to end the plague forever."
+        },
+        {
+          "id": 6,
+          "description": "Return to Old Merta and Elder Theron",
+          "type": "talk_to",
+          "target": "old-merta",
+          "triggerDialogue": "merta-plague-ended",
+          "journal": "The plague is lifting. The swamp can heal. We should tell Merta and the survivors."
+        }
+      ],
+      "rewards": {
+        "morgantha-killed": { "xp": 1200, "gold": 500, "items": ["plague-cured-pendant"], "reputation": { "bogwatch": 50, "grimfen": 40 } },
+        "morgantha-spared": { "xp": 1300, "gold": 450, "items": ["plague-cured-pendant", "morganthas-alliance-ring"], "reputation": { "bogwatch": 40, "grimfen": 50 }, "unlocks": ["morgantha-informant"] }
+      },
+      "flags": {
+        "onAccept": ["shadowmire-main-quest-active"],
+        "onComplete": ["shadowmire-cleared", "vexmort-defeated"]
+      }
+    },
+    {
+      "id": "mercy-for-the-cursed",
+      "name": "Mercy for the Cursed",
+      "type": "side",
+      "region": "shadowmire",
+      "level": { "recommended": 9, "minimum": 8 },
+      "giver": "healer-anna",
+      "description": "Healer Anna in Bogwatch is tending to seven villagers in the late stages of the plague — their skin is greying, their eyes are clouding, and within days they will rise as undead. Anna has a potent antidote that can cure them, but she only has enough for four doses. Three villagers will turn regardless. She asks you to help her decide who receives the cure — and to deal with those who cannot be saved.",
+      "journal": "Seven villagers are turning. We only have enough antidote for four. The rest must be... dealt with.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Speak with each of the seven cursed villagers",
+          "type": "interact",
+          "target": "cursed-villagers",
+          "count": 7,
+          "journal": "Learn about each person. Their stories may inform our choices."
+        },
+        {
+          "id": 1,
+          "description": "Choose four villagers to receive the antidote",
+          "type": "choice",
+          "options": [
+            {
+              "id": "pragmatic",
+              "description": "Save the four most useful to the village: the blacksmith, the healer's apprentice, the guard captain, and the farmer",
+              "setOutcome": "pragmatic-choice"
+            },
+            {
+              "id": "compassionate",
+              "description": "Save the four most vulnerable: the two children, the pregnant woman, and the elderly storyteller",
+              "setOutcome": "compassionate-choice"
+            },
+            {
+              "id": "lottery",
+              "description": "Let fate decide — draw lots fairly. No one person's life is worth more than another's.",
+              "setOutcome": "lottery-choice"
+            },
+            {
+              "id": "search-for-more",
+              "description": "[Herbalism skill or INT >= 16] Search for ingredients to brew additional antidotes before time runs out",
+              "condition": { "or": [{ "skill": "herbalism" }, { "stat": "int", "min": 16 }] },
+              "setOutcome": "extra-antidote"
+            }
+          ],
+          "journal": "An impossible choice. Who lives? Who dies?"
+        },
+        {
+          "id": 2,
+          "description": "Administer the antidote to the chosen villagers",
+          "type": "interact",
+          "target": "antidote-administration",
+          "journal": "Give the antidotes and pray they work in time."
+        },
+        {
+          "id": 3,
+          "description": "Deal with the remaining cursed villagers",
+          "type": "choice",
+          "options": [
+            {
+              "id": "mercy-kill",
+              "description": "End their suffering before the transformation completes",
+              "setOutcome": "mercy-given"
+            },
+            {
+              "id": "restrain",
+              "description": "Restrain them and wait — there may yet be a cure found later",
+              "setOutcome": "restrained"
+            },
+            {
+              "id": "release",
+              "description": "Release them into the swamp, where they will rise as undead but away from the village",
+              "setOutcome": "released"
+            }
+          ],
+          "journal": "The uncured must be dealt with somehow."
+        }
+      ],
+      "rewards": {
+        "pragmatic-choice": { "xp": 250, "gold": 100, "reputation": { "bogwatch": 15 }, "consequenceNote": "The village survives better in the short term, but the loss of children and the elderly haunts the survivors." },
+        "compassionate-choice": { "xp": 250, "gold": 80, "reputation": { "bogwatch": 25 }, "consequenceNote": "The village struggles without key workers, but the survivors feel they made the moral choice." },
+        "lottery-choice": { "xp": 250, "gold": 90, "reputation": { "bogwatch": 20 }, "consequenceNote": "No one feels singled out, but the randomness feels cruel in its indifference." },
+        "extra-antidote": { "xp": 400, "gold": 120, "items": ["master-herbalist-recipe"], "reputation": { "bogwatch": 40 }, "consequenceNote": "You save 6 of 7. Only one is lost — the one who succumbed before you could brew the extra dose." }
+      }
+    },
+    {
+      "id": "the-drowned-paladins",
+      "name": "The Drowned Paladins",
+      "type": "side",
+      "region": "shadowmire",
+      "level": { "recommended": 10, "minimum": 9 },
+      "giver": "paladin-commander-ghost",
+      "prerequisite": { "class": "paladin", "or": { "flag": "dwarven-ghost-communicated" } },
+      "description": "Deep in the swamp, you encounter the ghost of Commander Isolde, leader of the Shining Crusade that entered the Shadowmire three centuries ago. She retains her consciousness and begs for help — her paladins are trapped as Drowned Knights, forced to serve Vexmort against their wills. She knows where their sacred relics are hidden — relics that could break Vexmort's hold and free the knights' souls. But recovering them means venturing into the most dangerous parts of the swamp.",
+      "journal": "Commander Isolde's ghost asks us to recover the sacred relics of the Shining Crusade to free her Drowned Knights from Vexmort's control.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Recover the Crusade Banner from the sunken war-camp",
+          "type": "collect",
+          "target": "shining-crusade-banner",
+          "journal": "The banner sank with the war-camp when the swamp swallowed it. Look near the old stone bridge foundation."
+        },
+        {
+          "id": 1,
+          "description": "Recover Isolde's Holy Sword from the Bone Colossus's lair",
+          "type": "collect",
+          "target": "isoldes-holy-sword",
+          "journal": "Isolde's sword was incorporated into the Bone Colossus. Defeat it to reclaim the blade."
+        },
+        {
+          "id": 2,
+          "description": "Perform the Rite of Remembrance at the Drowned Chapel",
+          "type": "interact",
+          "target": "drowned-chapel-altar",
+          "journal": "The submerged chapel where the paladins took their oaths still stands. Performing the rite here with the relics will break Vexmort's hold on the Drowned Knights."
+        },
+        {
+          "id": 3,
+          "description": "Witness the Drowned Knights' liberation",
+          "type": "cutscene",
+          "target": "drowned-knights-freed",
+          "journal": "The Drowned Knights remember who they were. Some pass on peacefully. Others... offer to fight one last battle."
+        }
+      ],
+      "rewards": {
+        "xp": 400,
+        "gold": 200,
+        "items": ["isoldes-restored-sword"],
+        "reputation": { "bogwatch": 30, "grimfen": 20 },
+        "unlocks": ["freed-paladin-ghosts-assist-vexmort-fight"]
+      }
+    },
+    {
+      "id": "the-herbalists-apprentice",
+      "name": "The Herbalist's Apprentice",
+      "type": "side",
+      "region": "shadowmire",
+      "level": { "recommended": 9, "minimum": 8 },
+      "giver": "old-merta",
+      "description": "Old Merta's last apprentice, a young woman named Lily, went into the deep swamp three days ago to gather Corpse Bloom petals for plague antidotes. She has not returned. Merta fears the worst but cannot leave Grimfen undefended. She asks you to find Lily — or at least bring back her herb satchel, because the village needs those ingredients desperately.",
+      "journal": "Find Lily, Merta's apprentice, who went missing in the deep swamp while gathering herbs.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Follow Lily's trail into the deep swamp",
+          "type": "interact",
+          "target": "lily-trail-markers",
+          "count": 3,
+          "journal": "Lily marks her paths with knotted ribbons on branches. Follow the trail deeper into the mire."
+        },
+        {
+          "id": 1,
+          "description": "Find Lily",
+          "type": "reach_location",
+          "target": "lily-location",
+          "journal": "The trail ends at a clearing surrounded by Corpse Flowers. Lily is trapped inside a vine cage, alive but weakening."
+        },
+        {
+          "id": 2,
+          "description": "Free Lily from the Corpse Flower vines",
+          "type": "defeat_enemy",
+          "target": "corpse-flower-cluster",
+          "journal": "Destroy the Corpse Flowers holding Lily captive without damaging the cage she is in."
+        },
+        {
+          "id": 3,
+          "description": "Escort Lily back to Grimfen",
+          "type": "escort",
+          "target": "lily-escort",
+          "journal": "Lily is weak and poisoned. We must get her back to Merta quickly."
+        }
+      ],
+      "rewards": {
+        "xp": 200,
+        "gold": 80,
+        "items": ["mertas-gratitude-potion"],
+        "reputation": { "grimfen": 25 },
+        "unlocks": ["merta-shop-discount"]
+      }
+    },
+    {
+      "id": "negotiations-with-the-dead",
+      "name": "Negotiations with the Dead",
+      "type": "side",
+      "region": "shadowmire",
+      "level": { "recommended": 11, "minimum": 10 },
+      "giver": "bogwatch-elder-theron",
+      "description": "Elder Theron proposes something radical: negotiation with the undead. He has observed that certain Drowned Knights patrol predictable routes and seem to avoid Bogwatch deliberately, as if some remnant of their living selves respects the village boundaries. He wonders if a truce is possible — at least with the more sentient undead — buying the village time while the party deals with Vexmort. It is a morally complex idea that not everyone in the village supports.",
+      "journal": "Elder Theron wants to attempt negotiation with the sentient undead near Bogwatch. Not everyone agrees this is wise.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Attend the village council meeting about the proposed truce",
+          "type": "interact",
+          "target": "bogwatch-council",
+          "journal": "The village is divided. Attend the council meeting and hear all sides."
+        },
+        {
+          "id": 1,
+          "description": "Decide whether to support the truce attempt",
+          "type": "choice",
+          "options": [
+            {
+              "id": "support-truce",
+              "description": "Support Theron's plan and help negotiate with the Drowned Knight patrol leader",
+              "setOutcome": "truce-attempted"
+            },
+            {
+              "id": "oppose-truce",
+              "description": "Side with the opposition — the undead cannot be trusted and must be destroyed",
+              "setOutcome": "truce-opposed"
+            },
+            {
+              "id": "compromise",
+              "description": "Propose a middle ground: attempt negotiation but prepare defenses in case it fails",
+              "setOutcome": "compromise"
+            }
+          ],
+          "journal": "The village looks to us for guidance."
+        },
+        {
+          "id": 2,
+          "description": "Carry out the chosen plan",
+          "type": "interact",
+          "target": "truce-execution",
+          "journal": "Execute the plan, whatever it may be."
+        }
+      ],
+      "rewards": {
+        "truce-attempted": { "xp": 350, "gold": 100, "reputation": { "bogwatch": 20 }, "consequence": "The truce holds temporarily, giving the village breathing room, but some villagers resent living alongside the undead." },
+        "truce-opposed": { "xp": 250, "gold": 150, "reputation": { "bogwatch": 15 }, "consequence": "The undead patrols are destroyed, but the battle costs Bogwatch two defenders they could not afford to lose." },
+        "compromise": { "xp": 300, "gold": 120, "reputation": { "bogwatch": 25 }, "consequence": "The most balanced outcome. The truce is attempted with defenses ready. When it partially succeeds, the village gains both allies and security." }
+      }
+    },
+    {
+      "id": "mertas-reckoning",
+      "name": "Merta's Reckoning",
+      "type": "companion",
+      "region": "shadowmire",
+      "level": { "recommended": 12, "minimum": 11 },
+      "giver": "old-merta",
+      "prerequisite": { "quest_complete": "the-undying-plague", "objective_complete": { "quest": "the-undying-plague", "objective": 3 } },
+      "description": "After Morgantha's defeat, Old Merta asks to accompany the party to her former apprentice's tower one last time. She wants to salvage Morgantha's research — not the plague recipes, but the early work. Work they did together as girls, studying the healing properties of swamp herbs. She believes this research, combined with her own knowledge, could create a permanent cure for the lingering effects of the plague. But the tower is unstable, the remaining wards are still active, and Morgantha's spirit may not have departed entirely.",
+      "journal": "Accompany Old Merta to Morgantha's Tower to salvage healing research from their shared past.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Escort Merta to Morgantha's Tower",
+          "type": "escort",
+          "target": "merta-tower-escort",
+          "journal": "The causeway is treacherous. Protect Merta as she navigates the path she once walked as a young woman."
+        },
+        {
+          "id": 1,
+          "description": "Search the tower for the early research journals",
+          "type": "collect",
+          "target": "early-research-journals",
+          "count": 3,
+          "journal": "Three journals hidden throughout the tower contain the work Merta and Morgantha did together."
+        },
+        {
+          "id": 2,
+          "description": "Confront Morgantha's lingering spirit or ward echoes",
+          "type": "boss_defeat",
+          "target": "morgantha-echo",
+          "journal": "The tower's wards have created an echo of Morgantha — a shadow of her power that attacks intruders."
+        },
+        {
+          "id": 3,
+          "description": "Witness Merta's farewell to her old friend",
+          "type": "cutscene",
+          "target": "merta-farewell",
+          "journal": "Merta finds the pressed wildflower Morgantha kept all these years. An old friendship, remembered at the end."
+        }
+      ],
+      "rewards": {
+        "xp": 450,
+        "gold": 150,
+        "items": ["mertas-master-antidote"],
+        "companionBonus": { "characterId": "old-merta", "loyalty": "maximum", "unlockSkill": "plague-purge-mastery" },
+        "unlocks": ["merta-companion-recruitable", "permanent-plague-cure"]
+      }
+    },
+    {
+      "id": "bounty-swamp-horror",
+      "name": "Bounty: The Thing in the Deep",
+      "type": "bounty",
+      "region": "shadowmire",
+      "level": { "recommended": 11, "minimum": 9 },
+      "giver": "bounty-board-bogwatch",
+      "description": "Something enormous has been dragging boats and people into the deepest part of the swamp. Survivors describe a mass of tentacles, rotting flesh, and too many eyes. The bounty board calls it 'The Thing in the Deep' — a massive undead kraken-like abomination lurking in the central bog.",
+      "journal": "Hunt the abomination lurking in the deep swamp.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Set traps at the deep bog to lure the creature",
+          "type": "interact",
+          "target": "deep-bog-traps",
+          "journal": "Use meat and blood to bait the creature's feeding grounds."
+        },
+        {
+          "id": 1,
+          "description": "Defeat the Thing in the Deep",
+          "type": "boss_defeat",
+          "target": "swamp-abomination",
+          "journal": "An undead mass of fused aquatic creatures. Fight it in waist-deep water and do not get pulled under."
+        },
+        {
+          "id": 2,
+          "description": "Collect the creature's core organ as proof",
+          "type": "collect",
+          "target": "abomination-heart",
+          "journal": "The necrotic heart at the creature's center is proof enough."
+        },
+        {
+          "id": 3,
+          "description": "Turn in the bounty at Bogwatch",
+          "type": "interact",
+          "target": "bounty-board-bogwatch",
+          "journal": "Return to Bogwatch to claim the reward."
+        }
+      ],
+      "rewards": {
+        "xp": 300,
+        "gold": 250,
+        "items": ["abomination-hide-armor-piece"],
+        "reputation": { "bogwatch": 25, "grimfen": 15 }
+      }
+    }
+  ],
+  "questChains": {
+    "main-shadowmire": {
+      "name": "Shadowmire Swamp — Main Story",
+      "quests": ["the-undying-plague"],
+      "leadsTo": "cinder-core-main"
+    },
+    "merta-saga": {
+      "name": "Old Merta's Legacy",
+      "quests": ["the-herbalists-apprentice", "mertas-reckoning"],
+      "note": "Completing Merta's Reckoning unlocks Merta as a companion and cures the lingering plague."
+    }
+  }
+}

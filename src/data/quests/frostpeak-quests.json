@@ -1,0 +1,439 @@
+{
+  "region": "frostpeak",
+  "regionName": "Frostpeak Mountains",
+  "quests": [
+    {
+      "id": "the-frozen-throne",
+      "name": "The Frozen Throne",
+      "type": "main",
+      "region": "frostpeak",
+      "level": { "recommended": 10, "minimum": 8 },
+      "giver": "ranger-captain-svala",
+      "description": "The Frostpeak Mountains are in turmoil. The ancient dwarven fortress of Khar-Zadul has begun emitting waves of supernatural cold, the Crystal Ice Caverns have sealed themselves shut, and the dragon Frostfang has become increasingly aggressive. Ranger Captain Svala in Snowhaven believes the disturbances are connected and needs capable adventurers to investigate before the entire mountain range becomes uninhabitable.",
+      "journal": "Ranger Captain Svala has asked us to investigate the disturbances in the Frostpeak Mountains. We must explore the Crystal Ice Caverns, uncover the truth about Khar-Zadul's Frozen King, and ultimately confront the elder dragon Frostfang at the summit.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Speak with the dwarven elders in Ironhearth about the fortress Khar-Zadul",
+          "type": "talk_to",
+          "target": "forgemaster-durin",
+          "journal": "The dwarves of Ironhearth may know the history of the sealed fortress. We should speak with Forgemaster Durin."
+        },
+        {
+          "id": 1,
+          "description": "Clear the Crystal Ice Caverns and defeat the Crystal Golem",
+          "type": "boss_defeat",
+          "target": "crystal-golem",
+          "journal": "The Crystal Ice Caverns hold the first clue. Something ancient stirs in the deepest chamber."
+        },
+        {
+          "id": 2,
+          "description": "Return to Forgemaster Durin with the Prismatic Crystal Core",
+          "type": "talk_to",
+          "target": "forgemaster-durin",
+          "triggerDialogue": "durin-crystal-analysis",
+          "journal": "The Crystal Core we found may reveal the nature of the corruption. Durin can analyze it."
+        },
+        {
+          "id": 3,
+          "description": "Enter Khar-Zadul and confront the Frozen King",
+          "type": "boss_defeat",
+          "target": "frozen-king",
+          "journal": "The Frozen King sits on his ice throne, bound by a cursed crown. We must free him — or destroy him."
+        },
+        {
+          "id": 4,
+          "description": "Claim the Frozen King's runehammer",
+          "type": "collect",
+          "target": "thordaks-runehammer",
+          "journal": "The Frozen King's runehammer was forged to slay Frostfang. We will need it for what comes next."
+        },
+        {
+          "id": 5,
+          "description": "Ascend to Frostfang Summit and defeat the Elder Dragon",
+          "type": "boss_defeat",
+          "target": "frostfang-elder-dragon",
+          "journal": "The summit awaits. Frostfang the Elder Dragon must be stopped before the mountains themselves are destroyed."
+        },
+        {
+          "id": 6,
+          "description": "Return to Ranger Captain Svala with news of your victory",
+          "type": "talk_to",
+          "target": "ranger-captain-svala",
+          "triggerDialogue": "svala-frostfang-defeated",
+          "journal": "Frostfang is defeated. We should inform Svala and the people of the mountains."
+        }
+      ],
+      "rewards": {
+        "xp": 1200,
+        "gold": 500,
+        "items": ["frostpeak-champion-medal"],
+        "reputation": { "ironhearth": 50, "snowhaven": 50 },
+        "unlocks": ["cinder-core-entrance-discovered"]
+      },
+      "flags": {
+        "onAccept": ["frostpeak-main-quest-active"],
+        "onComplete": ["frostpeak-cleared", "frostfang-defeated"]
+      }
+    },
+    {
+      "id": "the-last-patrol",
+      "name": "The Last Patrol",
+      "type": "side",
+      "region": "frostpeak",
+      "level": { "recommended": 9, "minimum": 8 },
+      "giver": "ranger-halvar",
+      "description": "Ranger Halvar's patrol team went missing three days ago in the Whitecap Pass. The blizzard conditions have worsened, and no one else is willing to brave the storm. Halvar asks you to find his missing rangers — or at least bring back their badges so their families can have closure.",
+      "journal": "Three rangers are missing in the Whitecap Pass. We must brave the blizzard to find them.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Search the Whitecap Pass for the missing rangers",
+          "type": "reach_location",
+          "target": "whitecap-pass-camp",
+          "journal": "Follow the marked trail into the Whitecap Pass. Look for signs of the patrol camp."
+        },
+        {
+          "id": 1,
+          "description": "Find the rangers' camp and investigate",
+          "type": "interact",
+          "target": "ranger-camp-remains",
+          "journal": "The camp has been found — torn apart by something large. Blood in the snow leads deeper into the pass."
+        },
+        {
+          "id": 2,
+          "description": "Follow the blood trail to the yeti den",
+          "type": "reach_location",
+          "target": "yeti-den-entrance",
+          "journal": "The trail leads to a yeti den. The rangers may still be alive inside."
+        },
+        {
+          "id": 3,
+          "description": "Rescue the rangers or recover their badges",
+          "type": "choice",
+          "options": [
+            {
+              "id": "rescue-all",
+              "description": "Defeat the yetis and free all three rangers (they are alive but injured)",
+              "type": "defeat_enemy",
+              "target": "yeti-den-pack",
+              "condition": { "timedObjective": true, "daysPassed": 3, "inverted": true },
+              "setOutcome": "rangers-rescued"
+            },
+            {
+              "id": "rescue-some",
+              "description": "Two rangers are alive, one has succumbed to wounds. Recover the fallen's badge.",
+              "type": "defeat_enemy",
+              "target": "yeti-den-pack",
+              "condition": { "timedObjective": true, "daysPassed": 3 },
+              "setOutcome": "rangers-partial"
+            },
+            {
+              "id": "mercy",
+              "description": "Discover the yeti matriarch is protecting cubs. Negotiate a peaceful withdrawal with the injured rangers.",
+              "type": "dialogue",
+              "target": "yeti-matriarch",
+              "condition": { "stat": "wis", "min": 15 },
+              "setOutcome": "rangers-peaceful"
+            }
+          ],
+          "journal": "The situation in the den is more complex than expected."
+        },
+        {
+          "id": 4,
+          "description": "Return to Ranger Halvar",
+          "type": "talk_to",
+          "target": "ranger-halvar",
+          "journal": "Report back to Halvar with news of his patrol."
+        }
+      ],
+      "branchCondition": {
+        "note": "Whether all rangers survive depends on how quickly the player reaches the den. Taking more than 3 in-game days means one ranger dies from injuries.",
+        "timedDeadline": { "days": 3 }
+      },
+      "rewards": {
+        "rangers-rescued": { "xp": 300, "gold": 150, "items": ["rangers-frost-cloak"], "reputation": { "snowhaven": 30 } },
+        "rangers-partial": { "xp": 250, "gold": 120, "items": ["fallen-rangers-badge"], "reputation": { "snowhaven": 20 } },
+        "rangers-peaceful": { "xp": 350, "gold": 100, "items": ["yeti-friendship-token", "rangers-frost-cloak"], "reputation": { "snowhaven": 35 }, "unlocks": ["yeti-ally-available"] }
+      }
+    },
+    {
+      "id": "ghosts-of-khar-zadul",
+      "name": "Ghosts of Khar-Zadul",
+      "type": "side",
+      "region": "frostpeak",
+      "level": { "recommended": 10, "minimum": 9 },
+      "giver": "forgemaster-durin",
+      "description": "Forgemaster Durin confides that his ancestors were among those trapped when Khar-Zadul froze. He asks you to recover the Ledger of Grudges from the fortress's great hall — a sacred dwarven record of debts owed and wrongs to be righted. With it, he can perform the Rite of Release and free the dwarven ghosts from their eternal patrol.",
+      "journal": "Durin wants us to find the Ledger of Grudges in Khar-Zadul so the dwarven ghosts can finally rest.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Enter Khar-Zadul and locate the Great Hall",
+          "type": "reach_location",
+          "target": "khar-zadul-great-hall",
+          "journal": "The Great Hall of Khar-Zadul lies on the second level of the fortress."
+        },
+        {
+          "id": 1,
+          "description": "Find the Ledger of Grudges",
+          "type": "collect",
+          "target": "ledger-of-grudges",
+          "journal": "The Ledger is kept in the Recordkeeper's alcove behind the High Table."
+        },
+        {
+          "id": 2,
+          "description": "Decide the fate of the Ledger",
+          "type": "choice",
+          "options": [
+            {
+              "id": "return-durin",
+              "description": "Return the Ledger to Durin for the Rite of Release",
+              "setOutcome": "ghosts-freed"
+            },
+            {
+              "id": "read-first",
+              "description": "Read the Ledger first — discover it contains the location of a hidden dwarven treasure vault",
+              "condition": { "stat": "int", "min": 14 },
+              "setOutcome": "treasure-discovered"
+            },
+            {
+              "id": "ghost-captain",
+              "description": "Give the Ledger to the Ghost Captain in Khar-Zadul, allowing the ghosts to settle their own grudges",
+              "condition": { "class": "paladin", "or": { "flag": "dwarven-ghost-communicated" } },
+              "setOutcome": "ghosts-self-determined"
+            }
+          ],
+          "journal": "We have the Ledger. Now we must decide what to do with it."
+        },
+        {
+          "id": 3,
+          "description": "Witness the outcome of your choice",
+          "type": "cutscene",
+          "target": "ledger-outcome",
+          "journal": "The dwarven spirits await."
+        }
+      ],
+      "rewards": {
+        "ghosts-freed": { "xp": 350, "gold": 200, "items": ["dwarven-blessing-amulet"], "reputation": { "ironhearth": 40 } },
+        "treasure-discovered": { "xp": 300, "gold": 500, "items": ["dwarven-treasure-map"], "reputation": { "ironhearth": 15 } },
+        "ghosts-self-determined": { "xp": 400, "gold": 150, "items": ["ghost-captains-shield"], "reputation": { "ironhearth": 50 }, "unlocks": ["dwarven-ghost-allies-in-boss-fights"] }
+      }
+    },
+    {
+      "id": "the-avalanche-express",
+      "name": "The Avalanche Express",
+      "type": "side",
+      "region": "frostpeak",
+      "level": { "recommended": 9, "minimum": 8 },
+      "giver": "caravan-master-yoldi",
+      "description": "Caravan Master Yoldi needs a vital shipment of medicine delivered to Ironhearth before the mountain passes close for winter. The direct route has been blocked by an avalanche, and the detour through Goat Berserker territory is nearly as dangerous. She offers generous pay for escorts who can get the medicine through.",
+      "journal": "Escort the medicine caravan to Ironhearth through dangerous mountain passes.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Meet the caravan at the Snowhaven gates",
+          "type": "reach_location",
+          "target": "snowhaven-south-gate",
+          "journal": "The caravan departs at dawn from the south gate."
+        },
+        {
+          "id": 1,
+          "description": "Choose a route to Ironhearth",
+          "type": "choice",
+          "options": [
+            {
+              "id": "goat-pass",
+              "description": "Take the Goat Pass — shorter but infested with Mountain Goat Berserkers",
+              "setOutcome": "goat-route"
+            },
+            {
+              "id": "ice-bridge",
+              "description": "Cross the Ice Bridge — longer but avoids most enemies. Risk of bridge collapse.",
+              "setOutcome": "bridge-route"
+            },
+            {
+              "id": "tunnel",
+              "description": "Use the abandoned mine tunnels — dark and cramped, but sheltered from weather. Unknown dangers below.",
+              "setOutcome": "tunnel-route"
+            }
+          ],
+          "journal": "Three routes to Ironhearth. Each carries its own dangers."
+        },
+        {
+          "id": 2,
+          "description": "Navigate the chosen route and protect the caravan",
+          "type": "escort",
+          "target": "medicine-caravan",
+          "journal": "Keep the caravan intact. If the medicine is destroyed, the mission fails."
+        },
+        {
+          "id": 3,
+          "description": "Deliver the medicine to Ironhearth",
+          "type": "reach_location",
+          "target": "ironhearth-gate",
+          "journal": "Get the caravan to Ironhearth's gates in one piece."
+        }
+      ],
+      "routeEncounters": {
+        "goat-route": { "encounters": 4, "enemyTypes": ["mountain-goat-berserker", "ice-wolf"], "bonus": "fastest-time-bonus" },
+        "bridge-route": { "encounters": 2, "hazards": ["bridge-collapse-check", "blizzard-visibility"], "bonus": "intact-cargo-bonus" },
+        "tunnel-route": { "encounters": 3, "enemyTypes": ["dwarven-ghost", "frost-elemental"], "bonus": "secret-passage-discovery" }
+      },
+      "rewards": {
+        "xp": 250,
+        "gold": 200,
+        "items": ["mountain-guide-boots"],
+        "reputation": { "ironhearth": 25, "snowhaven": 20 },
+        "bonusRewards": {
+          "fastest-time-bonus": { "xp": 50, "gold": 50 },
+          "intact-cargo-bonus": { "xp": 50, "items": ["extra-medicine-supply"] },
+          "secret-passage-discovery": { "unlocks": ["abandoned-mine-shortcut"] }
+        }
+      }
+    },
+    {
+      "id": "the-dragon-scale-cloak",
+      "name": "The Dragon Scale Cloak",
+      "type": "side",
+      "region": "frostpeak",
+      "level": { "recommended": 11, "minimum": 10 },
+      "giver": "weaver-astrid",
+      "description": "The legendary weaver Astrid has spent decades perfecting the art of working dragon scales into fabric. She believes a cloak made from Frostfang's shed scales would provide unparalleled protection against extreme cold — and she has a buyer in the Scorched Wastes willing to pay a king's ransom. She needs you to collect 5 Frostfang Scales from the dragon's territory. The scales shed naturally and can be found lodged in ice near the summit, but collecting them means traversing the most dangerous part of the mountain.",
+      "journal": "Collect 5 Frostfang Scales from the summit approach for Weaver Astrid.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Collect 5 Frostfang Scales from the summit approach",
+          "type": "collect",
+          "target": "frostfang-shed-scale",
+          "count": 5,
+          "journal": "The scales are lodged in ice formations along the summit approach path."
+        },
+        {
+          "id": 1,
+          "description": "Return the scales to Weaver Astrid",
+          "type": "talk_to",
+          "target": "weaver-astrid",
+          "journal": "We have the scales. Time to deliver them to Astrid."
+        }
+      ],
+      "optionalObjectives": [
+        {
+          "id": "extra-scales",
+          "description": "Collect 3 additional scales for Astrid to make a second cloak — for you",
+          "type": "collect",
+          "target": "frostfang-shed-scale",
+          "count": 8,
+          "bonusRewards": { "items": ["dragonscale-frost-cloak"] }
+        }
+      ],
+      "rewards": {
+        "xp": 300,
+        "gold": 350,
+        "reputation": { "snowhaven": 15 }
+      }
+    },
+    {
+      "id": "forgemaster-durins-legacy",
+      "name": "Forgemaster Durin's Legacy",
+      "type": "companion",
+      "region": "frostpeak",
+      "level": { "recommended": 11, "minimum": 10 },
+      "giver": "forgemaster-durin",
+      "prerequisite": { "quest_complete": "ghosts-of-khar-zadul" },
+      "description": "After the events in Khar-Zadul, Forgemaster Durin reveals that he is the last living descendant of the Frozen King. He asks to accompany the party to the deepest forge of Khar-Zadul, where his ancestor's masterwork — a suit of armor called the Ironmantle — lies unfinished. Durin wishes to complete his ancestor's work and wear the armor as a symbol of the dwarven people's endurance. But the forge is guarded by the most powerful ghosts in the fortress, and they will not relinquish their king's treasure willingly.",
+      "journal": "Accompany Forgemaster Durin to the deepest forge of Khar-Zadul to complete his ancestor's masterwork armor.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Escort Durin to the Deep Forge of Khar-Zadul",
+          "type": "escort",
+          "target": "durin-deep-forge",
+          "journal": "The Deep Forge is below the throne room, through the Royal Armory."
+        },
+        {
+          "id": 1,
+          "description": "Defend Durin while he works the forge",
+          "type": "defense",
+          "target": "durin-forging",
+          "waves": 5,
+          "journal": "Ghost guardians attack in waves while Durin works. We must protect him."
+        },
+        {
+          "id": 2,
+          "description": "Witness the completion of the Ironmantle",
+          "type": "cutscene",
+          "target": "ironmantle-forging",
+          "journal": "The Ironmantle is complete. Durin takes his place as the true heir of Khar-Zadul."
+        }
+      ],
+      "rewards": {
+        "xp": 500,
+        "gold": 200,
+        "items": ["ironmantle-fragment"],
+        "companionBonus": { "characterId": "forgemaster-durin", "loyalty": "maximum", "unlockSkill": "ancestral-forge-mastery" },
+        "unlocks": ["durin-companion-recruitable"]
+      }
+    },
+    {
+      "id": "bounty-yeti-alpha",
+      "name": "Bounty: The White Death",
+      "type": "bounty",
+      "region": "frostpeak",
+      "level": { "recommended": 11, "minimum": 9 },
+      "giver": "bounty-board-snowhaven",
+      "description": "A bounty has been posted for an enormous albino yeti known as 'The White Death' that has been terrorizing the mountain passes. Multiple caravans have been destroyed, and the beast seems to be growing bolder with each attack.",
+      "journal": "Hunt down and slay the White Death, an alpha yeti terrorizing the mountain passes.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Track the White Death through the mountain passes",
+          "type": "interact",
+          "target": "yeti-tracks",
+          "count": 3,
+          "journal": "Follow the trail of massive tracks and destroyed caravans to find the alpha yeti's territory."
+        },
+        {
+          "id": 1,
+          "description": "Defeat the White Death",
+          "type": "boss_defeat",
+          "target": "yeti-alpha-white-death",
+          "journal": "The White Death is an alpha yeti of immense size and ferocity. Be prepared."
+        },
+        {
+          "id": 2,
+          "description": "Collect the White Death's fang as proof",
+          "type": "collect",
+          "target": "white-death-fang",
+          "journal": "Take a fang from the slain beast as proof of the kill."
+        },
+        {
+          "id": 3,
+          "description": "Turn in the bounty at Snowhaven",
+          "type": "interact",
+          "target": "bounty-board-snowhaven",
+          "journal": "Return to the Snowhaven bounty board to claim the reward."
+        }
+      ],
+      "rewards": {
+        "xp": 300,
+        "gold": 250,
+        "items": ["white-death-pelt"],
+        "reputation": { "snowhaven": 20, "ironhearth": 10 }
+      }
+    }
+  ],
+  "questChains": {
+    "main-frostpeak": {
+      "name": "Frostpeak Mountains — Main Story",
+      "quests": ["the-frozen-throne"],
+      "leadsTo": "cinder-core-main"
+    },
+    "durin-saga": {
+      "name": "The Legacy of Khar-Zadul",
+      "quests": ["ghosts-of-khar-zadul", "forgemaster-durins-legacy"],
+      "note": "Completing Forgemaster Durin's Legacy unlocks Durin as a companion."
+    }
+  }
+}

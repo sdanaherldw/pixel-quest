@@ -1,0 +1,517 @@
+{
+  "region": "cinder-core",
+  "regionName": "Cinder Core",
+  "quests": [
+    {
+      "id": "heart-of-the-world",
+      "name": "Heart of the World",
+      "type": "main",
+      "region": "cinder-core",
+      "level": { "recommended": 16, "minimum": 14 },
+      "giver": "commander-voss",
+      "description": "The three region keys have opened the way into the volcanic depths beneath the world. Commander Voss of Ashford Refuge has spent years mapping the upper tunnels and knows the path to Pyraxion's prison — but no expedition has ever returned from beyond the Forge of Giants. You are the last hope of a world on the brink of incineration.",
+      "journal": "Commander Voss in Ashford Refuge has briefed us on the situation below. Pyraxion's chains are failing — tremors shake the surface daily, volcanoes that have been dormant for millennia are waking, and the temperature of the entire world has risen by two degrees in the last month alone. We must fight through the Molten Caverns, pass the Forge of Giants, and reach Pyraxion's prison before the chains shatter completely.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Speak with Commander Voss at Ashford Refuge",
+          "type": "talk_to",
+          "target": "commander-voss",
+          "triggerDialogue": "voss-cinder-briefing",
+          "journal": "Commander Voss has established a forward base in a cooled lava tube. She'll know the safest route into the depths."
+        },
+        {
+          "id": 1,
+          "description": "Obtain heat-resistant gear from Ashford's quartermaster",
+          "type": "interact",
+          "target": "quartermaster-holt",
+          "journal": "The volcanic heat will kill us before any enemy does. Quartermaster Holt can provide cooling crystals and fire-warded cloaks — if we can supply the materials.",
+          "requiredItems": [
+            { "itemId": "frost-crystal", "count": 3 },
+            { "itemId": "fire-drake-scale", "count": 5 }
+          ]
+        },
+        {
+          "id": 2,
+          "description": "Navigate the Molten Caverns and defeat Ignis the Molten",
+          "type": "boss_defeat",
+          "target": "ignis-the-molten",
+          "journal": "The Molten Caverns twist and shift with the magma currents. At their deepest point, a titanic lava elemental called Ignis blocks the way forward. We must destroy it or find another path."
+        },
+        {
+          "id": 3,
+          "description": "Confront the Forge Master in the Forge of Giants",
+          "type": "boss_defeat",
+          "target": "the-forge-master",
+          "journal": "The Forge of Giants lies beyond the Caverns. The Forge Master — the last fire giant — has been corrupted by Pyraxion's whispers. He will not let us pass willingly.",
+          "alternateResolution": {
+            "condition": { "companion": "crag-hack", "hasItems": ["obsidian-fragment-1", "obsidian-fragment-2", "obsidian-fragment-3"] },
+            "description": "If Crag Hack is present with all three obsidian fragments, the Forge Master can be challenged to a smithing contest instead of combat. He will reforge the Obsidian Great Axe and, freed from his madness by the act of creation, willingly open the path forward.",
+            "setOutcome": "forge-master-redeemed",
+            "triggerDialogue": "forge-master-reforge-scene"
+          }
+        },
+        {
+          "id": 4,
+          "description": "Descend into Pyraxion's Prison",
+          "type": "reach_location",
+          "target": "pyraxion-prison",
+          "journal": "Past the Forge, the tunnels descend into killing heat. The walls here are no longer stone — they are adamantine, inscribed with prayers in languages no living scholar can read. The chains are visible now, glowing white-hot, vibrating with the strain of containing a god. We are close."
+        },
+        {
+          "id": 5,
+          "description": "Defeat Pyraxion, Lord of Cinders",
+          "type": "boss_defeat",
+          "target": "pyraxis-lord-of-cinders",
+          "journal": "This is it. The fire god strains against chains that are moments from breaking. We fight not for glory or gold but for the survival of every living thing on the surface. If we fall, the world burns.",
+          "specialInteraction": {
+            "cragHackWithAxe": {
+              "condition": { "companion": "crag-hack", "hasItem": "obsidian-great-axe" },
+              "description": "Crag Hack channels the Obsidian Great Axe's volcanic power to shatter Pyraxion's flame shield during Phase 3, reducing the boss's fire resistance to zero for 15 seconds. His Volcanic Fury Mastery triggers automatically, dealing massive bonus damage.",
+              "dialogue": "CRAG HACK: This axe was forged in YOUR fire, monster! Let's see how you like it turned against you!"
+            }
+          }
+        },
+        {
+          "id": 6,
+          "description": "Decide the fate of Pyraxion's prison",
+          "type": "choice",
+          "options": [
+            {
+              "id": "destroy-pyraxion",
+              "description": "Destroy Pyraxion utterly and collapse the prison",
+              "setOutcome": "pyraxion-destroyed",
+              "consequence": "The fire god is annihilated. The volcanic activity across the world ceases immediately. The Cinder Core cools and becomes lifeless — but the world's geothermal heat begins to fade. Winters grow longer. The world is saved, but changed."
+            },
+            {
+              "id": "reseal-pyraxion",
+              "description": "Use the region keys to reforge Pyraxion's chains",
+              "setOutcome": "pyraxion-resealed",
+              "consequence": "The three region keys — each imbued with the power of a defeated regional boss — are consumed to reforge the chains. Pyraxion is imprisoned once more, its heat restored to a manageable level. The world returns to balance. But the chains will fail again, someday, and someone else will have to stand where you stand now."
+            },
+            {
+              "id": "absorb-pyraxion",
+              "description": "Attempt to absorb Pyraxion's power into yourself",
+              "condition": { "class": "sorcerer", "level": 20 },
+              "setOutcome": "pyraxion-absorbed",
+              "consequence": "You draw the fire god's essence into your own body, becoming something more — and less — than mortal. You gain immense power but are forever changed, your eyes burning with inner flame, your touch capable of melting steel. The world is saved, but you can never return to it. You take Pyraxion's place as the world's living hearth, burning alone in the dark beneath the earth."
+            }
+          ],
+          "journal": "Pyraxion is defeated but not dead — a god's essence cannot simply be extinguished. We must choose what to do with the power that remains."
+        },
+        {
+          "id": 7,
+          "description": "Return to the surface",
+          "type": "reach_location",
+          "target": "ashford-refuge",
+          "journal": "It's over. The tremors have stopped. The air is cooling. We need to get back to the surface and let them know — the world is going to survive.",
+          "triggerCutscene": "ending-cutscene"
+        }
+      ],
+      "rewards": {
+        "xp": 5000,
+        "gold": 1000,
+        "items": ["hero-of-the-realm-medal"],
+        "reputation": { "ashford-refuge": 100 },
+        "unlocks": ["endgame-content"],
+        "bonusByOutcome": {
+          "pyraxion-destroyed": { "items": ["ashen-crown"], "title": "The Extinguisher" },
+          "pyraxion-resealed": { "items": ["chain-forgers-ring"], "title": "Warden of the Flame" },
+          "pyraxion-absorbed": { "items": ["mantle-of-the-living-flame"], "title": "The Undying Hearth", "classChange": "fire-ascendant" }
+        }
+      },
+      "flags": {
+        "onAccept": ["cinder-core-main-active"],
+        "onComplete": ["pyraxion-defeated", "main-story-complete"]
+      }
+    },
+    {
+      "id": "the-last-fire-giant",
+      "name": "The Last Fire Giant",
+      "type": "side",
+      "region": "cinder-core",
+      "level": { "recommended": 16, "minimum": 15 },
+      "giver": "scholar-brennan",
+      "description": "Scholar Brennan has spent his life studying the fire giants and believes the Forge Master is not truly corrupted — merely driven mad by ten thousand years of solitude and the ceaseless whispers of the imprisoned god he was created to guard. Brennan wants you to recover three Giantsong Crystals from the Molten Caverns that can be used to remind the last giant of his original purpose.",
+      "journal": "Scholar Brennan theorizes that the Forge Master can be saved. The fire giants were not born — they were crafted by the gods as living wardens. Each giant carried a Giantsong Crystal embedded in their chest that contained their purpose, their identity, their soul. The Forge Master's crystal cracked centuries ago. If we can find the crystals of his fallen brothers, we might be able to restore him.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Find the Giantsong Crystal of Forge Brother Moldrak",
+          "type": "collect",
+          "target": "giantsong-crystal-moldrak",
+          "location": "molten-caverns",
+          "journal": "Moldrak's body lies somewhere in the Molten Caverns, half-buried in cooled lava. His Giantsong Crystal should still resonate with purpose."
+        },
+        {
+          "id": 1,
+          "description": "Find the Giantsong Crystal of Forge Sister Embra",
+          "type": "collect",
+          "target": "giantsong-crystal-embra",
+          "location": "volcanic-vents-upper",
+          "journal": "Embra fell defending the upper vents from a volcanic drake incursion. Her crystal lies among the drake nests."
+        },
+        {
+          "id": 2,
+          "description": "Find the Giantsong Crystal of Forge Father Tharmund",
+          "type": "collect",
+          "target": "giantsong-crystal-tharmund",
+          "location": "ash-graveyards",
+          "journal": "Tharmund, the eldest of the fire giants, chose to die rather than listen to Pyraxion's whispers any longer. He walked into the Ash Graveyards and lay down. His crystal is the strongest of the three."
+        },
+        {
+          "id": 3,
+          "description": "Bring the three crystals to the Resonance Chamber",
+          "type": "reach_location",
+          "target": "resonance-chamber",
+          "journal": "Brennan says there's a Resonance Chamber near the Forge — a place where the giants once gathered to harmonize their crystals and renew their purpose. If we activate it with three crystals, the song might reach the Forge Master."
+        },
+        {
+          "id": 4,
+          "description": "Activate the Resonance Chamber",
+          "type": "interact",
+          "target": "resonance-pedestal",
+          "journal": "Place the three Giantsong Crystals on the pedestals and let the ancient harmonics fill the chamber."
+        },
+        {
+          "id": 5,
+          "description": "Confront the Forge Master with the truth of his purpose",
+          "type": "talk_to",
+          "target": "the-forge-master",
+          "triggerDialogue": "forge-master-remembers",
+          "journal": "The crystals are singing. Their harmony echoes through the tunnels like a hymn from the dawn of the world. The Forge Master has stopped hammering. He's listening.",
+          "outcomes": {
+            "ifBossNotDefeated": {
+              "description": "If the Forge Master has not yet been fought, the Giantsong restores his sanity. He becomes an ally, opens the path to Pyraxion's prison, and offers to reforge any legendary weapon the party possesses.",
+              "setOutcome": "forge-master-restored"
+            },
+            "ifBossDefeated": {
+              "description": "If the Forge Master has already been killed, the Resonance Chamber plays the song to an empty forge. Scholar Brennan weeps. The quest completes, but with diminished rewards and a heavy sense of loss.",
+              "setOutcome": "forge-master-requiem"
+            }
+          }
+        }
+      ],
+      "rewards": {
+        "forge-master-restored": {
+          "xp": 2500,
+          "gold": 500,
+          "items": ["giantsong-harmony-amulet", "forge-master-token"],
+          "reputation": { "ashford-refuge": 40 },
+          "unlocks": ["legendary-reforging", "forge-master-ally-pyraxion-fight"]
+        },
+        "forge-master-requiem": {
+          "xp": 1500,
+          "gold": 200,
+          "items": ["broken-giantsong-crystal"],
+          "reputation": { "ashford-refuge": 20 }
+        }
+      },
+      "flags": {
+        "onAccept": ["last-fire-giant-active"],
+        "onComplete": ["forge-master-quest-resolved"]
+      },
+      "designNote": "This quest creates a powerful tension with the main quest. Players who rush the main quest and kill the Forge Master before completing this side quest lose the best outcome. Rewards patience and exploration."
+    },
+    {
+      "id": "the-cooling-crystal",
+      "name": "The Cooling Crystal",
+      "type": "side",
+      "region": "cinder-core",
+      "level": { "recommended": 15, "minimum": 14 },
+      "giver": "engineer-vala",
+      "description": "The enchanted cooling crystal that keeps Ashford Refuge habitable is failing. Engineer Vala needs someone to descend into the Obsidian Caves and harvest a raw frost geode from a vein she discovered — but the caves are infested with Magma Slimes, and the geode must be transported without letting its temperature rise above freezing, or it will shatter.",
+      "journal": "Engineer Vala says the cooling crystal has a week left at most. Without it, Ashford Refuge becomes uninhabitable and we lose our only safe haven in the Cinder Core. She's located a frost geode deep in the Obsidian Caves — a freak geological anomaly, a pocket of primordial cold trapped in volcanic rock since before the world warmed. We need to extract it and bring it back before it melts.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Obtain a Frost Containment Flask from Vala",
+          "type": "interact",
+          "target": "engineer-vala",
+          "journal": "Vala has engineered a containment flask from Frostpeak ice-steel. It'll keep the geode cold during transport — but it only holds the cold for fifteen minutes. We need to be fast."
+        },
+        {
+          "id": 1,
+          "description": "Reach the frost geode vein in the Obsidian Caves",
+          "type": "reach_location",
+          "target": "obsidian-caves-frost-vein",
+          "journal": "The frost geode vein is deep in the Obsidian Caves, past the Magma Slime nesting grounds. Vala marked the path on our map."
+        },
+        {
+          "id": 2,
+          "description": "Extract the frost geode",
+          "type": "interact",
+          "target": "frost-geode-vein",
+          "journal": "The geode glows with an impossible cold blue light in the heart of the volcanic caves. We need to extract it carefully — one wrong strike and it shatters."
+        },
+        {
+          "id": 3,
+          "description": "Return the frost geode to Ashford Refuge within 15 minutes",
+          "type": "timed_delivery",
+          "target": "engineer-vala",
+          "item": "frost-geode",
+          "timeLimit": 900,
+          "journal": "The flask is holding, but the temperature is rising. We need to get back to Ashford Refuge before the containment fails.",
+          "failureOutcome": {
+            "description": "The geode shatters. Vala is devastated but says there may be one more vein — deeper, more dangerous. The quest can be retried, but enemy spawns in the caves increase.",
+            "setFlag": "cooling-crystal-failed-once"
+          }
+        },
+        {
+          "id": 4,
+          "description": "Help Vala install the new cooling crystal",
+          "type": "interact",
+          "target": "cooling-crystal-housing",
+          "journal": "Vala sets to work immediately, her hands steady despite the urgency. The old crystal is removed — for a terrifying moment, the heat rushes in like a wall. Then the new crystal pulses to life, and the air turns blessedly cool."
+        }
+      ],
+      "rewards": {
+        "xp": 1800,
+        "gold": 350,
+        "items": ["vala-custom-heat-shield", "frost-core-shard"],
+        "reputation": { "ashford-refuge": 50 },
+        "unlocks": ["ashford-refuge-expanded-services"]
+      },
+      "flags": {
+        "onAccept": ["cooling-crystal-quest-active"],
+        "onComplete": ["ashford-refuge-saved"]
+      }
+    },
+    {
+      "id": "commander-voss-last-expedition",
+      "name": "Commander Voss's Last Expedition",
+      "type": "companion",
+      "region": "cinder-core",
+      "level": { "recommended": 17, "minimum": 15 },
+      "giver": "commander-voss",
+      "prerequisite": { "flag": "cinder-core-main-active", "questComplete": "the-cooling-crystal" },
+      "description": "Commander Voss reveals that she has been to the Cinder Core before — twenty years ago, as a young soldier on the Tenth Expedition. Of the forty who descended, only she returned. Now she wants to go back to the place where her company died, recover their remains, and lay them to rest properly. She also believes her former captain, a woman named Sera Ashvale, may not be dead — may, in fact, have been captured by the Flame Cultists and forcibly converted.",
+      "journal": "Voss's hands trembled when she told us the truth. She was twenty years old when Captain Sera Ashvale led forty soldiers into the Core. They were overwhelmed in the Demon Ruins. Voss escaped through a vent shaft. The others were not so lucky. She has carried the guilt for two decades. Now she wants to find her fallen comrades — and face the possibility that her captain is alive, serving Pyraxis as a Flame Cultist high priestess.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Accompany Voss to the Demon Ruins",
+          "type": "reach_location",
+          "target": "demon-ruins-expedition-site",
+          "journal": "Voss leads the way with grim determination. She knows every tunnel, every branching passage. She counted them in her nightmares for twenty years."
+        },
+        {
+          "id": 1,
+          "description": "Recover the expedition dogtags (0/8)",
+          "type": "collect",
+          "target": "expedition-dogtag",
+          "count": 8,
+          "journal": "The remains are scattered through the ruins. Each set of dogtags Voss pockets makes her quieter. She reads every name aloud."
+        },
+        {
+          "id": 2,
+          "description": "Find Captain Ashvale's command tent",
+          "type": "reach_location",
+          "target": "ashvale-command-tent",
+          "journal": "Voss finds the command tent — or what's left of it. The captain's journal lies open on a scorched table. The last entry reads: 'They're inside the walls. Voss is gone — good, she'll make it out. The rest of us will hold as long as we can. Sera Ashvale, Tenth Expedition, signing off.' But there is no body."
+        },
+        {
+          "id": 3,
+          "description": "Track Captain Ashvale to the Cultist Sanctum",
+          "type": "reach_location",
+          "target": "cultist-sanctum",
+          "journal": "Drag marks lead from the command tent deeper into the ruins. The Flame Cultists took her alive. Voss's jaw tightens. She says nothing. She doesn't need to."
+        },
+        {
+          "id": 4,
+          "description": "Confront High Priestess Ashvale",
+          "type": "choice",
+          "options": [
+            {
+              "id": "fight-ashvale",
+              "description": "Fight High Priestess Ashvale and free her by force",
+              "type": "boss_defeat",
+              "target": "high-priestess-ashvale",
+              "setOutcome": "ashvale-defeated",
+              "journal": "Ashvale is too far gone. The woman Voss knew is buried under twenty years of brainwashing and dark fire. We'll have to free her the hard way."
+            },
+            {
+              "id": "reach-ashvale",
+              "description": "Let Voss try to reach Ashvale through words",
+              "type": "dialogue",
+              "target": "voss-ashvale-confrontation",
+              "condition": { "allDogtags": true },
+              "setOutcome": "ashvale-reached",
+              "journal": "Voss steps forward, alone. She holds up the dogtags — all eight of them — and says the names. Every single name. Ashvale's flame-wreathed hands begin to tremble."
+            },
+            {
+              "id": "mercy-kill",
+              "description": "Grant Ashvale a merciful death at Voss's request",
+              "type": "interact",
+              "target": "mercy-strike-ashvale",
+              "condition": { "vossLoyalty": "high" },
+              "setOutcome": "ashvale-mercy",
+              "journal": "Voss looks at you with haunted eyes. 'She wouldn't want to live like this,' she whispers. 'She was the best of us. She deserves better than what they made her.' Voss asks you to make it quick. She cannot do it herself."
+            }
+          ],
+          "journal": "Sera Ashvale stands before us, wreathed in dark fire, wearing the robes of a Pyraxis high priestess. Her eyes glow like embers. Voss goes pale. 'Captain,' she says. 'I came back for you.'"
+        },
+        {
+          "id": 5,
+          "description": "Return to Ashford Refuge with Voss",
+          "type": "talk_to",
+          "target": "commander-voss",
+          "triggerDialogue": "voss-aftermath",
+          "journal": "The walk back is long and quiet. Voss holds the dogtags in her fist the entire way, the metal clinking softly with each step."
+        }
+      ],
+      "rewards": {
+        "ashvale-defeated": {
+          "xp": 2200,
+          "gold": 400,
+          "items": ["ashvales-command-blade", "voss-companionship"],
+          "reputation": { "ashford-refuge": 35 },
+          "companionBonus": { "characterId": "commander-voss", "loyalty": "high", "unlockSkill": "veteran-commander" }
+        },
+        "ashvale-reached": {
+          "xp": 3000,
+          "gold": 500,
+          "items": ["ashvales-restored-blade", "ashvales-journal", "voss-companionship"],
+          "reputation": { "ashford-refuge": 50 },
+          "companionBonus": { "characterId": "commander-voss", "loyalty": "maximum", "unlockSkill": "unbreakable-resolve" },
+          "unlocks": ["ashvale-companion-recruitable"]
+        },
+        "ashvale-mercy": {
+          "xp": 2000,
+          "gold": 300,
+          "items": ["ashvales-broken-blade", "voss-companionship"],
+          "reputation": { "ashford-refuge": 30 },
+          "companionBonus": { "characterId": "commander-voss", "loyalty": "high", "unlockSkill": "soldier-of-sorrow" }
+        }
+      },
+      "flags": {
+        "onAccept": ["voss-expedition-active"],
+        "onComplete": ["voss-expedition-resolved"]
+      }
+    },
+    {
+      "id": "bounty-the-magma-king",
+      "name": "Bounty: The Magma King",
+      "type": "bounty",
+      "region": "cinder-core",
+      "level": { "recommended": 18, "minimum": 16 },
+      "giver": "bounty-board-ashford",
+      "description": "A bounty has been posted for an enormous Magma Slime that has been devouring the obsidian support pillars in the upper caverns. If it continues, the ceiling will collapse and bury Ashford Refuge under a thousand tons of volcanic rock. The creature has been designated 'The Magma King' — a Magma Slime of unprecedented size that has consumed so much obsidian and volcanic mineral that it has achieved a crude form of intelligence.",
+      "journal": "The Magma King is no ordinary slime. It has been growing for centuries, absorbing minerals, metals, and the occasional unlucky adventurer. It is now the size of a house and possesses a rudimentary cunning. It knows it is being hunted. It has started setting traps — collapsing tunnels, flooding passages with lava, even ambushing scouting parties by splitting off smaller versions of itself as decoys. We need to track it to its lair in the Crystal Geode Chamber and end it before it brings down the ceiling on our heads.",
+      "objectives": [
+        {
+          "id": 0,
+          "description": "Investigate the collapsed support pillars",
+          "type": "reach_location",
+          "target": "collapsed-pillars-upper-caverns",
+          "journal": "Three of the six support pillars in the upper caverns have been dissolved. The acid residue is unmistakable — slime digestive fluid, but far more concentrated than anything a normal Magma Slime could produce."
+        },
+        {
+          "id": 1,
+          "description": "Follow the Magma King's trail through the caverns",
+          "type": "reach_location",
+          "target": "magma-king-trail",
+          "journal": "The trail is a wide groove melted into the floor — the Magma King is so massive it leaves a permanent scar in the obsidian wherever it drags itself. It leads deeper into the caverns, toward the Crystal Geode Chamber.",
+          "encounters": [
+            { "type": "ambush", "enemies": ["magma-slime", "magma-slime", "magma-slime"], "description": "Decoy slimes attack from a concealed alcove!" }
+          ]
+        },
+        {
+          "id": 2,
+          "description": "Navigate the Magma King's trapped tunnels",
+          "type": "dungeon_clear",
+          "target": "magma-king-tunnels",
+          "journal": "The tunnels leading to the Crystal Geode Chamber have been rigged with crude but effective traps — unstable ceilings, redirected lava flows, and acidic slime pools concealed under thin obsidian crusts. The Magma King knows we are coming.",
+          "hazards": [
+            "Weakened ceiling sections collapse when weight is applied",
+            "Lava channels have been redirected to flood narrow passages",
+            "Acidic slime pools are hidden under thin obsidian shells"
+          ]
+        },
+        {
+          "id": 3,
+          "description": "Defeat the Magma King in the Crystal Geode Chamber",
+          "type": "boss_defeat",
+          "target": "magma-king",
+          "journal": "The Crystal Geode Chamber opens before us — a vast cavern lined with enormous amethyst crystals, now half-dissolved by the Magma King's corrosive bulk. The creature fills the center of the chamber, a mountain of bubbling, semi-transparent magma shot through with veins of consumed obsidian and the glinting shapes of dissolved weapons and armor from its past victims. It knows we are here. It turns — slowly, ponderously — and a face forms in the magma. Not a slime's face. Something almost human. Something almost sad.",
+          "bossData": {
+            "name": "The Magma King",
+            "level": 23,
+            "stats": { "hp": 5500, "atk": 38, "def": 26, "spd": 4, "crit": 5 },
+            "phases": [
+              {
+                "name": "Living Mountain",
+                "hpThreshold": 1.0,
+                "abilities": [
+                  { "name": "Tidal Surge", "damage": 40, "cooldown": 6.0, "type": "fire", "description": "Sends a massive wave of molten slime across the arena, flooding half the floor temporarily" },
+                  { "name": "Obsidian Shrapnel", "damage": 30, "cooldown": 4.0, "type": "physical", "description": "Launches shards of consumed obsidian from its body like a shotgun blast" },
+                  { "name": "Absorb", "damage": 0, "cooldown": 10.0, "type": "fire", "description": "Attempts to engulf a melee attacker, dealing 15 damage per second and healing itself for the same amount until the player breaks free" },
+                  { "name": "Spawn Slimelings", "damage": 0, "cooldown": 15.0, "type": "fire", "description": "Splits off 4 Magma Slimelings (HP: 100 each) that attack independently" }
+                ],
+                "behavior": "defensive"
+              },
+              {
+                "name": "Crystal Core Exposed",
+                "hpThreshold": 0.4,
+                "abilities": [
+                  { "name": "Crystal Beam", "damage": 55, "cooldown": 5.0, "type": "fire", "description": "Fires a concentrated beam of superheated energy from the crystals embedded in its core" },
+                  { "name": "Acid Rain", "damage": 20, "cooldown": 3.0, "type": "fire", "description": "Sprays acidic magma upward that rains down across the arena, dealing damage over time" },
+                  { "name": "Final Absorption", "damage": 0, "cooldown": 20.0, "type": "fire", "description": "Absorbs one of the geode chamber's crystals, healing 10% HP and gaining a new elemental resistance" },
+                  { "name": "Death Burst", "damage": 80, "cooldown": 0, "type": "fire", "description": "On death: explodes violently, dealing massive fire damage in a huge radius. Players must retreat or use defensive abilities" }
+                ],
+                "behavior": "aggressive"
+              }
+            ]
+          }
+        },
+        {
+          "id": 4,
+          "description": "Collect proof of the kill and return to the bounty board",
+          "type": "collect",
+          "target": "magma-king-core-crystal",
+          "journal": "In the cooling remains of the Magma King, a single crystal shines — not a geode crystal but something older, something that was at the creature's heart. It pulses with a fading warmth, almost like a heartbeat."
+        },
+        {
+          "id": 5,
+          "description": "Turn in the bounty at Ashford Refuge",
+          "type": "interact",
+          "target": "bounty-board-ashford",
+          "journal": "The bounty is claimed. Ashford's support pillars are safe — for now."
+        }
+      ],
+      "rewards": {
+        "xp": 2000,
+        "gold": 600,
+        "items": ["magma-kings-core", "crystallized-magma-shield"],
+        "reputation": { "ashford-refuge": 30 }
+      },
+      "flags": {
+        "onComplete": ["magma-king-defeated"]
+      }
+    }
+  ],
+  "questChains": {
+    "main-cinder-core": {
+      "name": "Cinder Core — Main Story",
+      "quests": ["heart-of-the-world"],
+      "prerequisite": { "flags": ["frostpeak-cleared", "scorched-wastes-cleared", "shadowmire-cleared"] },
+      "note": "The culmination of the entire game. All roads lead here."
+    },
+    "crag-hack-finale": {
+      "name": "The Saga of Crag Hack — Finale",
+      "quests": ["forged-in-fury"],
+      "note": "The Forged in Fury quest from Elderwood reaches its climax here. Objectives 3-5 of that quest take place in the Forge of Giants. Crag Hack's presence during the Pyraxion fight triggers unique dialogue and combat interactions."
+    },
+    "forge-master-redemption": {
+      "name": "Salvation of the Last Giant",
+      "quests": ["the-last-fire-giant"],
+      "conflicts": ["heart-of-the-world"],
+      "note": "Completing this quest before fighting the Forge Master in the main quest unlocks the best outcome for both. A deliberate design tension — rewarding exploration and side content with narrative payoff."
+    },
+    "voss-saga": {
+      "name": "Commander Voss — Soldier's Burden",
+      "quests": ["commander-voss-last-expedition"],
+      "note": "Voss becomes a permanent companion after this quest regardless of outcome. Her skills and dialogue differ dramatically based on Ashvale's fate."
+    }
+  }
+}

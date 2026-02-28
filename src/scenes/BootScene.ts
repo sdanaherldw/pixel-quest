@@ -2,7 +2,7 @@ import { Graphics, Text, TextStyle, Container } from 'pixi.js';
 import gsap from 'gsap';
 
 import { Scene } from '../engine/Scene';
-import { TestScene } from './TestScene';
+import { TitleScene } from './TitleScene';
 
 // ------------------------------------------------------------------
 // Floating mote of light (ambient particle)
@@ -495,7 +495,7 @@ export class BootScene extends Scene {
   private _transitionToGame(): void {
     const tl = gsap.timeline({
       onComplete: () => {
-        void this.engine.scenes.replace(new TestScene());
+        void this.engine.scenes.replace(new TitleScene());
       },
     });
 

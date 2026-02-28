@@ -118,6 +118,12 @@ function createDefaultActionMap(): Map<ActionName, ActionBinding> {
   m.set('partyCommand', { keys: ['Tab'] });
   m.set('swapLeader', { keys: ['KeyQ'] });
 
+  // Overlay screens
+  m.set('inventory', { keys: ['KeyI'] });
+  m.set('spellbook', { keys: ['KeyP'] });
+  m.set('questlog', { keys: ['KeyL'] });
+  m.set('map', { keys: ['KeyM'] });
+
   // Quick slots
   m.set('quickSlot1', { keys: ['Digit1'] });
   m.set('quickSlot2', { keys: ['Digit2'] });
