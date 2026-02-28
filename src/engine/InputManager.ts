@@ -47,6 +47,53 @@ interface KeyState {
 }
 
 // ------------------------------------------------------------------
+// Internal gamepad button state
+// ------------------------------------------------------------------
+
+interface GamepadButtonState {
+  /** `true` while the button is physically held down. */
+  down: boolean;
+
+  /** `true` only during the frame the button transitioned to down. */
+  justPressed: boolean;
+
+  /** `true` only during the frame the button transitioned to up. */
+  justReleased: boolean;
+}
+
+/** Maps a standard gamepad button index to a game action. */
+interface GamepadButtonMapping {
+  buttonIndex: number;
+  action: ActionName;
+}
+
+/** Threshold for analog stick axes to count as "pressed". */
+const GAMEPAD_AXIS_THRESHOLD = 0.5;
+
+/** Standard Gamepad button → action mappings. */
+const GAMEPAD_BUTTON_MAP: GamepadButtonMapping[] = [
+  { buttonIndex: 0, action: 'jump' },       // A
+  { buttonIndex: 1, action: 'dodge' },       // B
+  { buttonIndex: 2, action: 'attack' },      // X
+  { buttonIndex: 3, action: 'spell' },       // Y
+  { buttonIndex: 4, action: 'swapLeader' },  // LB
+  { buttonIndex: 5, action: 'partyCommand' },// RB
+  { buttonIndex: 9, action: 'openMenu' },    // Start
+  { buttonIndex: 12, action: 'moveUp' },     // D-pad Up
+  { buttonIndex: 13, action: 'moveDown' },   // D-pad Down
+  { buttonIndex: 14, action: 'moveLeft' },   // D-pad Left
+  { buttonIndex: 15, action: 'moveRight' },  // D-pad Right
+];
+
+/** Left stick axis → action mappings (axis index, direction sign, action). */
+const GAMEPAD_AXIS_MAP: { axis: number; sign: -1 | 1; action: ActionName }[] = [
+  { axis: 0, sign: -1, action: 'moveLeft' },
+  { axis: 0, sign: 1, action: 'moveRight' },
+  { axis: 1, sign: -1, action: 'moveUp' },
+  { axis: 1, sign: 1, action: 'moveDown' },
+];
+
+// ------------------------------------------------------------------
 // Default action map
 // ------------------------------------------------------------------
 
@@ -119,6 +166,22 @@ export class InputManager {
   /** Current pointer state. */
   private _pointer: PointerState = { x: 0, y: 0, buttons: 0 };
 
+  /** Whether a gamepad is currently connected. */
+  private _gamepadConnected = false;
+
+  /** Index of the active gamepad (first one connected). */
+  private _gamepadIndex = -1;
+
+  /**
+   * Per-gamepad-input state keyed by a virtual key like `Gamepad0`, `GamepadAxisLeft`, etc.
+   * These are tracked separately from keyboard keys so the two never interfere.
+   */
+  private readonly _gamepadButtons: Map<string, GamepadButtonState> = new Map();
+
+  /** Gamepad virtual keys that transitioned this frame – cleared during `update()`. */
+  private readonly _gpJustPressedQueue: string[] = [];
+  private readonly _gpJustReleasedQueue: string[] = [];
+
   // Bound listener references (needed for clean removal).
   private readonly _onKeyDown: (e: KeyboardEvent) => void;
   private readonly _onKeyUp: (e: KeyboardEvent) => void;
@@ -126,6 +189,8 @@ export class InputManager {
   private readonly _onPointerDown: (e: PointerEvent) => void;
   private readonly _onPointerUp: (e: PointerEvent) => void;
   private readonly _onContextMenu: (e: Event) => void;
+  private readonly _onGamepadConnected: (e: GamepadEvent) => void;
+  private readonly _onGamepadDisconnected: (e: GamepadEvent) => void;
 
   // ------------------------------------------------------------------
   // Constructor
@@ -142,12 +207,26 @@ export class InputManager {
     this._onPointerUp = this._handlePointerUp.bind(this);
     this._onContextMenu = (e: Event) => e.preventDefault();
 
+    this._onGamepadConnected = this._handleGamepadConnected.bind(this);
+    this._onGamepadDisconnected = this._handleGamepadDisconnected.bind(this);
+
     window.addEventListener('keydown', this._onKeyDown);
     window.addEventListener('keyup', this._onKeyUp);
     window.addEventListener('pointermove', this._onPointerMove);
     window.addEventListener('pointerdown', this._onPointerDown);
     window.addEventListener('pointerup', this._onPointerUp);
     window.addEventListener('contextmenu', this._onContextMenu);
+    window.addEventListener('gamepadconnected', this._onGamepadConnected);
+    window.addEventListener('gamepaddisconnected', this._onGamepadDisconnected);
+  }
+
+  // ------------------------------------------------------------------
+  // Gamepad
+  // ------------------------------------------------------------------
+
+  /** `true` when a gamepad is currently connected. */
+  public get gamepadConnected(): boolean {
+    return this._gamepadConnected;
   }
 
   // ------------------------------------------------------------------
@@ -155,7 +234,8 @@ export class InputManager {
   // ------------------------------------------------------------------
 
   /**
-   * `true` while *any* key bound to `action` is held down.
+   * `true` while *any* key bound to `action` is held down
+   * (keyboard **or** gamepad).
    */
   public isActionActive(action: ActionName): boolean {
     const binding = this._actions.get(action);
@@ -165,11 +245,17 @@ export class InputManager {
       const state = this._keys.get(code);
       if (state?.down) return true;
     }
+
+    // Check gamepad virtual keys for this action.
+    const gpState = this._gamepadButtons.get(action);
+    if (gpState?.down) return true;
+
     return false;
   }
 
   /**
-   * `true` only during the frame a key bound to `action` was first pressed.
+   * `true` only during the frame a key bound to `action` was first pressed
+   * (keyboard **or** gamepad).
    */
   public isActionJustPressed(action: ActionName): boolean {
     const binding = this._actions.get(action);
@@ -179,11 +265,16 @@ export class InputManager {
       const state = this._keys.get(code);
       if (state?.justPressed) return true;
     }
+
+    const gpState = this._gamepadButtons.get(action);
+    if (gpState?.justPressed) return true;
+
     return false;
   }
 
   /**
-   * `true` only during the frame a key bound to `action` was released.
+   * `true` only during the frame a key bound to `action` was released
+   * (keyboard **or** gamepad).
    */
   public isActionJustReleased(action: ActionName): boolean {
     const binding = this._actions.get(action);
@@ -193,6 +284,10 @@ export class InputManager {
       const state = this._keys.get(code);
       if (state?.justReleased) return true;
     }
+
+    const gpState = this._gamepadButtons.get(action);
+    if (gpState?.justReleased) return true;
+
     return false;
   }
 
@@ -263,10 +358,12 @@ export class InputManager {
   // ------------------------------------------------------------------
 
   /**
-   * Clears the per-frame edge flags (`justPressed`, `justReleased`).
+   * Clears the per-frame edge flags (`justPressed`, `justReleased`)
+   * and polls gamepad state.
    * Must be called **exactly once per frame** after all game logic.
    */
   public update(): void {
+    // Clear keyboard edge flags.
     for (const code of this._justPressedQueue) {
       const state = this._keys.get(code);
       if (state) state.justPressed = false;
@@ -278,6 +375,22 @@ export class InputManager {
       if (state) state.justReleased = false;
     }
     this._justReleasedQueue.length = 0;
+
+    // Clear gamepad edge flags.
+    for (const key of this._gpJustPressedQueue) {
+      const state = this._gamepadButtons.get(key);
+      if (state) state.justPressed = false;
+    }
+    this._gpJustPressedQueue.length = 0;
+
+    for (const key of this._gpJustReleasedQueue) {
+      const state = this._gamepadButtons.get(key);
+      if (state) state.justReleased = false;
+    }
+    this._gpJustReleasedQueue.length = 0;
+
+    // Poll gamepad.
+    this._pollGamepad();
   }
 
   // ------------------------------------------------------------------
@@ -292,9 +405,16 @@ export class InputManager {
     window.removeEventListener('pointerdown', this._onPointerDown);
     window.removeEventListener('pointerup', this._onPointerUp);
     window.removeEventListener('contextmenu', this._onContextMenu);
+    window.removeEventListener('gamepadconnected', this._onGamepadConnected);
+    window.removeEventListener('gamepaddisconnected', this._onGamepadDisconnected);
     this._keys.clear();
     this._justPressedQueue.length = 0;
     this._justReleasedQueue.length = 0;
+    this._gamepadButtons.clear();
+    this._gpJustPressedQueue.length = 0;
+    this._gpJustReleasedQueue.length = 0;
+    this._gamepadConnected = false;
+    this._gamepadIndex = -1;
   }
 
   // ------------------------------------------------------------------
@@ -360,5 +480,105 @@ export class InputManager {
       y: e.clientY,
       buttons: e.buttons,
     };
+  }
+
+  // ------------------------------------------------------------------
+  // Gamepad event handlers
+  // ------------------------------------------------------------------
+
+  private _handleGamepadConnected(e: GamepadEvent): void {
+    // Only track the first connected gamepad.
+    if (this._gamepadConnected) return;
+    this._gamepadIndex = e.gamepad.index;
+    this._gamepadConnected = true;
+  }
+
+  private _handleGamepadDisconnected(e: GamepadEvent): void {
+    if (e.gamepad.index !== this._gamepadIndex) return;
+    this._gamepadConnected = false;
+    this._gamepadIndex = -1;
+
+    // Release all currently-held gamepad buttons.
+    for (const [key, state] of this._gamepadButtons) {
+      if (state.down) {
+        state.down = false;
+        state.justReleased = true;
+        this._gpJustReleasedQueue.push(key);
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Gamepad polling (called once per frame from update())
+  // ------------------------------------------------------------------
+
+  /**
+   * Reads the current gamepad snapshot from the Gamepad API and updates
+   * per-action edge states (justPressed / justReleased) so the action
+   * query methods work identically for gamepad and keyboard input.
+   */
+  private _pollGamepad(): void {
+    if (!this._gamepadConnected) return;
+
+    const gamepads = navigator.getGamepads();
+    const gp = gamepads[this._gamepadIndex];
+    if (!gp) return;
+
+    // --- Buttons ---
+    for (const mapping of GAMEPAD_BUTTON_MAP) {
+      const pressed = gp.buttons[mapping.buttonIndex]?.pressed ?? false;
+      this._setGamepadAction(mapping.action, pressed);
+    }
+
+    // --- Left stick axes ---
+    for (const mapping of GAMEPAD_AXIS_MAP) {
+      const value = gp.axes[mapping.axis] ?? 0;
+      const pressed =
+        mapping.sign === 1
+          ? value > GAMEPAD_AXIS_THRESHOLD
+          : value < -GAMEPAD_AXIS_THRESHOLD;
+      // Axis-driven actions share the same action key as d-pad, so
+      // only set to true if pressed – don't overwrite a d-pad "true"
+      // with a stick "false".
+      if (pressed) {
+        this._setGamepadAction(mapping.action, true);
+      } else {
+        // Only release via axis if the corresponding d-pad button
+        // isn't also pressed.
+        const dpadMapping = GAMEPAD_BUTTON_MAP.find(
+          (m) => m.action === mapping.action,
+        );
+        if (dpadMapping) {
+          const dpadPressed =
+            gp.buttons[dpadMapping.buttonIndex]?.pressed ?? false;
+          if (!dpadPressed) {
+            this._setGamepadAction(mapping.action, false);
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Update the gamepad virtual button state for a given action,
+   * generating justPressed / justReleased edges as needed.
+   */
+  private _setGamepadAction(action: string, pressed: boolean): void {
+    let state = this._gamepadButtons.get(action);
+
+    if (!state) {
+      state = { down: false, justPressed: false, justReleased: false };
+      this._gamepadButtons.set(action, state);
+    }
+
+    if (pressed && !state.down) {
+      state.down = true;
+      state.justPressed = true;
+      this._gpJustPressedQueue.push(action);
+    } else if (!pressed && state.down) {
+      state.down = false;
+      state.justReleased = true;
+      this._gpJustReleasedQueue.push(action);
+    }
   }
 }

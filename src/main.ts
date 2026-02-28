@@ -1,5 +1,5 @@
 import { Engine } from './engine/Engine';
-import { TestScene } from './scenes/TestScene';
+import { BootScene } from './scenes/BootScene';
 
 // ---------------------------------------------------------------------------
 // Bootstrap
@@ -9,7 +9,7 @@ import { TestScene } from './scenes/TestScene';
  * Application entry point.
  *
  * Creates the engine, mounts the PixiJS canvas, sets up window resize
- * handling, pushes the initial test scene, and starts the game loop.
+ * handling, pushes the initial boot scene, and starts the game loop.
  */
 async function main(): Promise<void> {
   // --- Create and initialise the engine ---
@@ -34,8 +34,8 @@ async function main(): Promise<void> {
   window.addEventListener('resize', resize);
   resize(); // apply immediately
 
-  // --- Push the initial test scene ---
-  await engine.loadScene(new TestScene());
+  // --- Push the initial boot scene ---
+  await engine.loadScene(new BootScene());
 
   console.log('[main] Realms of Conquest engine started.');
 }
