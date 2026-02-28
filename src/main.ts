@@ -1,0 +1,46 @@
+import { Engine } from './engine/Engine';
+import { TestScene } from './scenes/TestScene';
+
+// ---------------------------------------------------------------------------
+// Bootstrap
+// ---------------------------------------------------------------------------
+
+/**
+ * Application entry point.
+ *
+ * Creates the engine, mounts the PixiJS canvas, sets up window resize
+ * handling, pushes the initial test scene, and starts the game loop.
+ */
+async function main(): Promise<void> {
+  // --- Create and initialise the engine ---
+  const engine = new Engine();
+
+  await engine.start({
+    width: 1280,
+    height: 720,
+    backgroundColor: 0x0a0a0a,
+    antialias: true,
+    resolution: window.devicePixelRatio,
+  });
+
+  // --- Resize to fill the browser window ---
+  const resize = (): void => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    engine.app.renderer.resize(width, height);
+    engine.camera.resize(width, height);
+  };
+
+  window.addEventListener('resize', resize);
+  resize(); // apply immediately
+
+  // --- Push the initial test scene ---
+  await engine.loadScene(new TestScene());
+
+  console.log('[main] Realms of Conquest engine started.');
+}
+
+// --- Run ---
+main().catch((err) => {
+  console.error('[main] Fatal error during bootstrap:', err);
+});

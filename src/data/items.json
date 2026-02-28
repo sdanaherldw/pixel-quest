@@ -1,0 +1,451 @@
+{
+  "items": [
+    {
+      "id": "obsidian-great-axe",
+      "name": "Obsidian Great Axe",
+      "type": "weapon",
+      "subtype": "greataxe",
+      "rarity": "legendary",
+      "level": 6,
+      "twoHanded": true,
+      "stats": { "atk": 35, "str": 5, "con": 3 },
+      "effects": [
+        {
+          "type": "armor_shred",
+          "value": 15,
+          "duration": 5.0,
+          "description": "Shatters enemy armor on hit, reducing DEF by 15 for 5s"
+        },
+        {
+          "type": "cleave_damage",
+          "value": 0.6,
+          "description": "Attacks hit all enemies in a wide arc for 60% damage"
+        },
+        {
+          "type": "execute_threshold",
+          "value": 0.2,
+          "description": "Instantly kills enemies below 20% HP"
+        },
+        {
+          "type": "character_synergy",
+          "characterId": "crag-hack",
+          "bonusDamage": 0.25,
+          "bonusCrit": 15,
+          "lifeSteal": 0.1,
+          "description": "When wielded by Crag Hack: +25% damage, +15% crit chance, 10% life steal"
+        }
+      ],
+      "uniquePassive": {
+        "name": "Volcanic Fury",
+        "description": "Every 5th hit triggers a volcanic eruption dealing AoE fire damage equal to 200% ATK in a radius around the target.",
+        "hitCounter": 5,
+        "damageMultiplier": 2.0,
+        "damageType": "fire",
+        "aoeRadius": 120,
+        "particleEffect": "volcanic-eruption"
+      },
+      "description": "Forged from volcanic obsidian in the depths of Cinder Core. The axe resonates with primal fury, growing stronger in the hands of a true berserker.",
+      "lore": "Legend says this axe was forged by the fire giants for a warrior who would one day challenge the gods. Only Crag Hack has ever been able to lift it without being consumed by its flames.",
+      "value": 0,
+      "sellable": false,
+      "questReward": "forged-in-fury",
+      "sprite": { "base": "greataxe", "palette": "obsidian", "glow": true, "particleTrail": "ember", "glowColor": "#FF4500" }
+    },
+    {
+      "id": "cracked-obsidian-axe",
+      "name": "Cracked Obsidian Axe",
+      "type": "weapon",
+      "subtype": "axe",
+      "rarity": "rare",
+      "level": 4,
+      "twoHanded": false,
+      "stats": { "atk": 18, "str": 3 },
+      "effects": [
+        {
+          "type": "armor_shred",
+          "value": 8,
+          "duration": 3.0,
+          "description": "Chips enemy armor on hit, reducing DEF by 8 for 3s"
+        },
+        {
+          "type": "character_synergy",
+          "characterId": "crag-hack",
+          "bonusDamage": 0.15,
+          "description": "Crag Hack deals 15% bonus damage with this weapon"
+        }
+      ],
+      "description": "A shard of volcanic obsidian crudely shaped into an axe head. Though cracked and incomplete, it pulses with dormant volcanic energy.",
+      "lore": "This fragment was found in the Elderwood Forest, far from any volcano. How it arrived here is a mystery — perhaps a portent of things to come.",
+      "value": 180,
+      "sellable": true,
+      "dropSource": "ancient-elven-ruins-chest",
+      "sprite": { "base": "axe", "palette": "obsidian-cracked", "glow": false }
+    },
+    {
+      "id": "rusty-sword",
+      "name": "Rusty Sword",
+      "type": "weapon",
+      "subtype": "sword",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": false,
+      "stats": { "atk": 5 },
+      "effects": [],
+      "description": "A battered old sword. It's seen better days, but it still has an edge.",
+      "value": 10,
+      "sellable": true,
+      "sprite": { "base": "sword", "palette": "rusty", "glow": false }
+    },
+    {
+      "id": "iron-mace",
+      "name": "Iron Mace",
+      "type": "weapon",
+      "subtype": "mace",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": false,
+      "stats": { "atk": 6, "str": 1 },
+      "effects": [],
+      "description": "A solid iron mace. Simple but effective.",
+      "value": 15,
+      "sellable": true,
+      "sprite": { "base": "mace", "palette": "iron", "glow": false }
+    },
+    {
+      "id": "short-bow",
+      "name": "Short Bow",
+      "type": "weapon",
+      "subtype": "bow",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": true,
+      "stats": { "atk": 7, "dex": 1 },
+      "effects": [],
+      "description": "A lightweight bow suited for hunting.",
+      "value": 12,
+      "sellable": true,
+      "sprite": { "base": "bow", "palette": "wood", "glow": false }
+    },
+    {
+      "id": "apprentice-staff",
+      "name": "Apprentice Staff",
+      "type": "weapon",
+      "subtype": "staff",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": true,
+      "stats": { "atk": 3, "int": 2 },
+      "effects": [
+        { "type": "mana_regen", "value": 1, "description": "+1 mana regeneration per second" }
+      ],
+      "description": "A simple wooden staff imbued with minor arcane energy.",
+      "value": 14,
+      "sellable": true,
+      "sprite": { "base": "staff", "palette": "wood-arcane", "glow": true, "glowColor": "#4488FF" }
+    },
+    {
+      "id": "rusty-dagger",
+      "name": "Rusty Dagger",
+      "type": "weapon",
+      "subtype": "dagger",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": false,
+      "stats": { "atk": 4, "dex": 1 },
+      "effects": [
+        { "type": "attack_speed", "value": 0.2, "description": "Attacks 20% faster" }
+      ],
+      "description": "A small, quick blade. What it lacks in power, it makes up in speed.",
+      "value": 8,
+      "sellable": true,
+      "sprite": { "base": "dagger", "palette": "rusty", "glow": false }
+    },
+    {
+      "id": "hunting-dagger",
+      "name": "Hunting Dagger",
+      "type": "weapon",
+      "subtype": "dagger",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": false,
+      "stats": { "atk": 5, "dex": 1 },
+      "effects": [],
+      "description": "A well-balanced dagger used by hunters and rangers.",
+      "value": 10,
+      "sellable": true,
+      "sprite": { "base": "dagger", "palette": "steel", "glow": false }
+    },
+    {
+      "id": "wooden-mace",
+      "name": "Wooden Mace",
+      "type": "weapon",
+      "subtype": "mace",
+      "rarity": "common",
+      "level": 1,
+      "twoHanded": false,
+      "stats": { "atk": 4, "wis": 1 },
+      "effects": [],
+      "description": "A simple mace carved from hardwood. Blessed for use by the clergy.",
+      "value": 8,
+      "sellable": true,
+      "sprite": { "base": "mace", "palette": "wood", "glow": false }
+    },
+    {
+      "id": "battle-axe",
+      "name": "Battle Axe",
+      "type": "weapon",
+      "subtype": "axe",
+      "rarity": "uncommon",
+      "level": 2,
+      "twoHanded": false,
+      "stats": { "atk": 10, "str": 2 },
+      "effects": [
+        { "type": "cleave_damage", "value": 0.3, "description": "Attacks cleave nearby enemies for 30% damage" }
+      ],
+      "description": "A sturdy battle axe with a keen edge. Favored by barbarians and berserkers.",
+      "value": 45,
+      "sellable": true,
+      "sprite": { "base": "axe", "palette": "steel", "glow": false }
+    },
+    {
+      "id": "leather-armor",
+      "name": "Leather Armor",
+      "type": "armor",
+      "subtype": "armor",
+      "slot": "armor",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 5, "dex": 1 },
+      "effects": [],
+      "armorType": "light",
+      "speedPenalty": 0,
+      "description": "Simple leather armor offering basic protection.",
+      "value": 15,
+      "sellable": true,
+      "sprite": { "base": "armor", "palette": "leather" }
+    },
+    {
+      "id": "chain-mail",
+      "name": "Chain Mail",
+      "type": "armor",
+      "subtype": "armor",
+      "slot": "armor",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 10, "con": 1 },
+      "effects": [],
+      "armorType": "medium",
+      "speedPenalty": 0.1,
+      "description": "Interlocking metal rings provide solid protection.",
+      "value": 30,
+      "sellable": true,
+      "sprite": { "base": "armor", "palette": "chain" }
+    },
+    {
+      "id": "cloth-robe",
+      "name": "Cloth Robe",
+      "type": "armor",
+      "subtype": "armor",
+      "slot": "armor",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 2, "int": 2, "wis": 1 },
+      "effects": [
+        { "type": "mana_regen", "value": 0.5, "description": "+0.5 mana regen per second" }
+      ],
+      "armorType": "light",
+      "speedPenalty": 0,
+      "description": "Simple robes favored by spellcasters.",
+      "value": 12,
+      "sellable": true,
+      "sprite": { "base": "robe", "palette": "blue" }
+    },
+    {
+      "id": "acolyte-robe",
+      "name": "Acolyte Robe",
+      "type": "armor",
+      "subtype": "armor",
+      "slot": "armor",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 3, "wis": 2 },
+      "effects": [
+        { "type": "healing_power", "value": 0.05, "description": "+5% healing power" }
+      ],
+      "armorType": "light",
+      "speedPenalty": 0,
+      "description": "White robes of the clergy, blessed with minor healing enhancement.",
+      "value": 14,
+      "sellable": true,
+      "sprite": { "base": "robe", "palette": "white" }
+    },
+    {
+      "id": "thief-garb",
+      "name": "Thief's Garb",
+      "type": "armor",
+      "subtype": "armor",
+      "slot": "armor",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 3, "dex": 2 },
+      "effects": [
+        { "type": "stealth", "value": 0.1, "description": "+10% stealth effectiveness" }
+      ],
+      "armorType": "light",
+      "speedPenalty": 0,
+      "description": "Dark, fitted clothing designed for moving unseen.",
+      "value": 12,
+      "sellable": true,
+      "sprite": { "base": "armor", "palette": "dark-leather" }
+    },
+    {
+      "id": "hide-armor",
+      "name": "Hide Armor",
+      "type": "armor",
+      "subtype": "armor",
+      "slot": "armor",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 7, "con": 1, "str": 1 },
+      "effects": [],
+      "armorType": "medium",
+      "speedPenalty": 0.05,
+      "description": "Rough-hewn animal hides stitched together. Rugged and practical.",
+      "value": 18,
+      "sellable": true,
+      "sprite": { "base": "armor", "palette": "hide" }
+    },
+    {
+      "id": "wooden-shield",
+      "name": "Wooden Shield",
+      "type": "armor",
+      "subtype": "shield",
+      "slot": "offhand",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "def": 4 },
+      "effects": [
+        { "type": "block_chance", "value": 0.1, "description": "10% chance to block incoming attacks" }
+      ],
+      "description": "A simple wooden shield. Better than nothing.",
+      "value": 8,
+      "sellable": true,
+      "sprite": { "base": "shield", "palette": "wood" }
+    },
+    {
+      "id": "lockpick-set",
+      "name": "Lockpick Set",
+      "type": "accessory",
+      "subtype": "tool",
+      "slot": "accessory1",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "dex": 1 },
+      "effects": [
+        { "type": "lockpicking", "value": 0.15, "description": "+15% lockpicking success chance" }
+      ],
+      "description": "A set of finely crafted lockpicks. Essential for any self-respecting rogue.",
+      "value": 20,
+      "sellable": true,
+      "sprite": { "base": "tool", "palette": "metal" }
+    },
+    {
+      "id": "prayer-beads",
+      "name": "Prayer Beads",
+      "type": "accessory",
+      "subtype": "trinket",
+      "slot": "accessory1",
+      "rarity": "common",
+      "level": 1,
+      "stats": { "wis": 1 },
+      "effects": [
+        { "type": "mana_regen", "value": 0.3, "description": "+0.3 mana regen per second" }
+      ],
+      "description": "Wooden beads sanctified by temple priests. Aid concentration during spellcasting.",
+      "value": 10,
+      "sellable": true,
+      "sprite": { "base": "trinket", "palette": "wood-holy" }
+    },
+    {
+      "id": "health-potion",
+      "name": "Health Potion",
+      "type": "consumable",
+      "subtype": "potion",
+      "rarity": "common",
+      "level": 1,
+      "stackable": true,
+      "maxStack": 20,
+      "effects": [
+        { "type": "heal", "value": 50, "description": "Restores 50 HP instantly" }
+      ],
+      "description": "A flask of red liquid that restores health.",
+      "value": 25,
+      "sellable": true,
+      "sprite": { "base": "potion", "palette": "red" }
+    },
+    {
+      "id": "mana-potion",
+      "name": "Mana Potion",
+      "type": "consumable",
+      "subtype": "potion",
+      "rarity": "common",
+      "level": 1,
+      "stackable": true,
+      "maxStack": 20,
+      "effects": [
+        { "type": "restore_mana", "value": 40, "description": "Restores 40 MP instantly" }
+      ],
+      "description": "A flask of blue liquid that restores mana.",
+      "value": 30,
+      "sellable": true,
+      "sprite": { "base": "potion", "palette": "blue" }
+    },
+    {
+      "id": "flame-sword",
+      "name": "Flame Sword",
+      "type": "weapon",
+      "subtype": "sword",
+      "rarity": "rare",
+      "level": 5,
+      "twoHanded": false,
+      "stats": { "atk": 18, "str": 2, "dex": 1 },
+      "effects": [
+        { "type": "fire_damage", "value": 5, "chance": 0.3, "description": "30% chance to deal 5 bonus fire damage" }
+      ],
+      "description": "A sword imbued with eternal flame. Burns foes on hit.",
+      "value": 450,
+      "sellable": true,
+      "sprite": { "base": "sword", "palette": "fire", "glow": true, "glowColor": "#FF6600" }
+    },
+    {
+      "id": "wool-cloak",
+      "name": "Enchanted Wool Cloak",
+      "type": "armor",
+      "subtype": "cloak",
+      "slot": "armor",
+      "rarity": "uncommon",
+      "level": 2,
+      "stats": { "def": 4, "con": 2, "wis": 1 },
+      "effects": [
+        { "type": "cold_resist", "value": 0.25, "description": "25% resistance to cold damage" },
+        { "type": "warmth", "value": true, "description": "Immune to cold weather effects" }
+      ],
+      "description": "A finely woven wool cloak enchanted to keep its wearer warm in any weather. It belonged to Farmer Bramble's late wife.",
+      "lore": "The enchantment was placed by a traveling wizard in exchange for a warm meal. Simple magic, but endlessly practical.",
+      "value": 60,
+      "sellable": true,
+      "questReward": "lost-livestock",
+      "sprite": { "base": "cloak", "palette": "wool-grey" }
+    }
+  ],
+  "rarityColors": {
+    "common": "#FFFFFF",
+    "uncommon": "#1EFF00",
+    "rare": "#0070FF",
+    "epic": "#A335EE",
+    "legendary": "#FF8000"
+  },
+  "equipmentSlots": [
+    "helmet", "amulet", "weapon", "offhand", "armor", "belt", "boots", "accessory1", "accessory2"
+  ]
+}

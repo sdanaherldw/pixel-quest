@@ -1,0 +1,178 @@
+{
+  "classes": [
+    {
+      "id": "knight",
+      "name": "Knight",
+      "description": "A stalwart warrior clad in heavy armor. Masters of melee combat, knights lead the charge with steel and fury.",
+      "baseStats": { "str": 16, "int": 8, "wis": 10, "dex": 10, "con": 14, "cha": 10 },
+      "statGrowth": { "str": 3, "int": 1, "wis": 1, "dex": 2, "con": 3, "cha": 1 },
+      "hpPerLevel": 12,
+      "mpPerLevel": 3,
+      "weaponTypes": ["sword", "axe", "mace", "greataxe", "greatsword"],
+      "armorTypes": ["light", "medium", "heavy"],
+      "startingEquipment": ["rusty-sword", "leather-armor", "wooden-shield"],
+      "skillTreeIds": ["knight-valor", "knight-bulwark", "knight-commander"],
+      "spellSchools": [],
+      "passiveAbilities": ["heavy-armor-mastery"],
+      "baseSpeed": 3.5,
+      "portraitVariants": 4
+    },
+    {
+      "id": "paladin",
+      "name": "Paladin",
+      "description": "Holy warriors who serve the light. Paladins balance martial prowess with divine magic, healing allies and smiting the unholy.",
+      "baseStats": { "str": 14, "int": 10, "wis": 14, "dex": 8, "con": 12, "cha": 12 },
+      "statGrowth": { "str": 2, "int": 1, "wis": 3, "dex": 1, "con": 2, "cha": 2 },
+      "hpPerLevel": 10,
+      "mpPerLevel": 6,
+      "weaponTypes": ["sword", "mace", "greatsword"],
+      "armorTypes": ["light", "medium", "heavy"],
+      "startingEquipment": ["iron-mace", "chain-mail", "wooden-shield"],
+      "skillTreeIds": ["paladin-devotion", "paladin-retribution", "paladin-protection"],
+      "spellSchools": ["holy", "healing"],
+      "passiveAbilities": ["divine-grace"],
+      "baseSpeed": 3.0,
+      "portraitVariants": 4
+    },
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "description": "Skilled hunters and trackers who strike from afar. Rangers commune with nature and never miss their mark.",
+      "baseStats": { "str": 10, "int": 10, "wis": 14, "dex": 16, "con": 10, "cha": 8 },
+      "statGrowth": { "str": 1, "int": 1, "wis": 2, "dex": 3, "con": 2, "cha": 1 },
+      "hpPerLevel": 8,
+      "mpPerLevel": 5,
+      "weaponTypes": ["bow", "crossbow", "dagger", "sword"],
+      "armorTypes": ["light", "medium"],
+      "startingEquipment": ["short-bow", "leather-armor", "hunting-dagger"],
+      "skillTreeIds": ["ranger-marksmanship", "ranger-beastmaster", "ranger-trapper"],
+      "spellSchools": ["nature"],
+      "passiveAbilities": ["keen-eye", "nature-stride"],
+      "baseSpeed": 4.0,
+      "portraitVariants": 4
+    },
+    {
+      "id": "sorcerer",
+      "name": "Sorcerer",
+      "description": "Masters of the arcane arts who command the elements. Devastating at range but fragile in close quarters.",
+      "baseStats": { "str": 6, "int": 18, "wis": 12, "dex": 10, "con": 8, "cha": 10 },
+      "statGrowth": { "str": 0, "int": 4, "wis": 2, "dex": 1, "con": 1, "cha": 1 },
+      "hpPerLevel": 5,
+      "mpPerLevel": 12,
+      "weaponTypes": ["staff", "wand", "dagger"],
+      "armorTypes": ["light"],
+      "startingEquipment": ["apprentice-staff", "cloth-robe"],
+      "skillTreeIds": ["sorcerer-fire", "sorcerer-ice", "sorcerer-lightning"],
+      "spellSchools": ["fire", "ice", "lightning"],
+      "passiveAbilities": ["arcane-intellect"],
+      "baseSpeed": 3.0,
+      "portraitVariants": 4
+    },
+    {
+      "id": "cleric",
+      "name": "Cleric",
+      "description": "Devoted priests who channel divine power to mend wounds and ward off darkness. The backbone of any adventuring party.",
+      "baseStats": { "str": 10, "int": 10, "wis": 16, "dex": 8, "con": 14, "cha": 12 },
+      "statGrowth": { "str": 1, "int": 1, "wis": 4, "dex": 1, "con": 2, "cha": 2 },
+      "hpPerLevel": 8,
+      "mpPerLevel": 10,
+      "weaponTypes": ["mace", "staff"],
+      "armorTypes": ["light", "medium"],
+      "startingEquipment": ["wooden-mace", "acolyte-robe", "prayer-beads"],
+      "skillTreeIds": ["cleric-restoration", "cleric-divine-wrath", "cleric-benediction"],
+      "spellSchools": ["healing", "holy", "utility"],
+      "passiveAbilities": ["divine-favor"],
+      "baseSpeed": 3.0,
+      "portraitVariants": 4
+    },
+    {
+      "id": "rogue",
+      "name": "Rogue",
+      "description": "Shadow-dwelling tricksters who strike from the darkness. Masters of stealth, lockpicking, and exploiting enemy weaknesses.",
+      "baseStats": { "str": 10, "int": 10, "wis": 8, "dex": 16, "con": 10, "cha": 14 },
+      "statGrowth": { "str": 1, "int": 1, "wis": 1, "dex": 4, "con": 1, "cha": 2 },
+      "hpPerLevel": 7,
+      "mpPerLevel": 4,
+      "weaponTypes": ["dagger", "sword", "crossbow"],
+      "armorTypes": ["light"],
+      "startingEquipment": ["rusty-dagger", "thief-garb", "lockpick-set"],
+      "skillTreeIds": ["rogue-assassination", "rogue-subtlety", "rogue-scoundrel"],
+      "spellSchools": ["shadow"],
+      "passiveAbilities": ["sneak-attack", "lockpicking"],
+      "baseSpeed": 4.5,
+      "portraitVariants": 4
+    },
+    {
+      "id": "barbarian",
+      "name": "Barbarian",
+      "description": "Primal warriors who channel raw fury in battle. Unique class — only the legendary Crag Hack embodies this savage fighting style.",
+      "unique": true,
+      "uniqueCharacter": "crag-hack",
+      "baseStats": { "str": 18, "int": 6, "wis": 7, "dex": 14, "con": 16, "cha": 12 },
+      "statGrowth": { "str": 4, "int": 0, "wis": 1, "dex": 2, "con": 3, "cha": 1 },
+      "hpPerLevel": 14,
+      "mpPerLevel": 2,
+      "weaponTypes": ["axe", "greataxe", "sword", "greatsword", "mace"],
+      "armorTypes": ["light", "medium"],
+      "startingEquipment": ["battle-axe", "hide-armor"],
+      "skillTreeIds": ["barbarian-ravager", "barbarian-warlord", "barbarian-unkillable"],
+      "spellSchools": [],
+      "passiveAbilities": ["berserker-blood", "obsidian-affinity"],
+      "baseSpeed": 4.0,
+      "portraitVariants": 1
+    }
+  ],
+  "uniqueCharacters": [
+    {
+      "id": "crag-hack",
+      "name": "Crag Hack",
+      "classId": "barbarian",
+      "title": "The Berserker",
+      "lore": "Once a gladiator champion in the arenas of Thornwick, Crag Hack broke free from his captors and now roams the land seeking worthy opponents. His unmatched fury in battle is matched only by his loyalty to those who earn his respect.",
+      "recruitment": {
+        "location": "thornwick-arena",
+        "region": "elderwood",
+        "method": "defeat-in-duel",
+        "level": 5,
+        "dialogue": "crag-hack-recruitment"
+      },
+      "baseStats": { "str": 18, "int": 6, "wis": 7, "dex": 14, "con": 16, "cha": 12 },
+      "personalQuest": {
+        "id": "forged-in-fury",
+        "title": "Forged in Fury",
+        "description": "Crag Hack seeks the legendary Obsidian Great Axe, said to be forged by fire giants in the depths of Cinder Core.",
+        "regions": ["elderwood", "scorched-wastes", "cinder-core"],
+        "reward": "obsidian-great-axe"
+      },
+      "passives": [
+        {
+          "id": "berserker-blood",
+          "name": "Berserker Blood",
+          "description": "Damage increases as HP decreases. Below 50% HP, damage scales exponentially. At 10% HP, deals 2.5x damage.",
+          "formula": "if hp_pct > 0.5: 1.0x | if hp_pct > 0.25: 1.0 + (0.5 - hp_pct) * 3.0 | if hp_pct > 0.1: 1.0 + (0.5 - hp_pct) * 4.0 | at 0.1: 2.5x"
+        },
+        {
+          "id": "obsidian-affinity",
+          "name": "Obsidian Affinity",
+          "description": "Obsidian weapons deal 30% increased damage when wielded by Crag Hack. The volcanic stone resonates with his primal fury.",
+          "damageMultiplier": 1.3,
+          "appliesTo": ["obsidian-great-axe", "cracked-obsidian-axe", "obsidian-dagger"]
+        }
+      ],
+      "voiceLines": {
+        "recruitment": "Hah! You fight well. Perhaps together we can find foes truly worthy of my axe.",
+        "combat": ["Feel my fury!", "RAAAGH!", "You dare?!", "Crag Hack fears nothing!"],
+        "lowHealth": ["Pain... fuels... my RAGE!", "Is that all you've got?!"],
+        "victory": "Another victory! The arena taught me well.",
+        "death": "I fall... but Crag Hack... does not... stay down..."
+      },
+      "sprite": {
+        "base": "barbarian-crag",
+        "hairColor": "#8B4513",
+        "skinTone": "#D2691E",
+        "scarPattern": "battle-worn",
+        "unique": true
+      }
+    }
+  ]
+}
