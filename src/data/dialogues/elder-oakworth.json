@@ -1,0 +1,137 @@
+{
+  "id": "elder-oakworth",
+  "speaker": "Elder Oakworth",
+  "context": "Oakhollow village center - The village elder and main quest giver",
+  "portrait": "elder-oakworth",
+  "nodes": {
+    "start": {
+      "text": "Ah, travelers! Welcome to Oakhollow. I am Elder Oakworth. I must confess, your arrival comes at a dire time. The forest... something is terribly wrong.",
+      "choices": [
+        { "text": "What's happening to the forest?", "next": "corruption-explain" },
+        { "text": "Tell us about this village.", "next": "village-info" },
+        { "text": "We're just passing through.", "next": "passing-through" }
+      ]
+    },
+    "corruption-explain": {
+      "text": "A darkness has crept into the Elderwood. Trees that have stood for centuries are withering. Animals flee. And the creatures... they've become twisted, aggressive. It started months ago, deep in the Ancient Elven Ruins to the north. Something has awakened there.",
+      "choices": [
+        { "text": "We'll investigate. What should we do first?", "next": "accept-main-quest" },
+        { "text": "What are these ruins?", "next": "ruins-lore" },
+        { "text": "That sounds dangerous. What's in it for us?", "next": "reward-negotiate" }
+      ]
+    },
+    "accept-main-quest": {
+      "text": "Bless you! Start with the Hollow Oak Caves east of town — the corruption has spread there first. Clear the creatures and look for clues. Then press north to the Ruined Watchtower. The answers... I believe they lie in the Ancient Elven Ruins beyond. But be careful. Each step deeper brings greater danger.",
+      "choices": [
+        { "text": "We won't let you down.", "next": "quest-accepted-noble" },
+        { "text": "Any supplies you can spare?", "next": "supplies" }
+      ],
+      "action": { "type": "accept_quest", "questId": "the-corruption-spreads" }
+    },
+    "ruins-lore": {
+      "text": "The Ancient Elven Ruins predate our village by thousands of years. The elves built a sanctuary there to house a powerful nature guardian — the Forest Guardian. It was meant to protect these woods for eternity. But if the guardian has been corrupted...",
+      "choices": [
+        { "text": "Then we need to stop it. We accept.", "next": "accept-main-quest" },
+        { "text": "Tell us more about the other regions.", "next": "world-lore" }
+      ]
+    },
+    "reward-negotiate": {
+      "text": "*sighs* We are a humble village, but this is our home. I can offer what gold we have, and the gratitude of every soul in Oakhollow. The caves and ruins also hold treasures from ages past. And if the corruption spreads beyond the forest... nowhere will be safe. Not even for travelers.",
+      "choices": [
+        { "text": "Fair enough. We'll help.", "next": "accept-main-quest" },
+        { "text": "We need to think about it.", "next": "think-about-it" }
+      ]
+    },
+    "village-info": {
+      "text": "Oakhollow has stood at the heart of Elderwood for three generations. We're a peaceful folk — farmers, woodcutters, herbalists. There's an inn if you need rest, and old Roderick runs the general shop. Fernvale lies to the north — a ranger outpost. And Thornwick, the fortified village, guards the eastern pass.",
+      "choices": [
+        { "text": "Now tell me about this corruption.", "next": "corruption-explain" },
+        { "text": "I've heard there's a warrior in Thornwick's arena.", "next": "crag-hack-rumor" },
+        { "text": "Thank you. We'll look around.", "next": "end-friendly" }
+      ]
+    },
+    "crag-hack-rumor": {
+      "text": "*chuckles* Ah yes, the barbarian. Crag Hack, they call him. He's been winning every bout in Thornwick's arena for weeks now. Wild fellow — all muscle and fury. I've heard he's searching for some legendary weapon. He might be worth recruiting if you're heading into danger... assuming you can best him first.",
+      "choices": [
+        { "text": "Interesting. Now, about this corruption...", "next": "corruption-explain" },
+        { "text": "Thanks for the tip.", "next": "end-friendly" }
+      ]
+    },
+    "world-lore": {
+      "text": "Beyond our forest lie four other great regions. To the north, the Frostpeak Mountains — treacherous peaks ruled by ice and legend says a dragon. East lie the Scorched Wastes, an endless desert hiding ancient secrets. South is the Shadowmire Swamp, a cursed bog of undead horrors. And deep below, Cinder Core — the volcanic heart of the world. But those are problems for another day. Our forest needs you now.",
+      "choices": [
+        { "text": "We'll start with the forest. Tell me where to begin.", "next": "accept-main-quest" },
+        { "text": "That's a lot of ground to cover.", "next": "encouragement" }
+      ]
+    },
+    "encouragement": {
+      "text": "One step at a time, friend. Save our forest first, and I believe you'll find the strength and knowledge needed for whatever lies beyond. Great heroes aren't born — they're forged through trials. Your journey starts here.",
+      "choices": [
+        { "text": "Then let's begin. We accept your quest.", "next": "accept-main-quest" }
+      ]
+    },
+    "supplies": {
+      "text": "Of course! Take these healing potions — they're the least we can offer. And speak with Roderick at the shop. Tell him I sent you; he'll give you a fair price on supplies.",
+      "choices": [],
+      "action": { "type": "give_items", "items": [{ "id": "health-potion", "count": 3 }], "setFlag": "oakworth-discount" }
+    },
+    "quest-accepted-noble": {
+      "text": "*bows deeply* The forest — and all of Oakhollow — thanks you. May the ancient spirits guide your path. Return to me when you've cleared the Hollow Oak Caves. I may have more information by then.",
+      "choices": [],
+      "action": { "type": "set_objective", "questId": "the-corruption-spreads", "objective": 0 }
+    },
+    "return-after-caves": {
+      "text": "You've returned! And I can feel it — the darkness has receded from the caves. But I fear it's only retreated further in. The Ruined Watchtower to the north has become a nexus of corruption. I've heard terrible sounds echoing from within. Please, you must press on.",
+      "choices": [
+        { "text": "We found this strange symbol in the caves.", "next": "symbol-clue" },
+        { "text": "We'll head to the Watchtower next.", "next": "watchtower-direction" }
+      ],
+      "condition": { "questProgress": "the-corruption-spreads", "objectiveComplete": 0 }
+    },
+    "symbol-clue": {
+      "text": "*examines the symbol with trembling hands* This... this is an elven binding seal. It's been broken. Whatever was contained in the Ancient Elven Ruins... it's free. The corruption isn't random — it's spreading FROM the guardian's chamber. The Forest Guardian itself may be the source.",
+      "choices": [
+        { "text": "Then we need to reach those ruins.", "next": "watchtower-direction" }
+      ]
+    },
+    "watchtower-direction": {
+      "text": "The Watchtower stands on the ridge between here and the ruins. You'll need to fight through it to reach the Ancient Elven Ruins beyond. Be prepared — the corruption grows stronger the closer you get to its source. Stock up at Roderick's before you go.",
+      "choices": [],
+      "action": { "type": "set_objective", "questId": "the-corruption-spreads", "objective": 2 }
+    },
+    "return-after-guardian": {
+      "text": "*tears in his eyes* I can feel it... the darkness lifts! The trees are already beginning to heal. You've done what I feared no mortal could — you've freed the Forest Guardian from corruption. You are heroes of Oakhollow, now and forever.",
+      "choices": [
+        { "text": "The Guardian mentioned something about mountains.", "next": "mountains-hint" },
+        { "text": "It was our honor, Elder.", "next": "end-victory" }
+      ],
+      "condition": { "questComplete": "the-corruption-spreads" }
+    },
+    "mountains-hint": {
+      "text": "The mountains? *strokes beard thoughtfully* The Frostpeak Mountains to the north... There have been rumors of tremors and strange lights near the peaks. If the corruption came from elsewhere and infected our guardian... perhaps its true source lies up there. But that is a journey few have survived.",
+      "choices": [
+        { "text": "We'll find the source, wherever it leads.", "next": "end-victory" }
+      ]
+    },
+    "end-victory": {
+      "text": "You will always have a home in Oakhollow. Rest, resupply, and when you're ready... the world awaits. May the spirits of the forest walk with you.",
+      "choices": [],
+      "action": { "type": "complete_quest", "questId": "the-corruption-spreads", "rewards": { "xp": 500, "gold": 200, "reputation": { "oakhollow": 50 } } }
+    },
+    "passing-through": {
+      "text": "I see. Well, our inn has warm beds and Roderick's shop has fine supplies. But if you have any sense of adventure or duty... the forest needs help. Speak to me again if you change your mind.",
+      "choices": [],
+      "action": { "type": "end_dialogue" }
+    },
+    "think-about-it": {
+      "text": "Of course. Take your time. But don't take too long — the corruption grows stronger each day. I'll be here when you're ready.",
+      "choices": [],
+      "action": { "type": "end_dialogue" }
+    },
+    "end-friendly": {
+      "text": "Of course. Enjoy your stay in Oakhollow. My door is always open if you need guidance.",
+      "choices": [],
+      "action": { "type": "end_dialogue" }
+    }
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "id": "farmer-bramble",
+  "speaker": "Farmer Bramble",
+  "context": "Oakhollow outskirts - A worried farmer whose sheep have gone missing",
+  "portrait": "farmer-bramble",
+  "nodes": {
+    "start": {
+      "text": "*wringing hands* Oh, thank the spirits! Are you the adventurers Elder Oakworth mentioned? Please, I need your help! My sheep — they've gone missing in the forest!",
+      "choices": [
+        { "text": "What happened to your sheep?", "next": "explain" },
+        { "text": "How many are missing?", "next": "how-many" },
+        { "text": "We're busy with more important things.", "next": "decline" }
+      ]
+    },
+    "explain": {
+      "text": "Three nights ago, I heard terrible sounds from the eastern pasture. When I went to check at dawn, seven of my best woolbacks were gone! No blood, no tracks — just... gone. The fence was broken from the inside, like they ran in terror. Something in the forest drove them out.",
+      "choices": [
+        { "text": "Could it be the corruption Elder Oakworth mentioned?", "next": "corruption-link" },
+        { "text": "Where exactly should we look?", "next": "location" },
+        { "text": "What's the reward?", "next": "reward" }
+      ]
+    },
+    "how-many": {
+      "text": "Seven! My finest woolbacks — Daisy, Clover, Buttercup, Thistle, Primrose, Ivy, and old Barnaby. Barnaby's the ram, ornery fellow, but he's worth his weight in gold. Literally — his wool fetches premium prices at market.",
+      "choices": [
+        { "text": "Tell me what happened.", "next": "explain" },
+        { "text": "Where should we look?", "next": "location" }
+      ]
+    },
+    "corruption-link": {
+      "text": "*nods fearfully* That's what I'm afraid of. The animals in the forest have been acting strange — aggressive, confused. If my sheep wandered into corrupted territory... *trails off* Please, they might still be alive. Woolbacks are hardy creatures.",
+      "choices": [
+        { "text": "We'll find them. Where do we start?", "next": "location" },
+        { "text": "What if they've been... changed?", "next": "corrupted-sheep" }
+      ]
+    },
+    "corrupted-sheep": {
+      "text": "*goes pale* Changed? You mean... like the twisted wolves? Oh spirits, no... If my woolbacks have been corrupted, I... I don't know what I'd do. But even if they're beyond saving, please — bring back Barnaby's bell. It was my father's. It's all I have left of him.",
+      "choices": [
+        { "text": "We'll do everything we can.", "next": "accept-quest" },
+        { "text": "We might have to put them down if they're corrupted.", "next": "hard-truth" }
+      ]
+    },
+    "hard-truth": {
+      "text": "*blinks back tears* I know. I've been a farmer long enough to know when an animal is suffering. If they can't be saved, then... give them peace. But bring me proof — Barnaby's bell, or a tuft of their wool. So I know for certain.",
+      "choices": [
+        { "text": "You have our word.", "next": "accept-quest" }
+      ]
+    },
+    "location": {
+      "text": "The eastern pasture borders the Whispering Thicket — that stretch of old-growth forest between here and the Hollow Oak Caves. There's a stream that runs through it; the sheep always liked to drink there. Start at the old stone bridge and follow the water northeast.",
+      "choices": [
+        { "text": "We'll head there now.", "next": "accept-quest" },
+        { "text": "Any dangers we should know about?", "next": "dangers" }
+      ]
+    },
+    "dangers": {
+      "text": "The Whispering Thicket has always had wolves, but lately they've been bolder — more vicious. And I've seen spider webs the size of fishing nets strung between the trees. My neighbor Herschel says he spotted goblins near the old stone bridge last week. Watch yourselves.",
+      "choices": [
+        { "text": "Noted. We'll find your sheep.", "next": "accept-quest" }
+      ]
+    },
+    "reward": {
+      "text": "I'm not a wealthy man, but I can offer 50 gold and all the wool you can carry. My wife Marta also brews the finest herbal remedies in Oakhollow — she'll make you healing salves. And if you find them alive, I'll give you old Barnaby's enchanted wool cloak. It was woven by the elves decades ago — keeps you warm in any weather.",
+      "choices": [
+        { "text": "That's generous. We'll help.", "next": "accept-quest" },
+        { "text": "Tell me more about this enchanted cloak.", "next": "cloak-info" },
+        { "text": "We'll think about it.", "next": "think-about-it" }
+      ]
+    },
+    "cloak-info": {
+      "text": "*eyes light up* The Enchanted Wool Cloak! Made from Barnaby's own fleece by a traveling elven weaver, years ago. It grants resistance to cold and a small boost to nature magic. I've kept it in my chest for a special occasion, but saving my flock seems special enough!",
+      "choices": [
+        { "text": "Deal. We'll bring them home.", "next": "accept-quest" }
+      ]
+    },
+    "accept-quest": {
+      "text": "*grasps your hands* Bless you! Bless you all! Head east past the windmill and across the old stone bridge. Follow the stream northeast into the Whispering Thicket. And please... be gentle with them if you can. Woolbacks are gentle souls.",
+      "choices": [],
+      "action": { "type": "accept_quest", "questId": "the-lost-woolbacks" }
+    },
+    "return-sheep-alive": {
+      "text": "*bursts into tears of joy* BARNABY! DAISY! Oh, you beautiful creatures! *hugs the nearest sheep* Thank you! Thank you so much! Here — take everything I promised and more. You've given an old farmer hope again.",
+      "choices": [
+        { "text": "Glad we could help.", "next": "end-alive-noble" },
+        { "text": "About that cloak...", "next": "end-alive-reward" }
+      ],
+      "condition": { "questProgress": "the-lost-woolbacks", "outcome": "sheep-alive" }
+    },
+    "return-sheep-corrupted": {
+      "text": "*takes Barnaby's bell with trembling hands* I... I knew. In my heart, I knew they were gone when I heard those terrible sounds. You did the right thing. They're at peace now. *wipes eyes* Here's your reward. You earned it — and my eternal gratitude for ending their suffering.",
+      "choices": [
+        { "text": "We're sorry for your loss.", "next": "end-corrupted-kind" },
+        { "text": "The corruption is getting worse. Be careful.", "next": "end-corrupted-warning" }
+      ],
+      "condition": { "questProgress": "the-lost-woolbacks", "outcome": "sheep-corrupted" }
+    },
+    "return-sold-sheep": {
+      "text": "*squints suspiciously* You found them alive but... sold them? To WHO? My sheep — my livelihood — sold to strangers?! *face reddens* Get out of my sight! I'll tell the whole village what kind of 'heroes' you really are!",
+      "choices": [
+        { "text": "It was the practical choice.", "next": "end-sold-cold" },
+        { "text": "We're sorry. Here's the money.", "next": "end-sold-apologize" }
+      ],
+      "condition": { "questProgress": "the-lost-woolbacks", "outcome": "sheep-sold" }
+    },
+    "end-alive-noble": {
+      "text": "*still hugging sheep* You're heroes, all of you. Come by anytime — Marta will have fresh bread and healing salves waiting. The forest needs more folk like you.",
+      "choices": [],
+      "action": {
+        "type": "complete_quest",
+        "questId": "the-lost-woolbacks",
+        "rewards": { "xp": 120, "gold": 75, "items": ["enchanted-wool-cloak"], "reputation": { "oakhollow": 25 } }
+      }
+    },
+    "end-alive-reward": {
+      "text": "Of course! A deal's a deal. *fetches a shimmering cloak from his chest* The Enchanted Wool Cloak — may it serve you well on the road ahead. And here's the gold I promised, plus a little extra. You've earned it!",
+      "choices": [],
+      "action": {
+        "type": "complete_quest",
+        "questId": "the-lost-woolbacks",
+        "rewards": { "xp": 120, "gold": 75, "items": ["enchanted-wool-cloak", "healing-salve", "healing-salve", "healing-salve"], "reputation": { "oakhollow": 20 } }
+      }
+    },
+    "end-corrupted-kind": {
+      "text": "*clutches the bell to his chest* Thank you for being honest with me. This corruption... it's taking everything from us. Please stop it. For my sheep, and for all of Oakhollow.",
+      "choices": [],
+      "action": {
+        "type": "complete_quest",
+        "questId": "the-lost-woolbacks",
+        "rewards": { "xp": 100, "gold": 50, "items": ["healing-salve", "healing-salve"], "reputation": { "oakhollow": 15 } }
+      }
+    },
+    "end-corrupted-warning": {
+      "text": "*nods grimly* I know. I've been thinking of sending Marta to stay with her sister in Thornwick. It's not safe here anymore. *looks at the bell* Stop this darkness. For all of us.",
+      "choices": [],
+      "action": {
+        "type": "complete_quest",
+        "questId": "the-lost-woolbacks",
+        "rewards": { "xp": 100, "gold": 50, "items": ["healing-salve", "healing-salve"], "reputation": { "oakhollow": 15 }, "setFlag": "bramble-warned" }
+      }
+    },
+    "end-sold-cold": {
+      "text": "*shaking with anger* Practical?! Those were living creatures — my friends! Get out! And don't expect any help from Oakhollow. Word travels fast in a small village.",
+      "choices": [],
+      "action": {
+        "type": "complete_quest",
+        "questId": "the-lost-woolbacks",
+        "rewards": { "xp": 60, "gold": 0, "reputation": { "oakhollow": -30 } },
+        "setFlag": "bramble-hostile"
+      }
+    },
+    "end-sold-apologize": {
+      "text": "*snatches the gold* This doesn't make it right. But... *sighs heavily* ...at least they're alive somewhere. Just go. I don't want to see you right now.",
+      "choices": [],
+      "action": {
+        "type": "complete_quest",
+        "questId": "the-lost-woolbacks",
+        "rewards": { "xp": 80, "gold": -30, "reputation": { "oakhollow": -10 } }
+      }
+    },
+    "decline": {
+      "text": "*shoulders sag* I understand. You have bigger problems to deal with. But if you change your mind... seven lives are counting on someone. *turns back to stare at the empty pasture*",
+      "choices": [],
+      "action": { "type": "end_dialogue", "setFlag": "bramble-quest-available" }
+    },
+    "think-about-it": {
+      "text": "Of course, take your time. But please... don't take too long. Every night they're out there, the forest grows darker. I'll be here, waiting.",
+      "choices": [],
+      "action": { "type": "end_dialogue", "setFlag": "bramble-quest-available" }
+    }
+  }
+}
