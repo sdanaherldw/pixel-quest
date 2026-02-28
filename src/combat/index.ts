@@ -100,6 +100,13 @@ export {
   type LimitBreak,
 } from './LimitBreakSystem';
 
+// CombatOrchestrator
+export {
+  CombatOrchestrator,
+  type AbilityDef,
+  type OrchestratorConfig,
+} from './CombatOrchestrator';
+
 // ElementalSystem
 export {
   Element,

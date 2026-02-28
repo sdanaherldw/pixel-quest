@@ -7,6 +7,10 @@
  */
 
 import forestQuestsData from '@/data/quests/forest-quests.json';
+import frostpeakQuestsData from '@/data/quests/frostpeak-quests.json';
+import scorchedQuestsData from '@/data/quests/scorched-quests.json';
+import shadowmireQuestsData from '@/data/quests/shadowmire-quests.json';
+import cinderQuestsData from '@/data/quests/cinder-quests.json';
 
 // ---------------------------------------------------------------------------
 // Enums
@@ -133,6 +137,10 @@ function loadQuestsFromRaw(raw: RawQuestFile): void {
 }
 
 loadQuestsFromRaw(forestQuestsData as unknown as RawQuestFile);
+loadQuestsFromRaw(frostpeakQuestsData as unknown as RawQuestFile);
+loadQuestsFromRaw(scorchedQuestsData as unknown as RawQuestFile);
+loadQuestsFromRaw(shadowmireQuestsData as unknown as RawQuestFile);
+loadQuestsFromRaw(cinderQuestsData as unknown as RawQuestFile);
 
 // ---------------------------------------------------------------------------
 // QuestSystem class

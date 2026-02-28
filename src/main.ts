@@ -29,6 +29,7 @@ async function main(): Promise<void> {
     const height = window.innerHeight;
     engine.app.renderer.resize(width, height);
     engine.camera.resize(width, height);
+    engine.scenes.resize(width, height);
   };
 
   window.addEventListener('resize', resize);
@@ -39,6 +40,11 @@ async function main(): Promise<void> {
 
   console.log('[main] Realms of Conquest engine started.');
 }
+
+// --- Global error handlers ---
+window.addEventListener('unhandledrejection', (e) => {
+  console.error('[main] Unhandled rejection:', e.reason);
+});
 
 // --- Run ---
 main().catch((err) => {

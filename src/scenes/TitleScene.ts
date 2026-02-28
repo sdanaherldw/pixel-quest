@@ -1,6 +1,7 @@
 import { Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { FadeTransition } from '@/ui/TransitionEffects';
 
 // ---------------------------------------------------------------------------
 // Particle type for golden sparkle motes
@@ -344,7 +345,10 @@ export class TitleScene extends Scene {
       if (selected === 'New Game') {
         void import('@/scenes/CharacterCreateScene').then(
           ({ CharacterCreateScene }) => {
-            void this.engine.scenes.push(new CharacterCreateScene());
+            void this.engine.scenes.push(
+              new CharacterCreateScene(),
+              new FadeTransition(0.5),
+            );
           },
         );
       }
@@ -358,6 +362,17 @@ export class TitleScene extends Scene {
 
   public render(_alpha: number): void {
     // All rendering is handled in update via Graphics redraws.
+  }
+
+  public override async exit(): Promise<void> {
+    this._particles.length = 0;
+  }
+
+  public override destroy(): void {
+    this._particles.length = 0;
+    this._menuTexts.length = 0;
+    this._torches.length = 0;
+    super.destroy();
   }
 
   // ------------------------------------------------------------------

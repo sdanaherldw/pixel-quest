@@ -1,6 +1,8 @@
-import { Container, Graphics, Text, TextStyle } from 'pixi.js';
+import { Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { FadeTransition } from '@/ui/TransitionEffects';
+import { FogFilter } from '@/rendering/filters';
 import { World } from '@/engine/ecs/World';
 import type { Entity } from '@/engine/ecs/Entity';
 import { ComponentType } from '@/engine/ecs/Component';
@@ -18,6 +20,11 @@ import {
   type EnemyData,
   type EnemyComponent,
 } from '@/entities/EnemyEntity';
+import { HUD, type PartyMemberData, type QuickSlotData } from '@/ui/HUD';
+import { DamageNumbers } from '@/ui/DamageNumbers';
+import { MenuSystem, type MenuOption } from '@/ui/MenuSystem';
+import { Notifications } from '@/ui/Notifications';
+import { GameState } from '@/engine/GameState';
 
 // ---------------------------------------------------------------------------
 // Platform definition
@@ -28,18 +35,6 @@ interface Platform {
   y: number;
   width: number;
   height: number;
-}
-
-// ---------------------------------------------------------------------------
-// Damage number floating text
-// ---------------------------------------------------------------------------
-
-interface DamageNumber {
-  text: Text;
-  x: number;
-  y: number;
-  vy: number;
-  life: number;
 }
 
 // ---------------------------------------------------------------------------
@@ -104,16 +99,18 @@ export class DungeonScene extends Scene {
   // ------------------------------------------------------------------
 
   private _bgLayers: Graphics[] = [];
-  private _damageNumbers: DamageNumber[] = [];
-  private _damageContainer!: Container;
 
   // ------------------------------------------------------------------
-  // UI
+  // UI components
   // ------------------------------------------------------------------
 
-  private _uiContainer!: Container;
-  private _dungeonNameText!: Text;
-  private _playerHPBar!: Container;
+  private _hud!: HUD;
+  private _damageNumbers!: DamageNumbers;
+  private _menuSystem!: MenuSystem;
+  private _notifications!: Notifications;
+
+  /** Bound event listeners for cleanup. */
+  private _boundEventHandlers: Array<{ event: string; handler: (...args: unknown[]) => void }> = [];
 
   // ------------------------------------------------------------------
   // Config
@@ -121,6 +118,9 @@ export class DungeonScene extends Scene {
 
   private _elapsed: number = 0;
   private _playerData: PlayerData;
+
+  // --- Visual filters ---
+  private _fogFilter: FogFilter | null = null;
 
   constructor(playerData?: PlayerData) {
     super('DungeonScene');
@@ -161,10 +161,9 @@ export class DungeonScene extends Scene {
     this._drawExitZone();
     this.container.addChild(this._exitGfx);
 
-    // --- Damage number container ---
-    this._damageContainer = new Container();
-    this._damageContainer.label = 'damage-numbers';
-    this.container.addChild(this._damageContainer);
+    // --- Damage numbers (world-space) ---
+    this._damageNumbers = new DamageNumbers();
+    this.container.addChild(this._damageNumbers.container);
 
     // --- Spawn player ---
     const spawnX = 100;
@@ -182,8 +181,21 @@ export class DungeonScene extends Scene {
     // --- Spawn enemies ---
     this._spawnEnemies();
 
-    // --- UI ---
-    this._buildUI();
+    // --- UI components ---
+    const w = this.engine.width;
+    const h = this.engine.height;
+
+    this._hud = new HUD(w, h);
+    this.engine.uiContainer.addChild(this._hud.container);
+
+    this._menuSystem = new MenuSystem(w, h);
+    this.engine.uiContainer.addChild(this._menuSystem.container);
+
+    this._notifications = new Notifications(w, h);
+    this.engine.uiContainer.addChild(this._notifications.container);
+
+    // Subscribe to GameState events.
+    this._subscribeToEvents();
 
     // --- Camera ---
     this.engine.camera.follow(
@@ -197,6 +209,13 @@ export class DungeonScene extends Scene {
       height: this._levelHeight,
     };
     this.engine.camera.lookAt(spawnX, spawnY);
+
+    // --- Atmospheric fog ---
+    this._fogFilter = new FogFilter();
+    this._fogFilter.density = 0.4;
+    this._fogFilter.fogColor = [0.12, 0.1, 0.18];
+    this._fogFilter.textureResolution = [this.engine.width, this.engine.height];
+    this.container.filters = [this._fogFilter];
   }
 
   // ------------------------------------------------------------------
@@ -217,20 +236,33 @@ export class DungeonScene extends Scene {
   public update(dt: number): void {
     this._elapsed += dt;
 
-    // Update damage numbers.
-    for (let i = this._damageNumbers.length - 1; i >= 0; i--) {
-      const dmg = this._damageNumbers[i];
-      dmg.life -= dt;
-      dmg.y += dmg.vy * dt;
-      dmg.vy -= 100 * dt;
-      dmg.text.position.set(dmg.x, dmg.y);
-      dmg.text.alpha = Math.max(0, dmg.life / 1.0);
+    // --- Update UI components ---
+    this._damageNumbers.update(dt);
+    this._notifications.update(dt);
 
-      if (dmg.life <= 0) {
-        this._damageContainer.removeChild(dmg.text);
-        dmg.text.destroy();
-        this._damageNumbers.splice(i, 1);
+    // --- Update fog filter time ---
+    if (this._fogFilter) {
+      this._fogFilter.time = this._elapsed;
+    }
+
+    // --- Menu system handles ESC ---
+    if (this._menuSystem.isOpen()) {
+      if (this.engine.input.isActionJustPressed('openMenu')) {
+        this._menuSystem.hide();
+      } else if (this.engine.input.isKeyJustPressed('ArrowUp')) {
+        this._menuSystem.navigateUp();
+      } else if (this.engine.input.isKeyJustPressed('ArrowDown')) {
+        this._menuSystem.navigateDown();
+      } else if (this.engine.input.isKeyJustPressed('Enter')) {
+        this._menuSystem.confirmSelection();
       }
+      return;
+    }
+
+    // --- Open menu on ESC ---
+    if (this.engine.input.isActionJustPressed('openMenu')) {
+      this._showMenu();
+      return;
     }
 
     // Update enemy HP bars.
@@ -240,9 +272,6 @@ export class DungeonScene extends Scene {
       const enemyComp = enemy.getComponent('Enemy') as EnemyComponent;
       updateEnemyHPBar(enemyComp.hpBarContainer, health.current, health.max);
     }
-
-    // Update player HP bar UI.
-    this._updatePlayerHPBar();
   }
 
   // ------------------------------------------------------------------
@@ -252,6 +281,7 @@ export class DungeonScene extends Scene {
   public render(alpha: number): void {
     const transform = this._playerEntity.getComponent(ComponentType.Transform) as TransformComponent;
     const playerComp = this._playerEntity.getComponent('Player') as PlayerComponent;
+    const health = this._playerEntity.getComponent(ComponentType.Health) as HealthComponent;
 
     // Interpolated position.
     const renderX = this._prevPlayerX + (transform.x - this._prevPlayerX) * alpha;
@@ -265,22 +295,54 @@ export class DungeonScene extends Scene {
       this._bgLayers[i].x = -camX * factor;
     }
 
-    // Layout UI.
-    this._layoutUI();
+    // --- HUD update ---
+    const gs = GameState.instance;
+    const partyData: PartyMemberData[] = gs.party.length > 0
+      ? gs.activeParty.map((m) => ({
+          name: m.name,
+          level: m.level,
+          hp: m.stats.hp,
+          maxHp: m.stats.maxHp,
+          mp: m.stats.mp,
+          maxMp: m.stats.maxMp,
+          isActive: m.id === gs.activePartyIds[0],
+        }))
+      : [{
+          name: playerComp.name,
+          level: playerComp.level ?? 1,
+          hp: health.current,
+          maxHp: health.max,
+          mp: 0,
+          maxMp: 0,
+          isActive: true,
+        }];
+
+    const quickSlots: QuickSlotData[] = [];
+    for (let i = 0; i < 8; i++) {
+      quickSlots.push({ index: i });
+    }
+
+    this._hud.update(partyData, 'Hollow Oak Caves', gs.gold, quickSlots, 0);
   }
 
   public async exit(): Promise<void> {
-    if (this._uiContainer.parent) {
-      this._uiContainer.parent.removeChild(this._uiContainer);
-    }
+    this._unsubscribeFromEvents();
+    this._hud.container.parent?.removeChild(this._hud.container);
+    this._menuSystem.container.parent?.removeChild(this._menuSystem.container);
+    this._notifications.container.parent?.removeChild(this._notifications.container);
   }
 
   public override destroy(): void {
+    this._hud.destroy();
+    this._damageNumbers.destroy();
+    this._menuSystem.destroy();
+    this._notifications.destroy();
     this._world.clear();
-    for (const dmg of this._damageNumbers) {
-      dmg.text.destroy();
-    }
-    this._damageNumbers.length = 0;
+    this._enemyEntities.length = 0;
+    this._platforms.length = 0;
+    this._bgLayers.length = 0;
+    this._fogFilter = null;
+    this.container.filters = [];
     super.destroy();
   }
 
@@ -728,7 +790,7 @@ export class DungeonScene extends Scene {
         eHealth.current = Math.max(0, eHealth.current - damage);
 
         // Spawn damage number.
-        this._spawnDamageNumber(eTransform.x, eTransform.y - 20, damage, false);
+        this._damageNumbers.spawn(eTransform.x, eTransform.y - 20, damage, 'physical');
 
         // Screen shake on kill.
         if (eHealth.current <= 0) {
@@ -736,31 +798,6 @@ export class DungeonScene extends Scene {
         }
       }
     }
-  }
-
-  private _spawnDamageNumber(x: number, y: number, amount: number, isHeal: boolean): void {
-    const color = isHeal ? 0x00ff00 : 0xff4444;
-    const text = new Text({
-      text: isHeal ? `+${amount}` : `-${amount}`,
-      style: new TextStyle({
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: 14,
-        fontWeight: 'bold',
-        fill: color,
-        stroke: { color: 0x000000, width: 3 },
-      }),
-    });
-    text.anchor.set(0.5, 0.5);
-    text.position.set(x, y);
-    this._damageContainer.addChild(text);
-
-    this._damageNumbers.push({
-      text,
-      x: x + (Math.random() - 0.5) * 10,
-      y,
-      vy: -80,
-      life: 1.0,
-    });
   }
 
   // ------------------------------------------------------------------
@@ -785,87 +822,85 @@ export class DungeonScene extends Scene {
   }
 
   // ------------------------------------------------------------------
-  // UI
+  // Menu
   // ------------------------------------------------------------------
 
-  private _buildUI(): void {
-    this._uiContainer = new Container();
-    this._uiContainer.label = 'dungeon-ui';
-    this.engine.uiContainer.addChild(this._uiContainer);
+  private _showMenu(): void {
+    const options: MenuOption[] = [
+      { label: 'Resume', action: () => this._menuSystem.hide() },
+      {
+        label: 'Inventory',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/InventoryScene').then(({ InventoryScene }) => {
+            void this.engine.scenes.push(new InventoryScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Save Game',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/SaveLoadScene').then(({ SaveLoadScene }) => {
+            void this.engine.scenes.push(new SaveLoadScene('save'), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Settings',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/SettingsScene').then(({ SettingsScene }) => {
+            void this.engine.scenes.push(new SettingsScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Quit to Title',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/TitleScene').then(({ TitleScene }) => {
+            void this.engine.scenes.replace(new TitleScene(), new FadeTransition(0.5));
+          });
+        },
+      },
+    ];
 
-    // Dungeon name.
-    this._dungeonNameText = new Text({
-      text: 'Hollow Oak Caves',
-      style: new TextStyle({
-        fontFamily: 'Georgia, "Times New Roman", serif',
-        fontSize: 16,
-        fill: 0xccbbaa,
-        stroke: { color: 0x000000, width: 3 },
-        letterSpacing: 2,
-      }),
-    });
-    this._dungeonNameText.position.set(16, 12);
-    this._uiContainer.addChild(this._dungeonNameText);
-
-    // Player HP bar.
-    this._playerHPBar = new Container();
-    this._playerHPBar.label = 'player-hp-bar';
-    this._uiContainer.addChild(this._playerHPBar);
-
-    const health = this._playerEntity.getComponent(ComponentType.Health) as HealthComponent;
-    const barWidth = 120;
-    const barHeight = 14;
-
-    const bg = new Graphics();
-    bg.roundRect(0, 0, barWidth, barHeight, 3).fill(0x1a0000);
-    bg.roundRect(0, 0, barWidth, barHeight, 3).stroke({ color: 0x660000, width: 1 });
-    this._playerHPBar.addChild(bg);
-
-    const fill = new Graphics();
-    fill.roundRect(1, 1, barWidth - 2, barHeight - 2, 2).fill(0x00cc00);
-    fill.label = 'hp-fill';
-    this._playerHPBar.addChild(fill);
-
-    const hpText = new Text({
-      text: `${health.current}/${health.max}`,
-      style: new TextStyle({
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: 9,
-        fill: 0xffffff,
-      }),
-    });
-    hpText.anchor.set(0.5, 0.5);
-    hpText.position.set(barWidth / 2, barHeight / 2);
-    hpText.label = 'hp-text';
-    this._playerHPBar.addChild(hpText);
+    this._menuSystem.show(options);
   }
 
-  private _updatePlayerHPBar(): void {
-    const health = this._playerEntity.getComponent(ComponentType.Health) as HealthComponent;
-    const barWidth = 120;
-    const barHeight = 14;
-    const pct = Math.max(0, Math.min(1, health.current / health.max));
+  // ------------------------------------------------------------------
+  // GameState event subscriptions
+  // ------------------------------------------------------------------
 
-    const fill = this._playerHPBar.children.find((c) => c.label === 'hp-fill') as Graphics | undefined;
-    const hpText = this._playerHPBar.children.find((c) => c.label === 'hp-text') as Text | undefined;
+  private _subscribeToEvents(): void {
+    const gs = GameState.instance;
 
-    if (fill) {
-      fill.clear();
-      const color = pct > 0.6 ? 0x00cc00 : pct > 0.3 ? 0xcccc00 : 0xcc0000;
-      fill.roundRect(1, 1, (barWidth - 2) * pct, barHeight - 2, 2).fill(color);
-    }
+    const onLevelUp = (member: unknown) => {
+      const m = member as { name?: string; level?: number };
+      this._notifications.show(
+        `${m.name ?? 'Party member'} reached level ${m.level ?? '?'}!`,
+        'levelup',
+      );
+    };
+    gs.events.on('party:levelup', onLevelUp);
+    this._boundEventHandlers.push({ event: 'party:levelup', handler: onLevelUp });
 
-    if (hpText) {
-      hpText.text = `${Math.round(health.current)}/${health.max}`;
-    }
+    const onInventory = (itemId: unknown, qty: unknown) => {
+      const q = qty as number;
+      if (q > 0) {
+        this._notifications.show(`Obtained: ${itemId}`, 'item');
+      }
+    };
+    gs.events.on('inventory:changed', onInventory);
+    this._boundEventHandlers.push({ event: 'inventory:changed', handler: onInventory });
   }
 
-  private _layoutUI(): void {
-    const w = this.engine.width;
-
-    this._dungeonNameText.position.set(16, 12);
-    this._playerHPBar.position.set(16, 36);
-
-    void w;
+  private _unsubscribeFromEvents(): void {
+    const gs = GameState.instance;
+    for (const { event, handler } of this._boundEventHandlers) {
+      gs.events.off(event, handler);
+    }
+    this._boundEventHandlers.length = 0;
   }
 }

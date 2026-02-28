@@ -3,6 +3,7 @@ import gsap from 'gsap';
 
 import { Scene } from '../engine/Scene';
 import { TitleScene } from './TitleScene';
+import { FadeTransition } from '@/ui/TransitionEffects';
 
 // ------------------------------------------------------------------
 // Floating mote of light (ambient particle)
@@ -495,7 +496,7 @@ export class BootScene extends Scene {
   private _transitionToGame(): void {
     const tl = gsap.timeline({
       onComplete: () => {
-        void this.engine.scenes.replace(new TitleScene());
+        void this.engine.scenes.replace(new TitleScene(), new FadeTransition(0.6));
       },
     });
 

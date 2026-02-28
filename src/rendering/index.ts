@@ -30,3 +30,19 @@ export {
   type LightSource,
   type LightType,
 } from './LightingSystem';
+
+export {
+  PainterlyFilter,
+  WaterFilter,
+  FogFilter,
+  DissolveFilter,
+  OutlineFilter,
+} from './filters';
+
+export {
+  CinematicCamera,
+  type LetterboxOptions,
+  type PanToOptions,
+  type BossIntroOptions,
+  type FreezeFrameOptions,
+} from './CinematicCamera';

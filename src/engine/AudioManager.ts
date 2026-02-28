@@ -92,6 +92,9 @@ export class AudioManager {
   // Crossfade
   private crossfadeState: CrossfadeState | null = null;
 
+  // Volume tween rAF IDs for cleanup
+  private _tweenRafIds: Set<number> = new Set();
+
   private constructor() {
     // singleton — use AudioManager.instance
   }
@@ -519,12 +522,31 @@ export class AudioManager {
       }
 
       if (t < 1) {
-        requestAnimationFrame(tick);
+        const id = requestAnimationFrame(tick);
+        this._tweenRafIds.add(id);
       } else {
         onComplete?.();
       }
     };
 
-    requestAnimationFrame(tick);
+    const id = requestAnimationFrame(tick);
+    this._tweenRafIds.add(id);
+  }
+
+  private cancelAllTweens(): void {
+    for (const id of this._tweenRafIds) {
+      cancelAnimationFrame(id);
+    }
+    this._tweenRafIds.clear();
+  }
+
+  destroy(): void {
+    this.cancelCrossfade();
+    this.cancelAllTweens();
+    if (this.currentMusicId) {
+      sound.stop(this.currentMusicId);
+      this.currentMusicId = null;
+    }
+    this.initialized = false;
   }
 }

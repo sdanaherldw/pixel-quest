@@ -1,6 +1,9 @@
 import localforage from 'localforage';
 import { z } from 'zod';
 
+import { GameState } from './GameState';
+import type { GameStateData } from './GameState';
+
 const CURRENT_SAVE_VERSION = '1.0.0';
 const AUTOSAVE_SLOT = 0;
 const MAX_MANUAL_SLOT = 3;
@@ -388,5 +391,188 @@ export class SaveManager {
     }
 
     return Math.floor(total);
+  }
+
+  // ── GameState Bridge ──────────────────────────────────────────────────
+
+  /**
+   * Serialize the current {@link GameState} and persist it to the given slot.
+   *
+   * This is the primary save method for gameplay code — it reads from
+   * the GameState singleton, maps the data into the SaveManager's
+   * persisted schema, and writes to IndexedDB.
+   */
+  async saveGameState(slot: number): Promise<boolean> {
+    const gs = GameState.instance;
+    const stateData: GameStateData = gs.serialize();
+
+    // Map GameState's data model into SaveManager's SaveData schema.
+    const leader = stateData.party[0];
+
+    const saveData: SaveData = {
+      version: CURRENT_SAVE_VERSION,
+      slot,
+      timestamp: Date.now(),
+      playtime: stateData.playtimeSeconds,
+      playerName: leader?.name ?? 'Unknown',
+      partyMembers: stateData.party.map((m) => ({
+        name: m.name,
+        classId: m.classId,
+        level: m.level,
+        currentHp: m.stats.hp,
+        maxHp: m.stats.maxHp,
+        currentMp: m.stats.mp,
+        maxMp: m.stats.maxMp,
+        xp: m.xp,
+        stats: {
+          str: m.stats.str,
+          int: m.stats.int,
+          wis: 0, // GameState uses vit/luk instead of wis/con
+          dex: m.stats.dex,
+          con: m.stats.vit,
+          cha: m.stats.cha,
+        },
+        equipment: Object.fromEntries(
+          Object.entries(m.equipment).filter(([, v]) => v !== null) as [string, string][],
+        ),
+        knownSpells: m.learnedSpells,
+        equippedSpells: m.equippedSpells,
+        skillPoints: m.skillPoints,
+        investedSkills: Object.fromEntries(
+          m.unlockedSkills.map((s) => [s, 1]),
+        ),
+      })),
+      inventory: {
+        items: stateData.inventory.map((s) => ({
+          itemId: s.itemId,
+          quantity: s.quantity,
+        })),
+        gold: stateData.gold,
+      },
+      questState: {
+        active: stateData.activeQuests.map((q) => q.questId),
+        completed: stateData.completedQuestIds,
+        failed: stateData.failedQuestIds,
+        objectives: Object.fromEntries(
+          stateData.activeQuests.map((q) => [
+            q.questId,
+            Object.fromEntries(q.objectives.map((o) => [o.id, o.completed])),
+          ]),
+        ),
+      },
+      worldState: {
+        currentRegion: stateData.currentRegion,
+        currentZone: '',
+        position: stateData.currentPosition,
+        unlockedRegions: stateData.unlockedRegions,
+        defeatedBosses: [],
+        discoveredTowns: [],
+        clearedDungeons: [],
+        flags: stateData.worldFlags,
+        reputation: {},
+      },
+      settings: {
+        musicVolume: 0.8,
+        sfxVolume: 0.8,
+        difficulty: 'normal',
+      },
+      newGamePlusLevel: stateData.newGamePlusLevel,
+    };
+
+    return this.save(slot, saveData);
+  }
+
+  /**
+   * Load a save slot and hydrate the {@link GameState} singleton with
+   * the persisted data.
+   *
+   * @returns `true` if the load and deserialization succeeded.
+   */
+  async loadGameState(slot: number): Promise<boolean> {
+    const saveData = await this.load(slot);
+    if (!saveData) return false;
+
+    const gs = GameState.instance;
+
+    // Map SaveData back into GameStateData and deserialize into GameState.
+    const gameStateData: GameStateData = {
+      party: saveData.partyMembers.map((m) => ({
+        id: crypto.randomUUID(),
+        name: m.name,
+        classId: m.classId,
+        level: m.level,
+        xp: m.xp,
+        xpToNext: Math.floor(100 * Math.pow(1.5, m.level - 1)),
+        stats: {
+          hp: m.currentHp,
+          maxHp: m.maxHp,
+          mp: m.currentMp,
+          maxMp: m.maxMp,
+          str: m.stats.str,
+          dex: m.stats.dex,
+          int: m.stats.int,
+          vit: m.stats.con,
+          cha: m.stats.cha,
+          luk: 10,
+          atk: m.stats.str * 2,
+          def: m.stats.con + Math.floor(m.stats.dex / 2),
+          spd: m.stats.dex + Math.floor(m.stats.str / 4),
+          critChance: 0.05 + m.stats.dex * 0.002,
+          critDamage: 1.5,
+          dodgeChance: 0.02 + m.stats.dex * 0.003,
+        },
+        equipment: {
+          weapon: m.equipment['weapon'] ?? null,
+          armor: m.equipment['armor'] ?? null,
+          helmet: m.equipment['helmet'] ?? null,
+          accessory: m.equipment['accessory'] ?? null,
+          ring: m.equipment['ring'] ?? null,
+        },
+        equippedSpells: m.equippedSpells,
+        learnedSpells: m.knownSpells,
+        skillPoints: m.skillPoints,
+        unlockedSkills: Object.keys(m.investedSkills),
+        statusEffects: [],
+      })),
+      activePartyIds: [], // filled below
+      inventory: saveData.inventory.items.map((i) => ({
+        itemId: i.itemId,
+        quantity: i.quantity,
+      })),
+      gold: saveData.inventory.gold,
+      activeQuests: saveData.questState.active.map((qid) => ({
+        questId: qid,
+        regionId: saveData.worldState.currentRegion,
+        objectives: Object.entries(saveData.questState.objectives[qid] ?? {}).map(
+          ([objId, completed]) => ({
+            id: objId,
+            current: completed ? 1 : 0,
+            target: 1,
+            completed,
+          }),
+        ),
+        startedAt: saveData.timestamp,
+      })),
+      completedQuestIds: [...saveData.questState.completed],
+      failedQuestIds: [...saveData.questState.failed],
+      currentRegion: saveData.worldState.currentRegion,
+      currentPosition: { ...saveData.worldState.position },
+      unlockedRegions: [...saveData.worldState.unlockedRegions],
+      worldFlags: { ...saveData.worldState.flags },
+      playtimeSeconds: saveData.playtime,
+      dayNightTime: 360,
+      saveSlot: saveData.slot,
+      newGamePlusLevel: saveData.newGamePlusLevel,
+      discoveredEnemies: [],
+      discoveredItems: [],
+      discoveredLore: [],
+    };
+
+    // Set active party IDs to all members (up to 4).
+    gameStateData.activePartyIds = gameStateData.party
+      .slice(0, 4)
+      .map((m) => m.id);
+
+    return gs.deserialize(gameStateData);
   }
 }

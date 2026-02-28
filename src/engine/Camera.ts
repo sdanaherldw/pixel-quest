@@ -138,6 +138,14 @@ export class Camera {
   // --- Zoom tween ---
   private _zoomTween: gsap.core.Tween | null = null;
 
+  // --- Bounds cache ---
+  private _boundsCache: Rectangle | null = null;
+  private _boundsCacheFrame: number = -1;
+  private _frameCounter: number = 0;
+
+  // --- Reusable point for worldToScreen ---
+  private readonly _screenPoint = { x: 0, y: 0 };
+
   // ------------------------------------------------------------------
   // Constructor
   // ------------------------------------------------------------------
@@ -269,17 +277,26 @@ export class Camera {
   /**
    * Axis-aligned bounding box of the currently visible area in world
    * coordinates.  Useful for culling and spatial queries.
+   *
+   * Results are cached per frame to avoid repeated allocation.
    */
   public getBounds(): Rectangle {
+    if (this._boundsCache && this._boundsCacheFrame === this._frameCounter) {
+      return this._boundsCache;
+    }
+
     const hw = (this._viewportWidth / 2) / this.zoom;
     const hh = (this._viewportHeight / 2) / this.zoom;
 
-    return new Rectangle(
+    this._boundsCache = new Rectangle(
       this.x - hw,
       this.y - hh,
       hw * 2,
       hh * 2,
     );
+    this._boundsCacheFrame = this._frameCounter;
+
+    return this._boundsCache;
   }
 
   /**
@@ -290,6 +307,23 @@ export class Camera {
       x: (worldX - this.x) * this.zoom + this._viewportWidth / 2,
       y: (worldY - this.y) * this.zoom + this._viewportHeight / 2,
     };
+  }
+
+  /**
+   * Convert a world-space position to screen pixels without allocating.
+   *
+   * Writes the result into the provided `out` object, or an internal
+   * reusable object if none is given.
+   */
+  public worldToScreenOut(
+    worldX: number,
+    worldY: number,
+    out?: { x: number; y: number },
+  ): { x: number; y: number } {
+    const result = out ?? this._screenPoint;
+    result.x = (worldX - this.x) * this.zoom + this._viewportWidth / 2;
+    result.y = (worldY - this.y) * this.zoom + this._viewportHeight / 2;
+    return result;
   }
 
   /**
@@ -315,6 +349,7 @@ export class Camera {
    * @param dt Fixed timestep delta in seconds.
    */
   public update(dt: number): void {
+    this._frameCounter++;
     this._updateFollow(dt);
     this._updateShake(dt);
     this._clampToBounds();

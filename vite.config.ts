@@ -13,6 +13,16 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    target: 'es2022',
+    target: 'es2020',
+    sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-pixi': ['pixi.js', '@pixi/sound'],
+          'vendor-physics': ['planck-js'],
+          'vendor-utils': ['gsap', 'localforage', 'zod'],
+        },
+      },
+    },
   },
 });

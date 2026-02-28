@@ -171,10 +171,13 @@ export class LimitBreakSystem {
   private individualMeters: Map<string, LimitBreakMeter>;
   private partyMeter: PartyMeter;
   private limitBreaks: Map<string, LimitBreak>; // keyed by `${classId}_${type}`
+  /** Maps characterId → classId for limit break lookups. */
+  private characterClassMap: Map<string, string>;
 
   constructor() {
     this.individualMeters = new Map<string, LimitBreakMeter>();
     this.limitBreaks = new Map<string, LimitBreak>();
+    this.characterClassMap = new Map<string, string>();
     this.partyMeter = {
       current: 0,
       max: 100,
@@ -186,13 +189,21 @@ export class LimitBreakSystem {
 
   // ---- Meter management ---------------------------------------------------
 
-  initializeMeter(characterId: string, chargeRate: number = 1.0): void {
+  initializeMeter(characterId: string, chargeRate: number = 1.0, classId?: string): void {
     this.individualMeters.set(characterId, {
       current: 0,
       max: 100,
       chargeRate,
       ready: false,
     });
+    if (classId) {
+      this.characterClassMap.set(characterId, classId);
+    }
+  }
+
+  /** Register the class for a character so limit breaks resolve correctly. */
+  registerCharacterClass(characterId: string, classId: string): void {
+    this.characterClassMap.set(characterId, classId);
   }
 
   // ---- Charging -----------------------------------------------------------
@@ -281,23 +292,17 @@ export class LimitBreakSystem {
       return null;
     }
 
-    // We need to figure out the character's class — search the registered
-    // limit breaks for one that matches this characterId's class.  For
-    // simplicity we also accept characterId === classId.
+    // Look up the character's classId from the registered mapping
+    const classId = this.characterClassMap.get(characterId);
+
     let found: LimitBreak | null = null;
 
-    for (const lb of this.limitBreaks.values()) {
-      if (lb.type !== 'individual') {
-        continue;
-      }
-      // Match by classId directly (the game layer maps characterId → classId)
-      if (lb.classId === characterId) {
-        found = lb;
-        break;
-      }
+    // Try to find via classId mapping first
+    if (classId) {
+      found = this.limitBreaks.get(`${classId}_individual`) ?? null;
     }
 
-    // Fallback: iterate to see if we already have a characterId-keyed LB
+    // Fallback: try characterId as classId (for cases where characterId IS the classId)
     if (!found) {
       found = this.limitBreaks.get(`${characterId}_individual`) ?? null;
     }

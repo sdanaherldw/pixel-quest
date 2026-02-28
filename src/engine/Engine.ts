@@ -4,6 +4,8 @@ import { SceneManager } from './SceneManager';
 import { InputManager } from './InputManager';
 import { Camera } from './Camera';
 import { Debug } from './Debug';
+import { RenderPipeline } from '@/rendering/RenderPipeline';
+import { ErrorReporter } from './ErrorReporter';
 import type { Scene } from './Scene';
 
 // ------------------------------------------------------------------
@@ -112,6 +114,9 @@ export class Engine {
   /** Debug overlay. */
   public debug!: Debug;
 
+  /** Render pipeline with named layers and post-processing. */
+  public pipeline!: RenderPipeline;
+
   // ------------------------------------------------------------------
   // Loop state
   // ------------------------------------------------------------------
@@ -131,8 +136,14 @@ export class Engine {
   /** Whether the loop is currently running. */
   private _running: boolean = false;
 
+  /** Consecutive error count for the game loop. */
+  private _errorCount: number = 0;
+
   /** Bound reference to the tick callback (for clean removal). */
   private readonly _tickBound: (ticker: { deltaMS: number }) => void;
+
+  /** Bound visibility change handler (for clean removal). */
+  private readonly _onVisibilityChange: () => void;
 
   // ------------------------------------------------------------------
   // Constructor
@@ -140,6 +151,10 @@ export class Engine {
 
   constructor() {
     this._tickBound = this._tick.bind(this) as (ticker: { deltaMS: number }) => void;
+    this._onVisibilityChange = () => {
+      if (document.hidden) this.stop();
+      else this.resume();
+    };
   }
 
   // ------------------------------------------------------------------
@@ -207,6 +222,8 @@ export class Engine {
     this.camera = new Camera(this.worldContainer, width, height);
     this.debug = new Debug(this);
 
+    this.pipeline = new RenderPipeline(this.worldContainer);
+
     if (showDebug) {
       this.debug.enabled = true;
     }
@@ -218,6 +235,9 @@ export class Engine {
     this._running = true;
     this._previousTime = performance.now();
     this._accumulator = 0;
+
+    // Pause/resume when the tab loses/gains focus.
+    document.addEventListener('visibilitychange', this._onVisibilityChange);
 
     // Use PixiJS ticker for frame scheduling (respects visibility, etc.).
     this.app.ticker.add(this._tickBound);
@@ -249,7 +269,8 @@ export class Engine {
 
     await this.scenes.destroyAll();
 
-    // Remove tick handler.
+    // Remove event listeners.
+    document.removeEventListener('visibilitychange', this._onVisibilityChange);
     this.app.ticker.remove(this._tickBound);
 
     // Destroy the PixiJS app (removes canvas from DOM).
@@ -295,35 +316,47 @@ export class Engine {
   private _tick(): void {
     if (!this._running) return;
 
-    const now = performance.now();
-    let frameTime = (now - this._previousTime) / 1000; // seconds
-    this._previousTime = now;
+    try {
+      const now = performance.now();
+      let frameTime = (now - this._previousTime) / 1000; // seconds
+      this._previousTime = now;
 
-    // Cap frame time to prevent spiral of death.
-    if (frameTime > this._maxFrameTime) {
-      frameTime = this._maxFrameTime;
+      // Cap frame time to prevent spiral of death.
+      if (frameTime > this._maxFrameTime) {
+        frameTime = this._maxFrameTime;
+      }
+
+      this._accumulator += frameTime;
+
+      // --- Fixed updates ---
+      while (this._accumulator >= this._fixedDt) {
+        this.scenes.fixedUpdate(this._fixedDt);
+        this.camera.update(this._fixedDt);
+        this._accumulator -= this._fixedDt;
+      }
+
+      // --- Variable update ---
+      this.scenes.update(frameTime);
+      this.input.update();
+
+      // --- Debug timing ---
+      this.debug.update(frameTime);
+
+      // --- Render (with interpolation) ---
+      const alpha = this._accumulator / this._fixedDt;
+      this.scenes.render(alpha);
+      this.camera.applyTransform();
+      this.debug.render();
+
+      // Reset error count on successful frame.
+      this._errorCount = 0;
+    } catch (error) {
+      console.error('[Engine] Error in game loop:', error);
+      this._errorCount++;
+      if (this._errorCount > 10) {
+        this.stop();
+        ErrorReporter.show(error as Error);
+      }
     }
-
-    this._accumulator += frameTime;
-
-    // --- Fixed updates ---
-    while (this._accumulator >= this._fixedDt) {
-      this.scenes.fixedUpdate(this._fixedDt);
-      this.camera.update(this._fixedDt);
-      this._accumulator -= this._fixedDt;
-    }
-
-    // --- Variable update ---
-    this.scenes.update(frameTime);
-    this.input.update();
-
-    // --- Debug timing ---
-    this.debug.update(frameTime);
-
-    // --- Render (with interpolation) ---
-    const alpha = this._accumulator / this._fixedDt;
-    this.scenes.render(alpha);
-    this.camera.applyTransform();
-    this.debug.render();
   }
 }

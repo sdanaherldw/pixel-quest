@@ -9,9 +9,9 @@ import type { Entity } from './Entity';
  * components while optionally excluding others.
  *
  * Each {@link Query} maintains a cached list of matched entities.  The cache
- * is automatically invalidated when an entity's component set changes (tracked
- * via {@link Entity.version}).  This avoids redundant iteration when the same
- * query is evaluated multiple times per frame.
+ * is automatically invalidated when the world's structural version changes
+ * (entity creation/destruction) or when an entity's component set changes
+ * (tracked via {@link Entity.version}).
  *
  * ### Usage
  *
@@ -20,7 +20,7 @@ import type { Entity } from './Entity';
  * const alive   = new Query(['Health'], ['Dead']);
  *
  * // Each frame:
- * const matched = movable.execute(allEntities);
+ * const matched = movable.execute(allEntities, world.structuralVersion);
  * ```
  */
 export class Query {
@@ -52,6 +52,9 @@ export class Query {
 
   /** When `true` the cache is known to be stale and must be rebuilt. */
   private _dirty: boolean = true;
+
+  /** The world structural version when this cache was last built. */
+  private _lastStructuralVersion: number = -1;
 
   // ------------------------------------------------------------------
   // Constructor
@@ -91,14 +94,31 @@ export class Query {
    * Return every entity from `entities` that satisfies this query.
    *
    * Results are cached and reused across multiple calls within the same
-   * frame as long as no entity's component set has changed.
+   * frame as long as no structural changes have occurred and no entity's
+   * component set has changed.
+   *
+   * @param entities  The full entity list from the world.
+   * @param structuralVersion  The world's current structural version.
+   *        When omitted, falls back to per-entity version checking.
    */
-  public execute(entities: ReadonlyArray<Entity>): Entity[] {
-    if (!this._dirty && this._isCacheValid(entities)) {
+  public execute(entities: ReadonlyArray<Entity>, structuralVersion?: number): Entity[] {
+    // Fast path: if structural version hasn't changed and cache isn't dirty,
+    // check per-entity component versions.
+    if (
+      !this._dirty &&
+      structuralVersion !== undefined &&
+      structuralVersion === this._lastStructuralVersion &&
+      this._isCacheValid(entities)
+    ) {
       return this._cache;
     }
 
-    this._rebuild(entities);
+    // Fallback for callers that don't pass structural version.
+    if (!this._dirty && structuralVersion === undefined && this._isCacheValid(entities)) {
+      return this._cache;
+    }
+
+    this._rebuild(entities, structuralVersion);
     return this._cache;
   }
 
@@ -135,7 +155,7 @@ export class Query {
   /**
    * Rebuild the cached match list from scratch.
    */
-  private _rebuild(entities: ReadonlyArray<Entity>): void {
+  private _rebuild(entities: ReadonlyArray<Entity>, structuralVersion?: number): void {
     this._cache.length = 0;
     this._versionMap.clear();
 
@@ -148,6 +168,7 @@ export class Query {
     }
 
     this._lastEntityCount = entities.length;
+    this._lastStructuralVersion = structuralVersion ?? -1;
     this._dirty = false;
   }
 }

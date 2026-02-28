@@ -110,6 +110,22 @@ export function registerDialogueFile(def: DialogueFileDef): void {
   dialogueMap.set(def.id, def);
 }
 
+/**
+ * Load dialogue data dynamically from a raw JSON object.
+ * Accepts either a single dialogue definition or an array of them.
+ */
+export function loadDialogueData(data: Record<string, unknown> | Record<string, unknown>[]): void {
+  const items = Array.isArray(data) ? data : [data];
+  for (const item of items) {
+    registerDialogue(item);
+  }
+}
+
+/** Check whether a dialogue has been registered. */
+export function hasDialogue(id: string): boolean {
+  return dialogueMap.has(id);
+}
+
 // ---------------------------------------------------------------------------
 // DialogueSystem class
 // ---------------------------------------------------------------------------

@@ -79,6 +79,10 @@ export interface Combatant {
   statusEffectIds: string[];
   /** Enemy data ID for cross-referencing enemies.json. */
   enemyDataId?: string;
+  /** XP reward for defeating this combatant (enemies only). */
+  xpReward?: number;
+  /** Gold reward for defeating this combatant (enemies only). */
+  goldReward?: number;
   /** Element weaknesses (take extra damage). */
   weaknesses: string[];
   /** Element resistances (take reduced damage). */
@@ -437,10 +441,9 @@ export class CombatManager {
       return this.buildResult(attackerId, targetId, baseDamage, 0, damageType, false, true);
     }
 
-    // Base damage calculation
-    let damage =
-      baseDamage * skillMultiplier - target.stats.def * 0.5;
-    damage = Math.max(1, damage); // always at least 1 damage
+    // Base damage calculation — diminishing returns DEF formula
+    const rawDmg = baseDamage * skillMultiplier;
+    let damage = rawDmg * (1 - target.stats.def / (target.stats.def + 100));
 
     // Elemental modifier
     const eleMod = this.getElementalModifier(damageType, target);
@@ -458,7 +461,7 @@ export class CombatManager {
     }
 
     damage = Math.floor(damage);
-    damage = Math.max(0, damage);
+    damage = Math.max(1, damage); // minimum damage floor of 1
 
     // Apply
     const overkill = Math.max(0, damage - target.stats.hp);
@@ -616,14 +619,9 @@ export class CombatManager {
 
     for (const c of this._combatants.values()) {
       if (c.team !== CombatantTeam.ENEMY) continue;
-      // XP is stored on the spawn config; we stash it in stats.mp (unused
-      // for enemies) or compute from level.  For simplicity we use a flat
-      // value from the enemy data — the calling code should set this.
-      // We treat stats.int as a proxy for xpReward for enemies.
-      totalXP += c.stats.int; // placeholder: caller maps xpReward → int
-      totalGold += Math.floor(
-        Math.random() * (c.stats.mp - c.stats.maxMp + 1) + c.stats.maxMp,
-      );
+      // Use explicit reward fields when available, fall back to stat-based estimates
+      totalXP += c.xpReward ?? Math.max(1, c.stats.int);
+      totalGold += c.goldReward ?? Math.max(1, Math.floor(c.stats.int * 0.5 + Math.random() * 5));
     }
 
     // Ensure sane values

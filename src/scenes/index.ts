@@ -10,3 +10,8 @@ export * from './QuestLogScene';
 export * from './GameOverScene';
 export * from './MapScene';
 export * from './TitleScene';
+export * from './SaveLoadScene';
+export * from './SettingsScene';
+export * from './CreditsScene';
+export * from './CutsceneScene';
+export * from './CodexScene';

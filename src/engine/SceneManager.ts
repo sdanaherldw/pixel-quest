@@ -127,6 +127,9 @@ export class SceneManager {
         await previous.exit();
       }
 
+      // Clear stale input between scenes.
+      this._engine.input.releaseAll();
+
       // Prepare the new scene.
       scene.setEngine(this._engine);
 
@@ -184,6 +187,9 @@ export class SceneManager {
       this._stageContainer.removeChild(removed.container);
       removed.destroy();
 
+      // Clear stale input between scenes.
+      this._engine.input.releaseAll();
+
       // Activate the scene that is now on top.
       const next = this.current;
       if (next) {
@@ -235,6 +241,9 @@ export class SceneManager {
         this._stageContainer.removeChild(removed.container);
         removed.destroy();
       }
+
+      // Clear stale input between scenes.
+      this._engine.input.releaseAll();
 
       // Prepare the new scene.
       scene.setEngine(this._engine);
@@ -290,6 +299,19 @@ export class SceneManager {
   public render(alpha: number): void {
     for (const scene of this._stack) {
       scene.render(alpha);
+    }
+  }
+
+  // ------------------------------------------------------------------
+  // Resize
+  // ------------------------------------------------------------------
+
+  /**
+   * Notify all scenes in the stack that the viewport has been resized.
+   */
+  public resize(width: number, height: number): void {
+    for (const scene of this._stack) {
+      scene.onResize(width, height);
     }
   }
 

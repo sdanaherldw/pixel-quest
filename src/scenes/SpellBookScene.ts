@@ -274,6 +274,12 @@ export class SpellBookScene extends Scene {
     this._overlay.rect(0, 0, w, h).fill({ color: 0x000000, alpha: 0.78 });
   }
 
+  public override destroy(): void {
+    this._currentSchoolSpells.length = 0;
+    this._equippedSpells.length = 0;
+    super.destroy();
+  }
+
   // ------------------------------------------------------------------
   // Helpers
   // ------------------------------------------------------------------

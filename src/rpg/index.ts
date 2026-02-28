@@ -134,6 +134,8 @@ export type {
 export {
   DialogueSystem,
   registerDialogueFile,
+  loadDialogueData,
+  hasDialogue,
   getDialogueDef,
   getAllDialogueIds,
 } from '@/rpg/DialogueSystem';
@@ -217,3 +219,13 @@ export type {
   AscendedItemBonus,
   AwakenedForm,
 } from '@/rpg/NewGamePlusSystem';
+
+// Shop System
+export {
+  ShopSystem,
+} from '@/rpg/ShopSystem';
+export type {
+  ShopItem,
+  ShopConfig,
+  ShopCallbacks,
+} from '@/rpg/ShopSystem';

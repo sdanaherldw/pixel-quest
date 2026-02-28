@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { Tooltips, type ItemDef } from '@/ui/Tooltips';
 
 // ---------------------------------------------------------------------------
 // Item rarity colors
@@ -117,7 +118,7 @@ export class InventoryScene extends Scene {
   private _leftPanel!: Container;
   private _centerPanel!: Container;
   private _rightPanel!: Container;
-  private _tooltipContainer!: Container;
+  private _tooltips!: Tooltips;
   private _tabContainer!: Container;
   private _goldText!: Text;
 
@@ -229,10 +230,9 @@ export class InventoryScene extends Scene {
     this._goldText.position.set(panelX + 20, panelY + panelH - 30);
     this.container.addChild(this._goldText);
 
-    // --- Tooltip container (rendered on top) ---
-    this._tooltipContainer = new Container();
-    this._tooltipContainer.visible = false;
-    this.container.addChild(this._tooltipContainer);
+    // --- Tooltips (rendered on top) ---
+    this._tooltips = new Tooltips(w, h);
+    this.container.addChild(this._tooltips.container);
   }
 
   public update(_dt: number): void {
@@ -372,10 +372,10 @@ export class InventoryScene extends Scene {
         // Hover tooltip.
         slotContainer.eventMode = 'static';
         slotContainer.on('pointerover', (e) => {
-          this._showTooltip(equippedItem, e.global.x, e.global.y);
+          this._showItemTooltip(equippedItem, e.global.x, e.global.y);
         });
         slotContainer.on('pointerout', () => {
-          this._hideTooltip();
+          this._tooltips.hide();
         });
         slotContainer.on('pointerdown', () => {
           this.engine.debug.log(`Unequipped: ${equippedItem.name}`);
@@ -450,13 +450,13 @@ export class InventoryScene extends Scene {
           cellContainer.eventMode = 'static';
           cellContainer.cursor = 'pointer';
           cellContainer.on('pointerover', (e) => {
-            this._showTooltip(item, e.global.x, e.global.y);
+            this._showItemTooltip(item, e.global.x, e.global.y);
           });
           cellContainer.on('pointermove', (e) => {
-            this._moveTooltip(e.global.x, e.global.y);
+            this._showItemTooltip(item, e.global.x, e.global.y);
           });
           cellContainer.on('pointerout', () => {
-            this._hideTooltip();
+            this._tooltips.hide();
           });
           cellContainer.on('pointerdown', () => {
             if (item.slot) {
@@ -521,129 +521,37 @@ export class InventoryScene extends Scene {
   }
 
   // ------------------------------------------------------------------
-  // Tooltip
+  // Tooltip helper
   // ------------------------------------------------------------------
 
-  private _showTooltip(item: InventoryItem, screenX: number, screenY: number): void {
+  private _showItemTooltip(item: InventoryItem, screenX: number, screenY: number): void {
     this._hoveredItemRef = item;
-    this._tooltipContainer.removeChildren();
-    this._tooltipContainer.visible = true;
 
-    const rarityColor = RARITY_COLORS[item.rarity] ?? 0xffffff;
-    const tooltipW = 220;
-    let tooltipH = 70;
+    // Convert local InventoryItem into the Tooltips ItemDef shape.
+    const itemDef: ItemDef = {
+      name: item.name,
+      rarity: item.rarity,
+      type: item.slot ?? 'Consumable',
+      level: item.levelReq ?? 0,
+      stats: item.stats
+        ? item.stats.split(',').map((s) => {
+            const trimmed = s.trim();
+            const match = trimmed.match(/([A-Z]+)\s*([+-]?\d+)/);
+            return match
+              ? { name: match[1], value: parseInt(match[2], 10) }
+              : { name: trimmed, value: 0 };
+          })
+        : [],
+      effects: [],
+      description: item.description,
+      value: 0,
+    };
 
-    // Build tooltip content to calculate height.
-    const lines: Array<{ text: string; style: TextStyle; y: number }> = [];
-    let yOffset = 8;
-
-    // Name.
-    lines.push({
-      text: item.name,
-      style: new TextStyle({
-        fontFamily: 'Georgia, serif',
-        fontSize: 13,
-        fontWeight: 'bold',
-        fill: rarityColor,
-      }),
-      y: yOffset,
-    });
-    yOffset += 18;
-
-    // Rarity.
-    lines.push({
-      text: item.rarity.charAt(0).toUpperCase() + item.rarity.slice(1),
-      style: new TextStyle({
-        fontFamily: '"Courier New", monospace',
-        fontSize: 9,
-        fill: rarityColor,
-        fontStyle: 'italic',
-      }),
-      y: yOffset,
-    });
-    yOffset += 14;
-
-    // Stats.
-    if (item.stats) {
-      lines.push({
-        text: item.stats,
-        style: new TextStyle({
-          fontFamily: '"Courier New", monospace',
-          fontSize: 10,
-          fill: 0x88ff88,
-        }),
-        y: yOffset,
-      });
-      yOffset += 14;
-    }
-
-    // Level requirement.
-    if (item.levelReq !== undefined) {
-      lines.push({
-        text: `Requires Level ${item.levelReq}`,
-        style: new TextStyle({
-          fontFamily: '"Courier New", monospace',
-          fontSize: 9,
-          fill: 0xffaa00,
-        }),
-        y: yOffset,
-      });
-      yOffset += 14;
-    }
-
-    // Description.
-    lines.push({
-      text: item.description,
-      style: new TextStyle({
-        fontFamily: 'Georgia, serif',
-        fontSize: 10,
-        fill: 0xaaaaaa,
-        fontStyle: 'italic',
-        wordWrap: true,
-        wordWrapWidth: tooltipW - 16,
-      }),
-      y: yOffset,
-    });
-    yOffset += 16;
-
-    tooltipH = yOffset + 8;
-
-    // Background.
-    const bg = new Graphics();
-    bg.roundRect(0, 0, tooltipW, tooltipH, 4).fill({ color: 0x0a0a0a, alpha: 0.95 });
-    bg.roundRect(0, 0, tooltipW, tooltipH, 4).stroke({ color: rarityColor, width: 1.5 });
-    this._tooltipContainer.addChild(bg);
-
-    // Text lines.
-    for (const line of lines) {
-      const text = new Text({ text: line.text, style: line.style });
-      text.position.set(8, line.y);
-      this._tooltipContainer.addChild(text);
-    }
-
-    this._moveTooltip(screenX, screenY);
+    this._tooltips.showItem(itemDef, screenX, screenY);
   }
 
-  private _moveTooltip(screenX: number, screenY: number): void {
-    // Position tooltip near the cursor but keep it on screen.
-    const w = this.engine.width;
-    const h = this.engine.height;
-    const ttW = 220;
-    const ttH = this._tooltipContainer.height || 100;
-
-    let tx = screenX + 16;
-    let ty = screenY - 10;
-
-    if (tx + ttW > w) tx = screenX - ttW - 8;
-    if (ty + ttH > h) ty = h - ttH - 4;
-    if (ty < 4) ty = 4;
-
-    this._tooltipContainer.position.set(tx, ty);
-  }
-
-  private _hideTooltip(): void {
-    this._hoveredItemRef = null;
-    this._tooltipContainer.visible = false;
-    this._tooltipContainer.removeChildren();
+  public override destroy(): void {
+    this._tooltips.destroy();
+    super.destroy();
   }
 }

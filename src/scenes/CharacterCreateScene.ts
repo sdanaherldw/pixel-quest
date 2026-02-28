@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { FadeTransition } from '@/ui/TransitionEffects';
 import { buildCharacterVisual, type ClassId, type PlayerData, type PlayerStats } from '@/entities/PlayerEntity';
 
 // ---------------------------------------------------------------------------
@@ -238,6 +239,15 @@ export class CharacterCreateScene extends Scene {
     this._rightPanel.position.set(w - 320, 80);
     this._previewContainer.position.set(w - 200, h - 220);
     this._buildBeginButton(w, h);
+  }
+
+  public override destroy(): void {
+    if (this._previewVisual) {
+      this._previewVisual.destroy({ children: true });
+      this._previewVisual = null;
+    }
+    this._slots.length = 0;
+    super.destroy();
   }
 
   // ------------------------------------------------------------------
@@ -784,7 +794,10 @@ export class CharacterCreateScene extends Scene {
 
     // Transition to overworld with the first character as leader.
     void import('./OverworldScene').then(({ OverworldScene }) => {
-      void this.engine.scenes.replace(new OverworldScene(partyData[0]));
+      void this.engine.scenes.replace(
+        new OverworldScene(partyData[0]),
+        new FadeTransition(0.7),
+      );
     });
   }
 

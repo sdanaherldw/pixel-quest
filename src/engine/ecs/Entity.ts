@@ -55,6 +55,20 @@ export class Entity {
     this.id = nextEntityId++;
   }
 
+  /**
+   * Internal factory used by World for entity ID recycling.
+   * Reuses a previously freed ID instead of allocating a new one.
+   */
+  public static _createWithId(id: number): Entity {
+    const entity = Object.create(Entity.prototype) as Entity;
+    (entity as { id: number }).id = id;
+    entity.active = true;
+    entity.destroyed = false;
+    (entity as unknown as { _components: Map<string, unknown> })._components = new Map();
+    (entity as unknown as { _version: number })._version = 0;
+    return entity;
+  }
+
   // ------------------------------------------------------------------
   // Component accessors
   // ------------------------------------------------------------------

@@ -42,9 +42,22 @@ export class World {
   /** Entity IDs that have been flagged for deferred removal. */
   private readonly _pendingDestroy: Set<number> = new Set();
 
-  /** Flat array view of entities – rebuilt when the map changes. */
+  /** Flat array view of entities -- rebuilt when the map changes. */
   private _entityList: Entity[] = [];
   private _entityListDirty: boolean = true;
+
+  /**
+   * Global structural version counter.  Incremented on any entity
+   * creation or destruction.  Queries compare against this to decide
+   * whether their cached results are still valid.
+   */
+  private _structuralVersion: number = 0;
+
+  /** Tag-based index: tag string -> set of entity IDs. */
+  private readonly _tagIndex: Map<string, Set<number>> = new Map();
+
+  /** Free list of destroyed entity IDs available for reuse. */
+  private readonly _freeIds: number[] = [];
 
   // ------------------------------------------------------------------
   // Entity management
@@ -56,10 +69,13 @@ export class World {
    * @returns The freshly created entity, ready for component attachment.
    */
   public createEntity(): Entity {
-    const entity = new Entity();
+    const recycledId = this._freeIds.pop();
+    const entity = recycledId !== undefined
+      ? Entity._createWithId(recycledId)
+      : new Entity();
     this._entities.set(entity.id, entity);
     this._entityListDirty = true;
-    this._invalidateAllQueries();
+    this._structuralVersion++;
     return entity;
   }
 
@@ -75,6 +91,7 @@ export class World {
     if (entity) {
       entity.destroyed = true;
       entity.active = false;
+      this._removeFromTagIndex(entity);
       this._pendingDestroy.add(id);
     }
   }
@@ -91,24 +108,41 @@ export class World {
 
   /**
    * Return every active entity that carries a {@link TagComponent} containing
-   * the given tag string.
+   * the given tag string.  Uses the tag index for O(1) lookup instead of
+   * iterating all entities.
    */
   public getEntitiesByTag(tag: string): Entity[] {
+    const ids = this._tagIndex.get(tag);
+    if (!ids || ids.size === 0) return [];
+
     const result: Entity[] = [];
-
-    for (const entity of this._entities.values()) {
-      if (!entity.active || entity.destroyed) continue;
-
-      const tagComp = entity.getComponent<typeof ComponentType.Tag>(
-        ComponentType.Tag,
-      ) as TagComponent | undefined;
-
-      if (tagComp && tagComp.tags.has(tag)) {
+    for (const id of ids) {
+      const entity = this._entities.get(id);
+      if (entity && entity.active && !entity.destroyed) {
         result.push(entity);
       }
     }
-
     return result;
+  }
+
+  /**
+   * Register an entity's tags in the tag index.
+   * Call this after adding a Tag component to an entity.
+   */
+  public indexEntityTags(entity: Entity): void {
+    const tagComp = entity.getComponent<typeof ComponentType.Tag>(
+      ComponentType.Tag,
+    ) as TagComponent | undefined;
+    if (!tagComp) return;
+
+    for (const tag of tagComp.tags) {
+      let set = this._tagIndex.get(tag);
+      if (!set) {
+        set = new Set();
+        this._tagIndex.set(tag, set);
+      }
+      set.add(entity.id);
+    }
   }
 
   /**
@@ -126,6 +160,11 @@ export class World {
   /** Total number of registered entities (including pending-destroy). */
   public get entityCount(): number {
     return this._entities.size;
+  }
+
+  /** Current structural version (incremented on entity add/remove). */
+  public get structuralVersion(): number {
+    return this._structuralVersion;
   }
 
   // ------------------------------------------------------------------
@@ -186,7 +225,7 @@ export class World {
       if (!system.enabled) continue;
 
       const query = this._systemQueries.get(system)!;
-      const matched = query.execute(allEntities);
+      const matched = query.execute(allEntities, this._structuralVersion);
       system.update(dt, matched);
     }
 
@@ -197,7 +236,7 @@ export class World {
    * Fixed-rate update.  Same filtering as {@link update} but invokes
    * `system.fixedUpdate` instead.
    *
-   * Does **not** flush destroyed entities – that only happens once per
+   * Does **not** flush destroyed entities -- that only happens once per
    * variable-rate frame to keep fixed ticks lightweight.
    */
   public fixedUpdate(dt: number): void {
@@ -207,7 +246,7 @@ export class World {
       if (!system.enabled) continue;
 
       const query = this._systemQueries.get(system)!;
-      const matched = query.execute(allEntities);
+      const matched = query.execute(allEntities, this._structuralVersion);
       system.fixedUpdate(dt, matched);
     }
   }
@@ -227,11 +266,12 @@ export class World {
 
     for (const id of this._pendingDestroy) {
       this._entities.delete(id);
+      this._freeIds.push(id);
     }
 
     this._pendingDestroy.clear();
     this._entityListDirty = true;
-    this._invalidateAllQueries();
+    this._structuralVersion++;
   }
 
   // ------------------------------------------------------------------
@@ -251,6 +291,9 @@ export class World {
     this._pendingDestroy.clear();
     this._entityList = [];
     this._entityListDirty = true;
+    this._tagIndex.clear();
+    this._freeIds.length = 0;
+    this._structuralVersion++;
   }
 
   // ------------------------------------------------------------------
@@ -262,10 +305,21 @@ export class World {
     this._systems.sort((a, b) => a.priority - b.priority);
   }
 
-  /** Invalidate every cached query so they re-evaluate next execute. */
-  private _invalidateAllQueries(): void {
-    for (const query of this._systemQueries.values()) {
-      query.invalidate();
+  /** Remove an entity from the tag index. */
+  private _removeFromTagIndex(entity: Entity): void {
+    const tagComp = entity.getComponent<typeof ComponentType.Tag>(
+      ComponentType.Tag,
+    ) as TagComponent | undefined;
+    if (!tagComp) return;
+
+    for (const tag of tagComp.tags) {
+      const set = this._tagIndex.get(tag);
+      if (set) {
+        set.delete(entity.id);
+        if (set.size === 0) {
+          this._tagIndex.delete(tag);
+        }
+      }
     }
   }
 }

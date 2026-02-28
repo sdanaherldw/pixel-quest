@@ -335,6 +335,11 @@ export class QuestLogScene extends Scene {
     this._overlay.rect(0, 0, w, h).fill({ color: 0x000000, alpha: 0.78 });
   }
 
+  public override destroy(): void {
+    this._filteredQuests.length = 0;
+    super.destroy();
+  }
+
   // ------------------------------------------------------------------
   // Filtering
   // ------------------------------------------------------------------

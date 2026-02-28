@@ -306,6 +306,13 @@ export class ComboSystem {
   private comboHistory: ComboInput[];
   private comboWindow: number; // time window per step (seconds)
   private cooldowns: Map<string, number>; // comboId → remaining cooldown
+  /** Timestamp of last input, used for timing evaluation. */
+  private lastInputTime: number;
+
+  // Timing windows (milliseconds)
+  private static readonly PERFECT_WINDOW = 50;
+  private static readonly GREAT_WINDOW = 100;
+  private static readonly GOOD_WINDOW = 200;
 
   constructor() {
     this.combos = new Map<string, ComboDefinition>();
@@ -313,6 +320,18 @@ export class ComboSystem {
     this.comboHistory = [];
     this.comboWindow = 0.5; // 500 ms per input
     this.cooldowns = new Map<string, number>();
+    this.lastInputTime = 0;
+  }
+
+  /**
+   * Evaluate timing quality based on elapsed ms since ideal input moment.
+   * The ideal moment is exactly when the combo window is half-way through.
+   */
+  private evaluateTiming(elapsedMs: number): 'early' | 'perfect' | 'late' {
+    if (elapsedMs <= ComboSystem.PERFECT_WINDOW) return 'perfect';
+    if (elapsedMs <= ComboSystem.GREAT_WINDOW) return 'perfect'; // great still counts as perfect for bonus
+    if (elapsedMs <= ComboSystem.GOOD_WINDOW) return 'early';
+    return 'late';
   }
 
   // ---- Registration -------------------------------------------------------
@@ -368,9 +387,11 @@ export class ComboSystem {
     candidates.sort((a, b) => b.inputs.length - a.inputs.length);
     const chosen = candidates[0]!;
 
-    // Determine timing (for now default to 'perfect' — timing evaluation
-    // would come from the input subsystem measuring frame-level accuracy)
-    const timing: 'early' | 'perfect' | 'late' = 'perfect';
+    // Evaluate timing based on elapsed time since last input
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const elapsedMs = this.lastInputTime > 0 ? now - this.lastInputTime : 0;
+    const timing = this.evaluateTiming(elapsedMs);
+    this.lastInputTime = now;
 
     this.activeCombo = {
       definition: chosen,
@@ -407,7 +428,11 @@ export class ComboSystem {
       return { type: 'failed', comboId: failedId };
     }
 
-    const timing: 'early' | 'perfect' | 'late' = 'perfect';
+    // Evaluate timing based on remaining window vs total window
+    const now = typeof performance !== 'undefined' ? performance.now() : Date.now();
+    const elapsedMs = this.lastInputTime > 0 ? now - this.lastInputTime : 0;
+    const timing = this.evaluateTiming(elapsedMs);
+    this.lastInputTime = now;
 
     if (timing === 'perfect') {
       active.perfectCount += 1;

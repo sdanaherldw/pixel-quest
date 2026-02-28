@@ -109,6 +109,14 @@ export abstract class Scene {
   }
 
   /**
+   * Called when the renderer is resized.  Override to re-layout UI
+   * elements or adjust display objects for the new dimensions.
+   */
+  public onResize(_width: number, _height: number): void {
+    /* override as needed */
+  }
+
+  /**
    * Final cleanup.  Called when the scene is permanently removed from
    * the stack (pop or replace).  Must release GPU resources, event
    * listeners, etc.

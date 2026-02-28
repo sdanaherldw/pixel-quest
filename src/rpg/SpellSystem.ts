@@ -299,7 +299,7 @@ export class SpellBook {
    * actual game effects (damage, healing, etc.).
    *
    * @param spellId        - Spell to cast.
-   * @param currentMana    - Character's current mana.
+   * @param caster         - The caster object; must have stats.mp for mana deduction.
    * @param characterLevel - Character's level.
    * @param magicAtk       - Caster's MAGIC_ATK for damage calc.
    * @param elementalMod   - Target elemental multiplier.
@@ -308,16 +308,23 @@ export class SpellBook {
    */
   cast(
     spellId: string,
-    currentMana: number,
+    caster: { stats: { mp: number } } | number,
     characterLevel: number,
     magicAtk: number = 0,
     elementalMod: number = 1.0,
     statValues: Record<string, number> = {},
   ): CastResult {
+    // Support both the new caster object and legacy numeric currentMana
+    const currentMana = typeof caster === 'number' ? caster : caster.stats.mp;
     const check = this.canCast(spellId, currentMana, characterLevel);
     if (!check.ok) return { success: false, reason: check.reason };
 
     const spell = spellMap.get(spellId)!;
+
+    // Deduct mana from the caster
+    if (typeof caster !== 'number') {
+      caster.stats.mp -= spell.manaCost;
+    }
 
     // Start cooldown.
     this.state.cooldowns[spellId] = spell.cooldown;

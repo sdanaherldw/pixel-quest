@@ -1,6 +1,8 @@
-import { Container, Graphics, Text, TextStyle } from 'pixi.js';
+import { Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { FadeTransition, DiamondTransition } from '@/ui/TransitionEffects';
+import { PainterlyFilter } from '@/rendering/filters';
 import { World as ECSWorld } from '@/engine/ecs/World';
 import type { Entity } from '@/engine/ecs/Entity';
 import { ComponentType } from '@/engine/ecs/Component';
@@ -13,6 +15,11 @@ import {
   type PlayerComponent,
 } from '@/entities/PlayerEntity';
 import { NPCEntity, updateQuestIndicator, type NPCComponent } from '@/entities/NPCEntity';
+import { HUD, type PartyMemberData, type QuickSlotData, type MinimapEntity } from '@/ui/HUD';
+import { DialogueBox } from '@/ui/DialogueBox';
+import { MenuSystem, type MenuOption } from '@/ui/MenuSystem';
+import { Notifications } from '@/ui/Notifications';
+import { GameState } from '@/engine/GameState';
 
 // ---------------------------------------------------------------------------
 // Tile types
@@ -109,16 +116,19 @@ export class OverworldScene extends Scene {
   private _npcEntities: Entity[] = [];
 
   // ------------------------------------------------------------------
-  // UI elements
+  // UI components
   // ------------------------------------------------------------------
 
-  private _uiContainer!: Container;
-  private _areaNameText!: Text;
-  private _minimapContainer!: Container;
-  private _minimapGfx!: Graphics;
-  private _minimapPlayerDot!: Graphics;
-  private _partyHPContainer!: Container;
-  private _quickBarContainer!: Container;
+  private _hud!: HUD;
+  private _dialogueBox!: DialogueBox;
+  private _menuSystem!: MenuSystem;
+  private _notifications!: Notifications;
+
+  /** Pre-computed minimap terrain colours (downsampled). */
+  private _minimapColors: number[][] | null = null;
+
+  /** Bound event listeners for cleanup. */
+  private _boundEventHandlers: Array<{ event: string; handler: (...args: unknown[]) => void }> = [];
 
   // ------------------------------------------------------------------
   // Config
@@ -126,6 +136,9 @@ export class OverworldScene extends Scene {
 
   private _areaName: string = 'Elderwood Forest';
   private _playerData: PlayerData;
+
+  // --- Visual filters ---
+  private _painterlyFilter: PainterlyFilter | null = null;
 
   constructor(playerData?: PlayerData) {
     super('OverworldScene');
@@ -180,8 +193,27 @@ export class OverworldScene extends Scene {
     // --- Create NPC entities ---
     this._createNPCs(spawnX, spawnY);
 
-    // --- UI ---
-    this._buildUI();
+    // --- UI components ---
+    const w = this.engine.width;
+    const h = this.engine.height;
+
+    this._hud = new HUD(w, h);
+    this.engine.uiContainer.addChild(this._hud.container);
+
+    this._dialogueBox = new DialogueBox(w, h);
+    this.engine.uiContainer.addChild(this._dialogueBox.container);
+
+    this._menuSystem = new MenuSystem(w, h);
+    this.engine.uiContainer.addChild(this._menuSystem.container);
+
+    this._notifications = new Notifications(w, h);
+    this.engine.uiContainer.addChild(this._notifications.container);
+
+    // Pre-compute minimap terrain colours.
+    this._minimapColors = this._buildMinimapColors();
+
+    // Subscribe to GameState events for notifications.
+    this._subscribeToEvents();
 
     // --- Camera ---
     this.engine.camera.follow(
@@ -195,6 +227,12 @@ export class OverworldScene extends Scene {
       height: this._mapRows * this._tileSize,
     };
     this.engine.camera.lookAt(spawnX, spawnY);
+
+    // --- Painterly post-processing ---
+    this._painterlyFilter = new PainterlyFilter();
+    this._painterlyFilter.intensity = 0.15;
+    this._painterlyFilter.textureResolution = [this.engine.width, this.engine.height];
+    this.container.filters = [this._painterlyFilter];
   }
 
   // ------------------------------------------------------------------
@@ -317,32 +355,81 @@ export class OverworldScene extends Scene {
   public update(dt: number): void {
     this._elapsed += dt;
 
+    // --- Update UI components ---
+    this._dialogueBox.update(dt);
+    this._notifications.update(dt);
+
+    // --- Update painterly filter time ---
+    if (this._painterlyFilter) {
+      this._painterlyFilter.time = this._elapsed;
+    }
+
+    // --- Menu system handles ESC ---
+    if (this._menuSystem.isOpen()) {
+      if (this.engine.input.isActionJustPressed('openMenu')) {
+        this._menuSystem.hide();
+      } else if (this.engine.input.isKeyJustPressed('ArrowUp')) {
+        this._menuSystem.navigateUp();
+      } else if (this.engine.input.isKeyJustPressed('ArrowDown')) {
+        this._menuSystem.navigateDown();
+      } else if (this.engine.input.isKeyJustPressed('Enter')) {
+        this._menuSystem.confirmSelection();
+      }
+      return; // Block other input while menu is open.
+    }
+
+    // --- DialogueBox handles input when visible ---
+    if (this._dialogueBox.isVisible()) {
+      if (this.engine.input.isActionJustPressed('interact') ||
+          this.engine.input.isKeyJustPressed('Space')) {
+        this._dialogueBox.advance();
+      }
+      return; // Block other input during dialogue.
+    }
+
+    // --- Open menu on ESC ---
+    if (this.engine.input.isActionJustPressed('openMenu')) {
+      this._showMenu();
+      return;
+    }
+
     // --- Overlay scene shortcuts ---
     if (this.engine.input.isActionJustPressed('inventory')) {
       void import('@/scenes/InventoryScene').then(({ InventoryScene }) => {
-        void this.engine.scenes.push(new InventoryScene());
+        void this.engine.scenes.push(
+          new InventoryScene(),
+          new FadeTransition(0.3),
+        );
       });
       return;
     }
     if (this.engine.input.isActionJustPressed('spellbook')) {
       void import('@/scenes/SpellBookScene').then(({ SpellBookScene }) => {
-        void this.engine.scenes.push(new SpellBookScene());
+        void this.engine.scenes.push(
+          new SpellBookScene(),
+          new FadeTransition(0.3),
+        );
       });
       return;
     }
     if (this.engine.input.isActionJustPressed('questlog')) {
       void import('@/scenes/QuestLogScene').then(({ QuestLogScene }) => {
-        void this.engine.scenes.push(new QuestLogScene());
+        void this.engine.scenes.push(
+          new QuestLogScene(),
+          new FadeTransition(0.3),
+        );
       });
       return;
     }
     if (this.engine.input.isActionJustPressed('map')) {
       void import('@/scenes/MapScene').then(({ MapScene }) => {
-        void this.engine.scenes.push(new MapScene());
+        void this.engine.scenes.push(
+          new MapScene(),
+          new FadeTransition(0.3),
+        );
       });
       return;
     }
-    // Menu is handled via the UI MenuSystem overlay — not a scene push.
 
     const transform = this._playerEntity.getComponent(ComponentType.Transform) as TransformComponent;
 
@@ -381,27 +468,82 @@ export class OverworldScene extends Scene {
   public render(alpha: number): void {
     const transform = this._playerEntity.getComponent(ComponentType.Transform) as TransformComponent;
     const playerComp = this._playerEntity.getComponent('Player') as PlayerComponent;
+    const health = this._playerEntity.getComponent(ComponentType.Health) as HealthComponent;
 
     // Interpolated player position.
     const renderX = this._prevPlayerX + (transform.x - this._prevPlayerX) * alpha;
     const renderY = this._prevPlayerY + (transform.y - this._prevPlayerY) * alpha;
     playerComp.visual.position.set(renderX, renderY);
 
-    // --- UI updates ---
-    this._updateMinimap(transform.x, transform.y);
-    this._updatePartyHP();
-    this._layoutUI();
+    // --- HUD update ---
+    const gs = GameState.instance;
+    const partyData: PartyMemberData[] = gs.party.length > 0
+      ? gs.activeParty.map((m) => ({
+          name: m.name,
+          level: m.level,
+          hp: m.stats.hp,
+          maxHp: m.stats.maxHp,
+          mp: m.stats.mp,
+          maxMp: m.stats.maxMp,
+          isActive: m.id === gs.activePartyIds[0],
+        }))
+      : [{
+          name: playerComp.name,
+          level: playerComp.level ?? 1,
+          hp: health.current,
+          maxHp: health.max,
+          mp: 0,
+          maxMp: 0,
+          isActive: true,
+        }];
+
+    const quickSlots: QuickSlotData[] = [];
+    for (let i = 0; i < 8; i++) {
+      quickSlots.push({ index: i });
+    }
+
+    this._hud.update(partyData, this._areaName, gs.gold, quickSlots, 0);
+
+    // --- Minimap ---
+    const worldW = this._mapCols * this._tileSize;
+    const worldH = this._mapRows * this._tileSize;
+    const minimapEntities: MinimapEntity[] = [
+      { x: (transform.x / worldW) * 120, y: (transform.y / worldH) * 120, type: 'player' },
+    ];
+    for (const npcEntity of this._npcEntities) {
+      const npcT = npcEntity.getComponent(ComponentType.Transform) as TransformComponent;
+      minimapEntities.push({
+        x: (npcT.x / worldW) * 120,
+        y: (npcT.y / worldH) * 120,
+        type: 'npc',
+      });
+    }
+    this._hud.updateMinimap(this._minimapColors, minimapEntities);
   }
 
   public async exit(): Promise<void> {
-    // Clean up UI from engine's UI container.
-    if (this._uiContainer.parent) {
-      this._uiContainer.parent.removeChild(this._uiContainer);
-    }
+    // Unsubscribe GameState events.
+    this._unsubscribeFromEvents();
+
+    // Clean up UI components from engine's UI container.
+    this._hud.container.parent?.removeChild(this._hud.container);
+    this._dialogueBox.container.parent?.removeChild(this._dialogueBox.container);
+    this._menuSystem.container.parent?.removeChild(this._menuSystem.container);
+    this._notifications.container.parent?.removeChild(this._notifications.container);
   }
 
   public override destroy(): void {
+    this._hud.destroy();
+    this._dialogueBox.destroy();
+    this._menuSystem.destroy();
+    this._notifications.destroy();
     this._world.clear();
+    this._npcEntities.length = 0;
+    this._tiles.length = 0;
+    this._transitionZones.length = 0;
+    this._minimapColors = null;
+    this._painterlyFilter = null;
+    this.container.filters = [];
     super.destroy();
   }
 
@@ -565,11 +707,17 @@ export class OverworldScene extends Scene {
     if (zone.targetScene === 'TownScene') {
       // Import dynamically to avoid circular deps at module level.
       void import('./TownScene').then(({ TownScene }) => {
-        void this.engine.scenes.replace(new TownScene());
+        void this.engine.scenes.replace(
+          new TownScene(),
+          new FadeTransition(0.5),
+        );
       });
     } else if (zone.targetScene === 'DungeonScene') {
       void import('./DungeonScene').then(({ DungeonScene }) => {
-        void this.engine.scenes.replace(new DungeonScene());
+        void this.engine.scenes.replace(
+          new DungeonScene(),
+          new DiamondTransition(0.6),
+        );
       });
     }
   }
@@ -627,211 +775,176 @@ export class OverworldScene extends Scene {
 
   private _onNPCInteract(npc: NPCComponent): void {
     this.engine.debug.log(`Talking to: ${npc.name} (${npc.dialogueId})`);
-    // Placeholder: full dialogue system integration goes here.
-  }
 
-  // ------------------------------------------------------------------
-  // UI
-  // ------------------------------------------------------------------
+    // Show dialogue via DialogueBox component.
+    const npcColor = npc.role === 'quest_giver' ? 0xdaa520
+      : npc.role === 'merchant' ? 0x228b22
+      : npc.role === 'guard' ? 0x808080
+      : 0x555577;
 
-  private _buildUI(): void {
-    this._uiContainer = new Container();
-    this._uiContainer.label = 'overworld-ui';
-    this.engine.uiContainer.addChild(this._uiContainer);
-
-    // --- Area name text (top-left) ---
-    this._areaNameText = new Text({
-      text: this._areaName,
-      style: new TextStyle({
-        fontFamily: 'Georgia, "Times New Roman", serif',
-        fontSize: 18,
-        fill: 0xeeddaa,
-        stroke: { color: 0x000000, width: 3 },
-        letterSpacing: 2,
-      }),
-    });
-    this._areaNameText.position.set(16, 12);
-    this._uiContainer.addChild(this._areaNameText);
-
-    // --- Minimap (bottom-right) ---
-    this._minimapContainer = new Container();
-    this._minimapContainer.label = 'minimap';
-    this._uiContainer.addChild(this._minimapContainer);
-
-    // Minimap background.
-    const minimapBg = new Graphics();
-    minimapBg.rect(0, 0, 120, 90).fill({ color: 0x000000, alpha: 0.6 });
-    minimapBg.rect(0, 0, 120, 90).stroke({ color: 0x555555, width: 1 });
-    this._minimapContainer.addChild(minimapBg);
-
-    // Minimap terrain.
-    this._minimapGfx = new Graphics();
-    this._drawMinimap();
-    this._minimapContainer.addChild(this._minimapGfx);
-
-    // Minimap player dot.
-    this._minimapPlayerDot = new Graphics();
-    this._minimapPlayerDot.circle(0, 0, 2).fill(0xffffff);
-    this._minimapContainer.addChild(this._minimapPlayerDot);
-
-    // --- Party HP bars (left side) ---
-    this._partyHPContainer = new Container();
-    this._partyHPContainer.label = 'party-hp';
-    this._uiContainer.addChild(this._partyHPContainer);
-
-    this._buildPartyHP();
-
-    // --- Quick spell/item bar (bottom center) ---
-    this._quickBarContainer = new Container();
-    this._quickBarContainer.label = 'quick-bar';
-    this._uiContainer.addChild(this._quickBarContainer);
-
-    this._buildQuickBar();
-  }
-
-  private _drawMinimap(): void {
-    const g = this._minimapGfx;
-    g.clear();
-
-    const scaleX = 118 / this._mapCols;
-    const scaleY = 88 / this._mapRows;
-
-    // Draw tiles at minimap scale (every Nth tile for performance).
-    const step = Math.max(1, Math.floor(this._mapCols / 60));
-    for (let row = 0; row < this._mapRows; row += step) {
-      for (let col = 0; col < this._mapCols; col += step) {
-        const tile = this._tiles[row][col];
-        const color = TILE_COLORS[tile];
-        g.rect(1 + col * scaleX, 1 + row * scaleY, scaleX * step, scaleY * step).fill(color);
-      }
-    }
-  }
-
-  private _updateMinimap(playerX: number, playerY: number): void {
-    const scaleX = 118 / (this._mapCols * this._tileSize);
-    const scaleY = 88 / (this._mapRows * this._tileSize);
-
-    this._minimapPlayerDot.position.set(
-      1 + playerX * scaleX,
-      1 + playerY * scaleY,
+    this._dialogueBox.show(
+      npc.name,
+      `Hello, traveler. Welcome to ${this._areaName}.`,
+      [],
+      { color: npcColor },
+      undefined,
+      () => {
+        this._dialogueBox.hide();
+      },
     );
   }
 
-  private _buildPartyHP(): void {
-    const health = this._playerEntity.getComponent(ComponentType.Health) as HealthComponent;
-    const playerComp = this._playerEntity.getComponent('Player') as PlayerComponent;
+  // ------------------------------------------------------------------
+  // Menu
+  // ------------------------------------------------------------------
 
-    const barWidth = 100;
-    const barHeight = 12;
-    const y = 0;
+  private _showMenu(): void {
+    const options: MenuOption[] = [
+      { label: 'Resume', action: () => this._menuSystem.hide() },
+      {
+        label: 'Inventory',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/InventoryScene').then(({ InventoryScene }) => {
+            void this.engine.scenes.push(new InventoryScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Spell Book',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/SpellBookScene').then(({ SpellBookScene }) => {
+            void this.engine.scenes.push(new SpellBookScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Quest Log',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/QuestLogScene').then(({ QuestLogScene }) => {
+            void this.engine.scenes.push(new QuestLogScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Map',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/MapScene').then(({ MapScene }) => {
+            void this.engine.scenes.push(new MapScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Save Game',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/SaveLoadScene').then(({ SaveLoadScene }) => {
+            void this.engine.scenes.push(new SaveLoadScene('save'), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Load Game',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/SaveLoadScene').then(({ SaveLoadScene }) => {
+            void this.engine.scenes.push(new SaveLoadScene('load'), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Settings',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/SettingsScene').then(({ SettingsScene }) => {
+            void this.engine.scenes.push(new SettingsScene(), new FadeTransition(0.3));
+          });
+        },
+      },
+      {
+        label: 'Quit to Title',
+        action: () => {
+          this._menuSystem.hide();
+          void import('@/scenes/TitleScene').then(({ TitleScene }) => {
+            void this.engine.scenes.replace(new TitleScene(), new FadeTransition(0.5));
+          });
+        },
+      },
+    ];
 
-    // Name.
-    const nameText = new Text({
-      text: playerComp.name,
-      style: new TextStyle({
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: 10,
-        fill: 0xffffff,
-      }),
-    });
-    nameText.position.set(0, y);
-    this._partyHPContainer.addChild(nameText);
-
-    // HP bar background.
-    const bg = new Graphics();
-    bg.rect(0, y + 14, barWidth, barHeight).fill(0x222222);
-    bg.rect(0, y + 14, barWidth, barHeight).stroke({ color: 0x444444, width: 1 });
-    bg.label = 'hp-bg';
-    this._partyHPContainer.addChild(bg);
-
-    // HP bar fill.
-    const fill = new Graphics();
-    const pct = health.current / health.max;
-    fill.rect(1, y + 15, (barWidth - 2) * pct, barHeight - 2).fill(0x00cc00);
-    fill.label = 'hp-fill';
-    this._partyHPContainer.addChild(fill);
-
-    // HP text.
-    const hpText = new Text({
-      text: `${health.current}/${health.max}`,
-      style: new TextStyle({
-        fontFamily: '"Courier New", Courier, monospace',
-        fontSize: 9,
-        fill: 0xffffff,
-      }),
-    });
-    hpText.anchor.set(0.5, 0.5);
-    hpText.position.set(barWidth / 2, y + 14 + barHeight / 2);
-    hpText.label = 'hp-text';
-    this._partyHPContainer.addChild(hpText);
+    this._menuSystem.show(options);
   }
 
-  private _updatePartyHP(): void {
-    const health = this._playerEntity.getComponent(ComponentType.Health) as HealthComponent;
-    const barWidth = 100;
-    const barHeight = 12;
+  // ------------------------------------------------------------------
+  // Minimap helpers
+  // ------------------------------------------------------------------
 
-    const fill = this._partyHPContainer.children.find((c) => c.label === 'hp-fill') as Graphics | undefined;
-    const hpText = this._partyHPContainer.children.find((c) => c.label === 'hp-text') as Text | undefined;
-
-    if (fill) {
-      const pct = Math.max(0, Math.min(1, health.current / health.max));
-      fill.clear();
-      const color = pct > 0.6 ? 0x00cc00 : pct > 0.3 ? 0xcccc00 : 0xcc0000;
-      fill.rect(1, 15, (barWidth - 2) * pct, barHeight - 2).fill(color);
+  private _buildMinimapColors(): number[][] {
+    const step = Math.max(1, Math.floor(this._mapCols / 30));
+    const rows: number[][] = [];
+    for (let row = 0; row < this._mapRows; row += step) {
+      const rowColors: number[] = [];
+      for (let col = 0; col < this._mapCols; col += step) {
+        rowColors.push(TILE_COLORS[this._tiles[row][col]]);
+      }
+      rows.push(rowColors);
     }
-
-    if (hpText) {
-      hpText.text = `${Math.round(health.current)}/${health.max}`;
-    }
+    return rows;
   }
 
-  private _buildQuickBar(): void {
-    const slotCount = 8;
-    const slotSize = 32;
-    const gap = 4;
-    const totalWidth = slotCount * slotSize + (slotCount - 1) * gap;
+  // ------------------------------------------------------------------
+  // GameState event subscriptions for Notifications
+  // ------------------------------------------------------------------
 
-    const bg = new Graphics();
-    bg.roundRect(-4, -4, totalWidth + 8, slotSize + 8, 4).fill({ color: 0x000000, alpha: 0.5 });
-    this._quickBarContainer.addChild(bg);
+  private _subscribeToEvents(): void {
+    const gs = GameState.instance;
 
-    for (let i = 0; i < slotCount; i++) {
-      const x = i * (slotSize + gap);
-      const slot = new Graphics();
-      slot.rect(x, 0, slotSize, slotSize).fill({ color: 0x222222, alpha: 0.7 });
-      slot.rect(x, 0, slotSize, slotSize).stroke({ color: 0x555555, width: 1 });
-      this._quickBarContainer.addChild(slot);
+    const onQuest = (questId: unknown) => {
+      this._notifications.show(`New quest: ${questId}`, 'quest');
+    };
+    gs.events.on('quest:started', onQuest);
+    this._boundEventHandlers.push({ event: 'quest:started', handler: onQuest });
 
-      // Key number.
-      const keyText = new Text({
-        text: `${i + 1}`,
-        style: new TextStyle({
-          fontFamily: '"Courier New", Courier, monospace',
-          fontSize: 8,
-          fill: 0x888888,
-        }),
-      });
-      keyText.position.set(x + 2, 1);
-      this._quickBarContainer.addChild(keyText);
-    }
+    const onQuestComplete = (questId: unknown) => {
+      this._notifications.show(`Quest complete: ${questId}`, 'quest');
+    };
+    gs.events.on('quest:completed', onQuestComplete);
+    this._boundEventHandlers.push({ event: 'quest:completed', handler: onQuestComplete });
+
+    const onLevelUp = (member: unknown) => {
+      const m = member as { name?: string; level?: number };
+      this._notifications.show(
+        `${m.name ?? 'Party member'} reached level ${m.level ?? '?'}!`,
+        'levelup',
+      );
+    };
+    gs.events.on('party:levelup', onLevelUp);
+    this._boundEventHandlers.push({ event: 'party:levelup', handler: onLevelUp });
+
+    const onRegion = (regionId: unknown) => {
+      this._notifications.show(`Entered: ${regionId}`, 'achievement');
+    };
+    gs.events.on('world:regionChanged', onRegion);
+    this._boundEventHandlers.push({ event: 'world:regionChanged', handler: onRegion });
+
+    const onInventory = (itemId: unknown, qty: unknown) => {
+      const q = qty as number;
+      if (q > 0) {
+        this._notifications.show(`Obtained: ${itemId}`, 'item');
+      }
+    };
+    gs.events.on('inventory:changed', onInventory);
+    this._boundEventHandlers.push({ event: 'inventory:changed', handler: onInventory });
   }
 
-  private _layoutUI(): void {
-    const w = this.engine.width;
-    const h = this.engine.height;
-
-    // Area name: top-left.
-    this._areaNameText.position.set(16, 12);
-
-    // Minimap: bottom-right.
-    this._minimapContainer.position.set(w - 136, h - 106);
-
-    // Party HP: left side.
-    this._partyHPContainer.position.set(16, 50);
-
-    // Quick bar: bottom center.
-    const barWidth = 8 * 32 + 7 * 4;
-    this._quickBarContainer.position.set((w - barWidth) / 2, h - 48);
+  private _unsubscribeFromEvents(): void {
+    const gs = GameState.instance;
+    for (const { event, handler } of this._boundEventHandlers) {
+      gs.events.off(event, handler);
+    }
+    this._boundEventHandlers.length = 0;
   }
 }

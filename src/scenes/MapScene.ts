@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { WipeTransition } from '@/ui/TransitionEffects';
 
 // ---------------------------------------------------------------------------
 // Region definitions
@@ -243,6 +244,15 @@ export class MapScene extends Scene {
       this._buildNodes();
     }
 
+    // Confirm region travel
+    if (input.isActionJustPressed('interact')) {
+      const selected = REGIONS[this._selectedRegionIdx];
+      if (selected.unlocked && selected.id !== this._currentRegionId) {
+        this._currentRegionId = selected.id;
+        void this.engine.scenes.pop(new WipeTransition(0.5, 'left'));
+      }
+    }
+
     // Pulsing glow on current region
     this._drawGlow();
   }
@@ -256,6 +266,11 @@ export class MapScene extends Scene {
     const h = this.engine.height;
     this._overlay.clear();
     this._overlay.rect(0, 0, w, h).fill({ color: 0x000000, alpha: 0.8 });
+  }
+
+  public override destroy(): void {
+    this._regionPositions.length = 0;
+    super.destroy();
   }
 
   // ------------------------------------------------------------------

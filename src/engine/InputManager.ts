@@ -400,6 +400,32 @@ export class InputManager {
   }
 
   // ------------------------------------------------------------------
+  // Release all state (for scene transitions)
+  // ------------------------------------------------------------------
+
+  /**
+   * Clears all pressed key/action state.
+   * Call this during scene transitions to prevent stale input carrying over.
+   */
+  public releaseAll(): void {
+    for (const [, state] of this._keys) {
+      state.down = false;
+      state.justPressed = false;
+      state.justReleased = false;
+    }
+    this._justPressedQueue.length = 0;
+    this._justReleasedQueue.length = 0;
+
+    for (const [, state] of this._gamepadButtons) {
+      state.down = false;
+      state.justPressed = false;
+      state.justReleased = false;
+    }
+    this._gpJustPressedQueue.length = 0;
+    this._gpJustReleasedQueue.length = 0;
+  }
+
+  // ------------------------------------------------------------------
   // Cleanup
   // ------------------------------------------------------------------
 

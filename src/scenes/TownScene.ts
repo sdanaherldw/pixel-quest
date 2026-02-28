@@ -1,6 +1,7 @@
 import { Container, Graphics, Text, TextStyle } from 'pixi.js';
 
 import { Scene } from '@/engine/Scene';
+import { DialogueBox } from '@/ui/DialogueBox';
 
 // ---------------------------------------------------------------------------
 // Building definitions
@@ -68,6 +69,7 @@ export class TownScene extends Scene {
   private _leaveButton!: Container;
   private _serviceOverlay!: Container;
   private _torchGfx!: Graphics;
+  private _dialogueBox!: DialogueBox;
 
   // ------------------------------------------------------------------
   // State
@@ -142,10 +144,26 @@ export class TownScene extends Scene {
     this._serviceOverlay.label = 'service-overlay';
     this._serviceOverlay.visible = false;
     this.container.addChild(this._serviceOverlay);
+
+    // --- Dialogue box ---
+    this._dialogueBox = new DialogueBox(w, h);
+    this.engine.uiContainer.addChild(this._dialogueBox.container);
   }
 
   public update(dt: number): void {
     this._elapsed += dt;
+
+    // Dialogue box takes priority when visible.
+    this._dialogueBox.update(dt);
+    if (this._dialogueBox.isVisible()) {
+      if (
+        this.engine.input.isActionJustPressed('interact') ||
+        this.engine.input.isKeyJustPressed('Space')
+      ) {
+        this._dialogueBox.advance();
+      }
+      return;
+    }
 
     // Animate torch flicker.
     this._drawTorchAmbience(this.engine.width, this.engine.height);
@@ -706,8 +724,23 @@ export class TownScene extends Scene {
   // ------------------------------------------------------------------
 
   private _onNPCClick(npc: TownNPC): void {
-    this.engine.debug.log(`Talking to ${npc.name} (${npc.role})`);
-    // Placeholder: full dialogue system integration goes here.
+    const dialogueByRole: Record<string, string> = {
+      'Quest Giver': 'Brave adventurer, the forest to the east grows dark with corruption. Will you investigate?',
+      'Villager': 'The harvest has been poor this year. Strange creatures roam the fields at night...',
+      'Guard': 'Stay vigilant, traveller. Reports of bandits on the northern road have increased.',
+      'Merchant': 'Welcome! I have the finest goods in all the land. Care to browse my wares?',
+    };
+
+    const text = dialogueByRole[npc.role] ?? `Greetings, adventurer. I am ${npc.name}.`;
+
+    this._dialogueBox.show(
+      npc.name,
+      text,
+      undefined,
+      { color: npc.color },
+      undefined,
+      undefined,
+    );
   }
 
   // ------------------------------------------------------------------
@@ -728,6 +761,16 @@ export class TownScene extends Scene {
   /** The town identifier used to load this scene. */
   public get townId(): string {
     return this._townId;
+  }
+
+  public override async exit(): Promise<void> {
+    this._dialogueBox.container.removeFromParent();
+  }
+
+  public override destroy(): void {
+    this._closeService();
+    this._dialogueBox.destroy();
+    super.destroy();
   }
 
   private _resolveTownName(id: string): string {

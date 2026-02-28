@@ -214,6 +214,16 @@ export class GameOverScene extends Scene {
     // Dynamic rendering handled in update.
   }
 
+  public override async exit(): Promise<void> {
+    this._particles.length = 0;
+  }
+
+  public override destroy(): void {
+    this._particles.length = 0;
+    this._menuTexts.length = 0;
+    super.destroy();
+  }
+
   // ------------------------------------------------------------------
   // Background
   // ------------------------------------------------------------------
